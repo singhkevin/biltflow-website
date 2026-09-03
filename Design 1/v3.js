@@ -13,7 +13,8 @@
                  orangeDowngraded: 0, darkBandFixed: 0,
                  ringMark: 0, videoSlot: 0,
                  guideRemoved: 0, scatterRemoved: 0, marksRemoved: 0,
-                 videoWidened: 0, modulesRebuilt: 0 };
+                 videoWidened: 0, modulesRebuilt: 0,
+                 logosToText: 0, headerRule: 0 };
 
   // luminance of the nearest painted background behind an element
   function onDark(el) {
@@ -321,6 +322,33 @@
         report.modulesRebuilt = 1;
       }
     }
+
+    // 8. INTEGRATIONS — all twelve as wordmarks, none as images.
+    //    Only four marks were both legally clear and monochrome-safe, and all four
+    //    happen to sit in the left-hand column, so the strip read as colour on the
+    //    left and text on the right. There is no way to balance it: every
+    //    right-column vendor is either a Microsoft/Meta licence problem or a file
+    //    that turned out to be the parent company's mark. One uniform typographic
+    //    treatment is the consistent answer, and text is the correct nominative-use
+    //    treatment anyway.
+    [].slice.call(root.querySelectorAll('img')).forEach(function (im) {
+      var src = im.getAttribute('src') || '';
+      if (!/\/logos\//.test(src)) return;                 // leave the Biltflow marks alone
+      var card = im.parentElement;
+      im.remove();
+      // the vendor name was hidden when the logo went in — bring it back
+      [].slice.call(card.querySelectorAll('span')).forEach(function (sp) {
+        if (sp.style.display === 'none') sp.style.display = '';
+      });
+      card.removeAttribute('data-logo');
+      report.logosToText++;
+    });
+
+    // 9. Drop the rule under the header. It runs full-bleed while the logo and nav
+    //    sit inside the gutter, and the drawing grid already crosses it, so it
+    //    reads as a stray line rather than a division.
+    var hdr = root.querySelector('header');
+    if (hdr) { hdr.style.borderBottom = 'none'; report.headerRule = 1; }
   }
 
   var tries = 0;
