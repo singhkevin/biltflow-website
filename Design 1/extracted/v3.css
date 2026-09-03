@@ -10,7 +10,17 @@
    section head than below the content that precedes it. Forcing 120/120
    made the page 1,452px longer for no gain. */
 #dc-root .sc-host > div > section{padding-top:96px !important;padding-bottom:80px !important}
-#dc-root .sc-host > div > header{padding-top:28px !important;padding-bottom:28px !important}
+#dc-root .sc-host > div > header{padding-top:20px !important;padding-bottom:20px !important}
+
+/* 1b. The hero sits directly under the header, so it does not need the standard
+       96px section lead-in — that plus vertically centring the text column against
+       a ~700px ring put the first word 228px below the nav. Tighten the lead-in and
+       let both columns centre together so the gap closes from the top, not the middle. */
+#dc-root .sc-host > div > section:first-of-type{
+  padding-top:32px !important;
+  min-height:auto !important;
+  align-items:center !important;
+}
 #dc-root .sc-host > div > footer{padding-top:56px !important;padding-bottom:56px !important}
 
 /* 2. MEASURE — one paragraph was running to 110 characters.
