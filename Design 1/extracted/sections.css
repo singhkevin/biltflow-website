@@ -60,7 +60,12 @@
 .bf-integrations .node.act{border-color:#12161B}
 .bf-integrations .node.act:focus-visible{outline:2px solid #FF5500;outline-offset:2px}
 .bf-integrations .lock{display:flex;align-items:center;gap:10px;height:28px}
-.bf-integrations .lock img{display:block;filter:grayscale(1) brightness(0);opacity:.8;transition:opacity .16s linear}
+.bf-integrations .lock img{display:block;opacity:.9;transition:opacity .16s linear}
+/* No monochrome flatten. grayscale+brightness(0) destroys white counters
+   (Bluebeam's mark contains #fff) and turns any gradient icon into a blob —
+   which is exactly how Excel, Outlook and Teams rendered. The four marks that
+   remain are shown in their own colours at 22px, which is small enough that
+   they read as an inventory rather than a logo wall. */
 .bf-integrations .node.act .lock img{opacity:1}
 .bf-integrations .word{
   font-size:18px;font-weight:600;letter-spacing:-.012em;color:#12161B;

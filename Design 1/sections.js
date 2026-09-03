@@ -2,18 +2,18 @@
 (function(){
 
 window.BF_LOGO = {
-  aconex: "./logos/aconex.svg",
+  aconex: "__WORDMARK__aconex",
   procore: "./logos/procore.svg",
   bluebeam: "./logos/bluebeam.svg",
   procurepro: "./logos/procurepro.svg",
   payapps: "./logos/payapps.png",
-  buildsoft: "./logos/buildsoft.png",
-  jobpac: "./logos/jobpac.png",
-  costx: "./logos/costx.svg",
-  excel: "./logos/excel.svg",
-  outlook: "./logos/outlook.svg",
-  teams: "./logos/teams.svg",
-  whatsapp: "./logos/whatsapp.svg"
+  buildsoft: "__WORDMARK__buildsoft",
+  jobpac: "__WORDMARK__jobpac",
+  costx: "__WORDMARK__costx",
+  excel: "__WORDMARK__excel",
+  outlook: "__WORDMARK__outlook",
+  teams: "__WORDMARK__teams",
+  whatsapp: "__WORDMARK__whatsapp"
 };
 
 (function(){

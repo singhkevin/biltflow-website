@@ -9,19 +9,30 @@
     'excel':'excel', 'outlook':'outlook', 'teams':'teams', 'whatsapp':'whatsapp'
   };
   var EXT = ['svg','png'];
+  /* Only four of the twelve marks are BOTH legally clear and visually viable:
+     - excel / outlook / teams : gradient product icons. Microsoft permits wordmarks
+       only for nominative use; product icons need an express licence. Flattening
+       them to monochrome also turns them into black blobs.
+     - whatsapp : Meta forbids recolouring the mark.
+     - aconex / jobpac / costx : the fetched files are the ORACLE, VIEWPOINT and RIB
+       corporate marks, not the product wordmarks. Showing them misnames the product.
+     - buildsoft : palette PNG with no alpha, so a monochrome flatten gives a black box.
+     Everything not on this list keeps its text wordmark, which is the correct
+     nominative-use treatment anyway. */
+  var CLEARED = ['procore','procurepro','bluebeam','payapps'];
 
   function slug(t){ return (t||'').toLowerCase().replace(/[^a-z]/g,''); }
 
   function swap(card, name) {
     var key = MAP[slug(name)];
-    if (!key) return;
+    if (!key || CLEARED.indexOf(key) === -1) return;   // keep the wordmark
     var i = 0;
     var img = new Image();
     img.alt = name;
     // normalise on HEIGHT so twelve different lockups sit on one optical line
     img.style.cssText = 'height:22px;width:auto;max-width:140px;' +
       'object-fit:contain;object-position:left center;display:block;' +
-      'filter:grayscale(1) brightness(0);opacity:.78';
+      'opacity:.9';
     img.onerror = function () {
       if (++i < EXT.length) { img.src = './logos/' + key + '.' + EXT[i]; return; }
       img.remove();                       // no asset — the wordmark stays
