@@ -10,7 +10,8 @@
   // tally must accumulate across runs or each pass overwrites the last one's total.
   var report = window.__v3 || { runs: 0, sizesSnapped: 0, coloursFixed: 0, pointersCleared: 0,
                  innerBordersDropped: 0, copyFixed: 0, tinyRaised: 0,
-                 orangeDowngraded: 0, darkBandFixed: 0 };
+                 orangeDowngraded: 0, darkBandFixed: 0,
+                 ringMark: 0, videoSlot: 0 };
 
   // luminance of the nearest painted background behind an element
   function onDark(el) {
@@ -104,11 +105,75 @@
     }
   }
 
+
+  /* ---------- requested changes ---------- */
+  function enhance(root) {
+    // 1. Biltflow mark at the centre of the lifecycle ring, replacing the crosshair.
+    var marker = root.querySelector('[data-marker]');
+    var ring = marker && marker.ownerSVGElement;
+    if (ring && !ring.querySelector('[data-bf-mark]')) {
+      // the crosshair is two short 20px lines through the centre
+      [].slice.call(ring.querySelectorAll('line')).forEach(function (l) {
+        var mx = (parseFloat(l.getAttribute('x1')) + parseFloat(l.getAttribute('x2'))) / 2;
+        var my = (parseFloat(l.getAttribute('y1')) + parseFloat(l.getAttribute('y2'))) / 2;
+        if (Math.hypot(mx - 280, my - 280) < 20) l.remove();
+      });
+      var W = 132, H = W * (30 / 114);              // logo is 114x30
+      var img = document.createElementNS('http://www.w3.org/2000/svg', 'image');
+      img.setAttribute('data-bf-mark', '');
+      img.setAttribute('href', './assets/biltflow-logo-black.svg');
+      img.setAttribute('x', 280 - W / 2); img.setAttribute('y', 280 - H / 2);
+      img.setAttribute('width', W); img.setAttribute('height', H);
+      img.setAttribute('opacity', '.9');
+      ring.appendChild(img);
+      report.ringMark = 1;
+    }
+
+    // 2. Video slot in the noise band — the film's NOISE beat plays here.
+    var noise = null;
+    [].slice.call(root.querySelectorAll('section')).forEach(function (sec) {
+      if (/More software\. More data/.test(sec.textContent)) noise = sec;
+    });
+    if (noise && !noise.querySelector('[data-bf-video]')) {
+      var kids = [].slice.call(noise.children);
+      var stage = kids.sort(function (a, b) { return b.offsetHeight - a.offsetHeight; })[0];
+      if (stage && stage.offsetHeight > 300) {
+        var slot = document.createElement('div');
+        slot.setAttribute('data-bf-video', '');
+        slot.style.cssText = 'max-width:900px;margin:0 auto;';
+        slot.innerHTML =
+          '<div style="display:flex;justify-content:space-between;align-items:baseline;' +
+            'font:500 12px/1 \'IBM Plex Mono\',ui-monospace,monospace;letter-spacing:.16em;' +
+            'text-transform:uppercase;color:#9AA4AD;margin-bottom:14px">' +
+            '<span>Film &middot; noise sequence</span><span>16:9</span></div>' +
+          '<div style="position:relative;aspect-ratio:16/9;border:1px solid #3D4650;background:#0C0E11">' +
+            '<span style="position:absolute;top:-1px;left:-1px;width:14px;height:14px;' +
+              'border-top:1px solid #FF5500;border-left:1px solid #FF5500"></span>' +
+            '<span style="position:absolute;bottom:-1px;right:-1px;width:14px;height:14px;' +
+              'border-bottom:1px solid #FF5500;border-right:1px solid #FF5500"></span>' +
+            '<div style="position:absolute;inset:0;display:flex;flex-direction:column;' +
+              'align-items:center;justify-content:center;gap:18px">' +
+              '<svg width="46" height="46" viewBox="0 0 46 46" fill="none" aria-hidden="true">' +
+                '<circle cx="23" cy="23" r="22" stroke="#59636E"/>' +
+                '<path d="M19 15.5 L31 23 L19 30.5 Z" stroke="#F9FAFB" stroke-width="1.2" ' +
+                  'stroke-linejoin="round" fill="none"/></svg>' +
+              '<span style="font:500 12px/1 \'IBM Plex Mono\',ui-monospace,monospace;' +
+                'letter-spacing:.16em;text-transform:uppercase;color:#9AA4AD">' +
+                '[ Video &mdash; to be placed ]</span>' +
+            '</div>' +
+          '</div>';
+        stage.replaceWith(slot);
+        report.videoSlot = 1;
+      }
+    }
+  }
+
   var tries = 0;
   (function boot() {
     var root = document.getElementById('dc-root');
     if (root && root.querySelectorAll('section').length > 3) {
       run(root);
+      enhance(root);
       report.runs++;
       window.__v3 = report;
       return;
