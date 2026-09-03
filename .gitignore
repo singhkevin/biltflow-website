@@ -2,3 +2,5 @@
 node_modules/
 *.log
 .image-slots.state.json
+.vercel
+.env*
