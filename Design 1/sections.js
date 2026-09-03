@@ -311,30 +311,39 @@ window.BF_LOGO = {
   });
   map.addEventListener('mouseleave', function(){ if (pinned < 0) set(-1); });
 
-  /* ---- EVE waveform: runs only while a document is selected, then settles flat ---- */
-  var wave = $('wave'), N = 32, X0 = 322, ST = 3.7, YC = 398,
-      FLAT = wave.getAttribute('points'),
-      amp = 0, want = 0, t = 0, raf = null, vis = true;
+  /* ---- EVE waveform: always breathing at a low idle baseline, swells while a document is selected.
+     wave is re-queried fresh every frame/call rather than cached -- the artboard runtime
+     reconciles this templated subtree shortly after boot (same mechanism confirmed for the
+     integrations riser's <path> elements) and silently swaps in a new node, orphaning any
+     reference captured once at IIFE-init time. ---- */
+  var N = 32, X0 = 322, ST = 3.7, YC = 398,
+      FLAT = ($('wave') || {}).getAttribute && $('wave').getAttribute('points'),
+      IDLE = 2, ACTIVE = 9.5,
+      amp = 0, want = IDLE, t = 0, raf = null, vis = true;
 
   function frame(){
+    var w = $('wave');
     t += 0.075; amp += (want - amp) * 0.13;
-    if (!want && amp < 0.12){ wave.setAttribute('points', FLAT); raf = null; return; }
-    for (var p='', i=0, u, y; i<N; i++){ u = i/(N-1);
-      y = YC + amp * Math.sin(u*Math.PI) *
-          (Math.sin(t*2.1 + u*9)*0.62 + Math.sin(t*3.4 + u*15)*0.38);
-      p += (i?' ':'') + (X0 + i*ST).toFixed(1) + ',' + y.toFixed(1); }
-    wave.setAttribute('points', p); raf = requestAnimationFrame(frame);
+    if (w){
+      for (var p='', i=0, u, y; i<N; i++){ u = i/(N-1);
+        y = YC + amp * Math.sin(u*Math.PI) *
+            (Math.sin(t*2.1 + u*9)*0.62 + Math.sin(t*3.4 + u*15)*0.38);
+        p += (i?' ':'') + (X0 + i*ST).toFixed(1) + ',' + y.toFixed(1); }
+      w.setAttribute('points', p);
+    }
+    raf = setTimeout(frame, 16);
   }
   function pulse(on){
     if (slow) return;
-    want = on ? 9.5 : 0;
-    if (!raf && vis) raf = requestAnimationFrame(frame);
+    want = on ? ACTIVE : IDLE;
+    if (!raf && vis) raf = setTimeout(frame, 16);
   }
   new IntersectionObserver(function(e){
     vis = e[0].isIntersecting;
-    if (!vis){ if (raf) cancelAnimationFrame(raf); raf = null; wave.setAttribute('points', FLAT); }
-    else if (want && !raf) raf = requestAnimationFrame(frame);
+    if (!vis){ if (raf) clearTimeout(raf); raf = null; var w = $('wave'); if (w) w.setAttribute('points', FLAT); }
+    else if (!raf) raf = setTimeout(frame, 16);
   }, {threshold:0}).observe(map);
+  if (!slow) pulse(false);
 
   /* ---- copilot / autopilot ---- */
   var knob = $('knob'), stops = Q('#stops button');
