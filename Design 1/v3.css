@@ -18,7 +18,11 @@
        let both columns centre together so the gap closes from the top, not the middle. */
 #dc-root .sc-host > div > section:first-of-type{
   padding-top:32px !important;
-  min-height:auto !important;
+  /* Hero fills the first viewport: 100vh minus the header's own height (128px,
+     stable across breakpoints since header padding is fixed at 20/20 above and
+     doesn't wrap). Deliberately full-screen, unlike the padding fix above which
+     was closing an accidental gap -- this is an intentional above-the-fold hero. */
+  min-height:calc(100vh - 128px) !important;
   align-items:center !important;
 }
 #dc-root .sc-host > div > footer{padding-top:56px !important;padding-bottom:56px !important}

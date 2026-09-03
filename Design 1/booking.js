@@ -236,21 +236,29 @@
     root.querySelector('.scrim').addEventListener('click', close);
   }
 
+  // Bind via delegation on document, not on the CTA nodes themselves. The artboard
+  // runtime (support.js) hydrates its templated DOM shortly after first paint —
+  // matching "book a demo" by text succeeds instantly against the PRE-hydration
+  // markup, so a direct addEventListener binds to nodes hydration then discards,
+  // and every click silently does nothing (verified: works when open() is called
+  // directly, fails via both real and dispatched clicks, on a fresh load with zero
+  // prior interaction — a boot-timing race, not a later re-render). Delegation reads
+  // event.target at click time, so it is correct regardless of node replacement.
+  function isTrigger(el){
+    return el && /^\s*book a demo\s*$/i.test(el.textContent || '');
+  }
+  document.addEventListener('click', function(ev){
+    var el = ev.target.closest('a,button');
+    if (!isTrigger(el)) return;
+    ev.preventDefault();
+    if (!root) build();
+    open();
+  });
+
   var tries = 0;
   (function boot(){
-    var ctas = [].filter.call(document.querySelectorAll('a,button'), function(el){
-      return /^\s*book a demo\s*$/i.test(el.textContent || '');
-    });
-    if (ctas.length){
-      build();
-      ctas.forEach(function(el){
-        if (el.hasAttribute('data-bf-bound')) return;   // never bind the same node twice
-        el.setAttribute('data-bf-bound', '');
-        el.addEventListener('click', function(ev){ ev.preventDefault(); open(); });
-      });
-      window.__bfBook = { triggers: ctas.length, open: open };
-      return;
-    }
+    var found = [].some.call(document.querySelectorAll('a,button'), isTrigger);
+    if (found){ build(); window.__bfBook = { open: open }; return; }
     if (tries++ < 40) setTimeout(boot, 150);
   })();
 })();
