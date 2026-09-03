@@ -11,7 +11,8 @@
   var report = window.__v3 || { runs: 0, sizesSnapped: 0, coloursFixed: 0, pointersCleared: 0,
                  innerBordersDropped: 0, copyFixed: 0, tinyRaised: 0,
                  orangeDowngraded: 0, darkBandFixed: 0,
-                 ringMark: 0, videoSlot: 0 };
+                 ringMark: 0, videoSlot: 0,
+                 guideRemoved: 0, scatterRemoved: 0 };
 
   // luminance of the nearest painted background behind an element
   function onDark(el) {
@@ -182,6 +183,36 @@
         stage.replaceWith(slot);
         report.videoSlot = 1;
       }
+    }
+
+    // 3. Remove the cursor-tracking guide overlay: the full-page crosshair, the
+    //    "X 0000 · Y 0000 · GRID D/10" readout and the ruler strip. Same class of
+    //    thing as the cursor field — drawing-set chrome that tracks the pointer
+    //    and competes with the content underneath.
+    [].slice.call(root.querySelectorAll('div,span')).forEach(function (el) {
+      var st = el.getAttribute('style') || '';
+      if (/mix-blend-mode\s*:\s*difference/.test(st) && /position\s*:\s*fixed/.test(st)) {
+        el.remove(); report.guideRemoved++;
+      }
+    });
+    // the coordinate readout itself, wherever it ended up
+    [].slice.call(root.querySelectorAll('*')).forEach(function (el) {
+      if (el.children.length) return;
+      var t = (el.textContent || '').trim();
+      if (/^X \d+\s*·\s*Y \d+/.test(t) || /^GRID [A-Z]\/\d+$/.test(t)) {
+        el.remove(); report.guideRemoved++;
+      }
+    });
+
+    // 4. The noise band was showing the video slot AND the original card scatter.
+    //    They argue the same beat twice; the video is what plays there.
+    if (noise) {
+      [].slice.call(noise.children).forEach(function (c) {
+        if (c.hasAttribute('data-bf-video')) return;
+        if (/Aconex/.test(c.textContent) && /Procore/.test(c.textContent) && c.offsetHeight > 400) {
+          c.remove(); report.scatterRemoved++;
+        }
+      });
     }
   }
 

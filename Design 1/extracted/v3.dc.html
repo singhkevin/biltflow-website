@@ -106,17 +106,15 @@ div[style*="grid-template-columns:1.4fr 2.4fr"]{display:none !important}
 [data-stage][data-active="true"] dt{color:#C43D00 !important}
 </style>
 <script src="./motion.js?v=1788437436"></script>
-<script src="./cursor-field.js?v=1788437436"></script>
 <script src="./stages.js?v=1788437436"></script>
 <script src="./logos.js?v=1788439413"></script>
 <link rel="stylesheet" href="./sections.css?v=1788439474">
 <script src="./sections.js?v=1788439413" defer></script>
 <link rel="stylesheet" href="./v3.css?v=1788438573">
-<script src="./v3.js?v=1788439635" defer></script>
+<script src="./v3.js?v=1788439821" defer></script>
 </helmet>
 <div style="width:1440px;margin:0 auto;background:#F9FAFB;color:#12161B;font-family:Archivo,'Helvetica Neue',Helvetica,sans-serif;font-size:17px;line-height:1.5;position:relative;z-index:0">
 <div aria-hidden="true" style="position:fixed;top:0;bottom:0;left:0;right:0;margin:0 auto;width:1440px;z-index:-1;pointer-events:none;will-change:transform;transform:translateZ(0);background-image:linear-gradient(to right,#12161B14 1px,transparent 1px),linear-gradient(to bottom,#12161B14 1px,transparent 1px),linear-gradient(to right,#12161B0A 1px,transparent 1px),linear-gradient(to bottom,#12161B0A 1px,transparent 1px);background-size:160px 200px,160px 200px,40px 40px,40px 40px;background-position:80px 0,80px 0,80px 0,80px 0;"></div>
-<canvas data-cursor-field aria-hidden="true" style="position:fixed;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none"></canvas>
 
 <div ref="{{ guideRef }}" aria-hidden="true" style="position:fixed;inset:0;pointer-events:none;z-index:5;mix-blend-mode:difference;opacity:0;transition:opacity .3s linear">
   <span data-guide="v" style="position:absolute;top:0;bottom:0;left:0;width:1px;background:#2A2E33;will-change:transform"></span>
@@ -1182,18 +1180,5 @@ class Component extends DCLogic {
 }
 </script>
 
-<script>
-(function(){
-  var tries=0;
-  (function go(){
-    var c=document.querySelector('canvas[data-cursor-field]');
-    if(c && window.CursorField && c.clientWidth){
-      window.__bf = new CursorField(c,{step:30,radius:230,ease:0.12,push:11,dot:1.0,grow:1.2,len:1.3,rest:'#C9D0D7',hot:'#C43D00',hot2:'#FF5500',dash:true,idleMs:1400});
-      return;
-    }
-    if(tries++<40) setTimeout(go,150);
-  })();
-})();
-</script>
 </body>
 </html>
