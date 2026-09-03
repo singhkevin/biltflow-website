@@ -21,13 +21,20 @@
 
     // The module dials repeat all 13 stage names three times — 78 elements whose only
     // job is to be identical. Strip them so the lit arc is the one thing that differs.
-    [].forEach.call(document.querySelectorAll('svg'), function (svg) {
-      if (svg.querySelector('[data-marker]')) return;          // leave the big ring alone
-      if (!svg.querySelector('[data-label]')) return;
-      [].forEach.call(svg.querySelectorAll('[data-label],[data-num]'), function (el) {
-        el.style.display = 'none';
+    // Identify them STRUCTURALLY: only a section holding MORE THAN ONE labelled ring is a
+    // set of dials. Keying off "has no [data-marker]" also caught the hero ring, which has
+    // no marker of its own, and silently hid its 13 stage names.
+    [].forEach.call(document.querySelectorAll('section'), function (sec) {
+      var rings = [].filter.call(sec.querySelectorAll('svg'), function (sv) {
+        return sv.querySelector('[data-label]');
       });
-      svg.setAttribute('data-dial', '');
+      if (rings.length < 2) return;                  // hero and lifecycle keep their labels
+      rings.forEach(function (svg) {
+        [].forEach.call(svg.querySelectorAll('[data-label],[data-num]'), function (el) {
+          el.style.display = 'none';
+        });
+        svg.setAttribute('data-dial', '');
+      });
     });
 
     return rows.length > 0;

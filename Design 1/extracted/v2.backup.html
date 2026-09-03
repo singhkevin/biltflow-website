@@ -105,12 +105,10 @@ div[style*="grid-template-columns:1.4fr 2.4fr"]{display:none !important}
 [data-stage][data-active="true"] h3{font-weight:600 !important}
 [data-stage][data-active="true"] dt{color:#C43D00 !important}
 </style>
-<script src="./motion.js?v=1788437436"></script>
-<script src="./cursor-field.js?v=1788437436"></script>
-<script src="./stages.js?v=1788437436"></script>
-<script src="./logos.js?v=1788437436"></script>
-<link rel="stylesheet" href="./sections.css?v=1788437436">
-<script src="./sections.js?v=1788437436" defer></script>
+<script src="./motion.js"></script>
+<script src="./cursor-field.js"></script>
+<script src="./stages.js"></script>
+<script src="./logos.js"></script>
 </helmet>
 <div style="width:1440px;margin:0 auto;background:#F9FAFB;color:#12161B;font-family:Archivo,'Helvetica Neue',Helvetica,sans-serif;font-size:17px;line-height:1.5;position:relative;z-index:0">
 <div aria-hidden="true" style="position:fixed;top:0;bottom:0;left:0;right:0;margin:0 auto;width:1440px;z-index:-1;pointer-events:none;will-change:transform;transform:translateZ(0);background-image:linear-gradient(to right,#12161B14 1px,transparent 1px),linear-gradient(to bottom,#12161B14 1px,transparent 1px),linear-gradient(to right,#12161B0A 1px,transparent 1px),linear-gradient(to bottom,#12161B0A 1px,transparent 1px);background-size:160px 200px,160px 200px,40px 40px,40px 40px;background-position:80px 0,80px 0,80px 0,80px 0;"></div>
@@ -260,797 +258,206 @@ div[style*="grid-template-columns:1.4fr 2.4fr"]{display:none !important}
 </section>
 
 <!-- 05 STACK -->
-<section class="bf-integrations" data-bf="integrations">
-<div class="page">
-<section class="sec" id="integrations" aria-labelledby="int-title">
-<div class="inner">
-
-  <div class="eyebrow mono">Integrations</div>
-
-  <div class="head">
-    <div>
-      <h2 class="title" id="int-title">Biltflow works with your existing stack.</h2>
-      <p class="sub">Connect first. Replace on your timeline, not ours.</p>
+<section id="stack" data-screen-label="05 Existing stack" style="padding:96px 80px;border-bottom:1px solid #C9D0D7">
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;padding-bottom:20px;border-bottom:1px solid #12161B">
+    <div style="display:flex;flex-direction:column;gap:20px;max-width:760px">
+      <span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;font-weight:500;letter-spacing:0.16em;color:#59636E">INTEGRATIONS</span>
+      <h2 style="margin:0;font-size:44px;line-height:1.1;font-weight:500;letter-spacing:-0.03em;text-wrap:pretty">Biltflow works with your existing stack.</h2>
     </div>
-    <div class="head-r">
-      <div class="legend">
-        <span class="mono">How to read this</span>
-        <p>Each system on the left and right already holds part of the job. Hover or tab a system to trace what lives in it today, and where it lands.</p>
-      </div>
-    </div>
+    <p style="margin:0;max-width:400px;font-size:17px;color:#59636E;text-wrap:pretty">Connect first. Replace on your timeline, not ours.</p>
   </div>
-
-  <!-- ============ DIAGRAM ============ -->
-  <div class="diagram">
-    <div class="colhead l mono">Project &amp; commercial systems</div>
-    <div class="colhead r mono">Finance, measure &amp; messaging</div>
-
-    <div class="wire" id="wire">
-      <svg viewBox="0 0 1240 538" aria-hidden="true" focusable="false">
-        <!-- bus reference ticks -->
-        <g class="tick">
-          <line x1="430" y1="30" x2="430" y2="39"/>
-          <line x1="430" y1="499" x2="430" y2="508"/>
-          <line x1="810" y1="30" x2="810" y2="39"/>
-          <line x1="810" y1="499" x2="810" y2="508"/>
-        </g>
-        <g id="routes">
-          <path class="route" d="M300,39 H430 V269 H460"/>
-          <path class="route" d="M300,131 H430 V269 H460"/>
-          <path class="route" d="M300,223 H430 V269 H460"/>
-          <path class="route" d="M300,315 H430 V269 H460"/>
-          <path class="route" d="M300,407 H430 V269 H460"/>
-          <path class="route" d="M300,499 H430 V269 H460"/>
-          <path class="route" d="M940,39 H810 V269 H780"/>
-          <path class="route" d="M940,131 H810 V269 H780"/>
-          <path class="route" d="M940,223 H810 V269 H780"/>
-          <path class="route" d="M940,315 H810 V269 H780"/>
-          <path class="route" d="M940,407 H810 V269 H780"/>
-          <path class="route" d="M940,499 H810 V269 H780"/>
-        </g>
-        <g id="lives">
-          <path class="live" d="M300,39 H430 V269 H460"/>
-          <path class="live" d="M300,131 H430 V269 H460"/>
-          <path class="live" d="M300,223 H430 V269 H460"/>
-          <path class="live" d="M300,315 H430 V269 H460"/>
-          <path class="live" d="M300,407 H430 V269 H460"/>
-          <path class="live" d="M300,499 H430 V269 H460"/>
-          <path class="live" d="M940,39 H810 V269 H780"/>
-          <path class="live" d="M940,131 H810 V269 H780"/>
-          <path class="live" d="M940,223 H810 V269 H780"/>
-          <path class="live" d="M940,315 H810 V269 H780"/>
-          <path class="live" d="M940,407 H810 V269 H780"/>
-          <path class="live" d="M940,499 H810 V269 H780"/>
-        </g>
-      </svg>
-
-      <span class="arrive l" id="arrL"></span>
-      <span class="arrive r" id="arrR"></span>
-
-      <!-- vendor nodes are written by script from one data table -->
-
-      <div class="rec" id="rec">
-        <div class="rec-top">
-          <span class="mono">One record</span>
-          <span class="idx" id="recIdx">—</span>
-        </div>
-        <p class="rec-name" id="recName">Twelve systems.<br>One record.</p>
-        <div class="rec-rule"></div>
-        <div class="rec-cap" id="recCap">What lives there today</div>
-        <ul class="rec-list" id="recList">
-          <li class="hint">Hover a system to trace what it already holds — and see it land in one record.</li>
-        </ul>
-        <div class="rec-foot">[ Connector scope to confirm ]</div>
-      </div>
+  <div style="display:flex;flex-direction:column;margin-top:56px">
+    <div style="display:grid;grid-template-columns:repeat(6, minmax(0, 1fr));gap:16px">
+      <div style="display:flex;flex-direction:column;justify-content:space-between;height:104px;padding:16px;background:#FFFFFF;border:1px solid #C9D0D7"><span style="font-size:18px;font-weight:500">Aconex</span><span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:0.16em;color:#59636E">DOCUMENT CONTROL</span></div>
+      <div style="display:flex;flex-direction:column;justify-content:space-between;height:104px;padding:16px;background:#FFFFFF;border:1px solid #C9D0D7"><span style="font-size:18px;font-weight:500">Procore</span><span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:0.16em;color:#59636E">PROJECT MANAGEMENT</span></div>
+      <div style="display:flex;flex-direction:column;justify-content:space-between;height:104px;padding:16px;background:#FFFFFF;border:1px solid #C9D0D7"><span style="font-size:18px;font-weight:500">Jobpac</span><span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:0.16em;color:#59636E">ERP · FINANCE</span></div>
+      <div style="display:flex;flex-direction:column;justify-content:space-between;height:104px;padding:16px;background:#FFFFFF;border:1px solid #C9D0D7"><span style="font-size:18px;font-weight:500">ProcurePro</span><span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:0.16em;color:#59636E">PROCUREMENT</span></div>
+      <div style="display:flex;flex-direction:column;justify-content:space-between;height:104px;padding:16px;background:#FFFFFF;border:1px solid #C9D0D7"><span style="font-size:18px;font-weight:500">Payapps</span><span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:0.16em;color:#59636E">PROGRESS CLAIMS</span></div>
+      <div style="display:flex;flex-direction:column;justify-content:space-between;height:104px;padding:16px;background:#FFFFFF;border:1px solid #C9D0D7"><span style="font-size:18px;font-weight:500">Buildsoft</span><span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:0.16em;color:#59636E">ESTIMATING</span></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(6, minmax(0, 1fr));gap:16px;height:48px"><span style="display:block;width:1px;height:100%;background:#9AA4AD;margin:0 auto"></span><span style="display:block;width:1px;height:100%;background:#9AA4AD;margin:0 auto"></span><span style="display:block;width:1px;height:100%;background:#9AA4AD;margin:0 auto"></span><span style="display:block;width:1px;height:100%;background:#9AA4AD;margin:0 auto"></span><span style="display:block;width:1px;height:100%;background:#9AA4AD;margin:0 auto"></span><span style="display:block;width:1px;height:100%;background:#9AA4AD;margin:0 auto"></span></div>
+    <div style="position:relative;display:flex;align-items:center;justify-content:center;height:96px">
+      <span style="position:absolute;left:106px;right:106px;top:50%;height:1px;background:#12161B"></span>
+      <span style="position:absolute;left:106px;top:50%;width:1px;height:12px;background:#12161B;transform:translateY(-50%)"></span>
+      <span style="position:absolute;right:106px;top:50%;width:1px;height:12px;background:#12161B;transform:translateY(-50%)"></span>
+      <div style="position:relative;display:flex;align-items:center;gap:20px;height:64px;padding:0 28px;background:#12161B;color:#F9FAFB"><img src="./assets/biltflow-logo-light.svg" width="114" height="30" alt="biltflow" style="display:block"><span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;letter-spacing:0.16em;color:#9AA4AD;border-left:1px solid #59636E;padding-left:20px;white-space:nowrap">ONE RECORD · 12 CONNECTIONS</span></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(6, minmax(0, 1fr));gap:16px;height:48px"><span style="display:block;width:1px;height:100%;background:#9AA4AD;margin:0 auto"></span><span style="display:block;width:1px;height:100%;background:#9AA4AD;margin:0 auto"></span><span style="display:block;width:1px;height:100%;background:#9AA4AD;margin:0 auto"></span><span style="display:block;width:1px;height:100%;background:#9AA4AD;margin:0 auto"></span><span style="display:block;width:1px;height:100%;background:#9AA4AD;margin:0 auto"></span><span style="display:block;width:1px;height:100%;background:#9AA4AD;margin:0 auto"></span></div>
+    <div style="display:grid;grid-template-columns:repeat(6, minmax(0, 1fr));gap:16px">
+      <div style="display:flex;flex-direction:column;justify-content:space-between;height:104px;padding:16px;background:#FFFFFF;border:1px solid #C9D0D7"><span style="font-size:18px;font-weight:500">Bluebeam</span><span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:0.16em;color:#59636E">DRAWING MARKUP</span></div>
+      <div style="display:flex;flex-direction:column;justify-content:space-between;height:104px;padding:16px;background:#FFFFFF;border:1px solid #C9D0D7"><span style="font-size:18px;font-weight:500">CostX</span><span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:0.16em;color:#59636E">TAKE-OFF</span></div>
+      <div style="display:flex;flex-direction:column;justify-content:space-between;height:104px;padding:16px;background:#FFFFFF;border:1px solid #C9D0D7"><span style="font-size:18px;font-weight:500">Excel</span><span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:0.16em;color:#59636E">SPREADSHEETS</span></div>
+      <div style="display:flex;flex-direction:column;justify-content:space-between;height:104px;padding:16px;background:#FFFFFF;border:1px solid #C9D0D7"><span style="font-size:18px;font-weight:500">Outlook</span><span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:0.16em;color:#59636E">EMAIL</span></div>
+      <div style="display:flex;flex-direction:column;justify-content:space-between;height:104px;padding:16px;background:#FFFFFF;border:1px solid #C9D0D7"><span style="font-size:18px;font-weight:500">Teams</span><span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:0.16em;color:#59636E">MESSAGING</span></div>
+      <div style="display:flex;flex-direction:column;justify-content:space-between;height:104px;padding:16px;background:#FFFFFF;border:1px solid #C9D0D7"><span style="font-size:18px;font-weight:500">WhatsApp</span><span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:0.16em;color:#59636E">SITE MESSAGING</span></div>
     </div>
   </div>
-
-  <div class="foot">
-    <p>Product names and logos are the property of their respective owners and appear here for identification only. No partnership, affiliation or endorsement is implied. Record types listed describe what each system typically holds on a project; the scope of each connection is confirmed during onboarding.</p>
-    <span class="mono">Fig. — connection schedule</span>
-  </div>
-
-</div>
-</section>
-</div>
-
-<!-- ============================================================
-     VENDOR LOGO SOURCES
-     The unmodified monochrome files from ../logos/, base64-inlined so this
-     demo page opens standalone. Rendered through grayscale(1) brightness(0)
-     so twelve brand palettes do not turn the section into confetti.
-     Three sources are parent-brand marks rather than product wordmarks --
-     Oracle (Aconex), Viewpoint (Jobpac) and RIB (CostX) -- so those cards set
-     name:1 and keep the product name beside the mark, which is the real lockup.
-     Bluebeam and Payapps are cropped to drop the "a Nemetschek/Autodesk company"
-     straplines: illegible at 15px and irrelevant here. Sources in ../logos/ are
-     untouched. Nominative use only - see the footnote in the section above.
-     ============================================================ -->
+  <p style="margin:32px 0 0;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;letter-spacing:0.16em;color:#9AA4AD">FIG. 03 — THE SAME TWELVE SYSTEMS AS THE NOISE BAND, AT REST. NAMES ARE THE PROPERTY OF THEIR OWNERS.</p>
 </section>
 
 <!-- 06 BUILT ON REAL CONSTRUCTION -->
-<section class="bf-eve-provenance" data-bf="eve-provenance">
-
-
-
-
-
-
-
-
-<div class="page">
-<section class="sec" id="eve-provenance" aria-labelledby="ep-h">
-  <div class="head">
-    <div>
-      <span class="mono eyebrow">Provenance &middot; Orchestration</span>
-      <h2 id="ep-h">Built on real construction. EVE holds it together.</h2>
+<section data-screen-label="06 Real construction" style="padding:96px 80px;border-bottom:1px solid #C9D0D7">
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;padding-bottom:20px;border-bottom:1px solid #12161B">
+    <div style="display:flex;flex-direction:column;gap:20px;max-width:760px">
+      <span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;font-weight:500;letter-spacing:0.16em;color:#59636E">PROVENANCE</span>
+      <h2 style="margin:0;font-size:44px;line-height:1.1;font-weight:500;letter-spacing:-0.03em;text-wrap:pretty">Built on real construction.</h2>
     </div>
-    <p>Trained on the documents a building actually produces &mdash; in the order it produces
-       them. EVE is the layer that knows how each one refers to the next.</p>
+    <p style="margin:0;max-width:400px;font-size:17px;color:#59636E;text-wrap:pretty">Trained on the documents a building actually produces — in the order it produces them.</p>
   </div>
-
-  <div class="body">
-    <div>
-      <div class="panel">
-        <div class="panel-bar">
-          <span class="mono" style="letter-spacing:.16em">Relationship readout</span>
-          <span class="mono" id="ro-idx">&mdash;&thinsp;/&thinsp;09</span>
-        </div>
-        <div class="panel-main">
-          <h3 class="panel-title" id="ro-title">Nine document types.</h3>
-          <p class="panel-desc" id="ro-desc">A building produces the same records in the same
-             order, every time. Biltflow is built on those records &mdash; not on a general
-             model taught to talk about buildings.</p>
-          <div class="panel-rule"></div>
-          <div class="panel-cap mono" id="ro-cap" style="letter-spacing:.16em">Select a document</div>
-          <ul class="rels" id="ro-rels" hidden></ul>
-          <div class="hint" id="ro-hint">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9AA4AD"
-                 stroke-width="1" aria-hidden="true"><path d="M7 3.5l11 8.5-4.6 1.2 2.6 5.4-2.2 1-2.6-5.4L7 17z"/></svg>
-            <span>Hover or tab a document</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="legend">
-        <dl>
-          <div class="row"><span class="sw" style="background:#FF5500"></span>Selected document</div>
-          <div class="row"><span class="sw" style="background:#0E6FC2"></span>Related through EVE</div>
-          <div class="row"><span class="sw" style="background:#C9D0D7"></span>Not in this relation</div>
-        </dl>
-        <div class="figref">Fig. 02 &mdash; Document relationship map &middot; NTS</div>
-      </div>
-    </div>
-
-    <div class="plate">
-      <span class="reg tl"></span><span class="reg tr"></span>
-      <span class="reg bl"></span><span class="reg br"></span>
-      <svg class="map" id="map" viewBox="30 60 700 624" role="img"
-           aria-label="Nine construction document types arranged around EVE, the orchestration layer at the centre.">
-        <circle class="guide" cx="380" cy="380" r="288"/>
-<g class="spoke" data-spoke="0">
-  <line class="sp-line" x1="380" y1="262" x2="380" y2="133"/>
-  <path class="sp-arrow sp-arrow-in" d="M380 256.5L377.2 248.2L382.8 248.2Z"/>
-  <path class="sp-arrow sp-arrow-out" d="M380 138.5L382.8 146.8L377.2 146.8Z"/>
-  <rect class="sp-plate" x="338" y="190" width="84" height="15"/>
-  <text class="sp-label" x="380" y="200.7" text-anchor="middle"></text>
-</g>
-<g class="spoke" data-spoke="1">
-  <line class="sp-line" x1="455.8" y1="289.6" x2="532.5" y2="198.3"/>
-  <path class="sp-arrow sp-arrow-in" d="M459.4 285.4L462.6 277.3L466.8 280.8Z"/>
-  <path class="sp-arrow sp-arrow-out" d="M529 202.5L525.8 210.6L521.5 207Z"/>
-  <rect class="sp-plate" x="452.2" y="236.4" width="84" height="15"/>
-  <text class="sp-label" x="494.2" y="247.1" text-anchor="middle"></text>
-</g>
-<g class="spoke" data-spoke="2">
-  <line class="sp-line" x1="496.2" y1="359.5" x2="588.8" y2="343.2"/>
-  <path class="sp-arrow sp-arrow-in" d="M501.6 358.6L509.3 354.4L510.2 359.8Z"/>
-  <path class="sp-arrow sp-arrow-out" d="M583.3 344.1L575.7 348.3L574.7 342.9Z"/>
-  <rect class="sp-plate" x="500.5" y="343.8" width="84" height="15"/>
-  <text class="sp-label" x="542.5" y="354.5" text-anchor="middle"></text>
-</g>
-<g class="spoke" data-spoke="3">
-  <line class="sp-line" x1="482.2" y1="439" x2="566.2" y2="487.5"/>
-  <path class="sp-arrow sp-arrow-in" d="M487 441.8L495.5 443.5L492.7 448.3Z"/>
-  <path class="sp-arrow sp-arrow-out" d="M561.4 484.8L552.9 483L555.7 478.2Z"/>
-  <rect class="sp-plate" x="482.2" y="455.8" width="84" height="15"/>
-  <text class="sp-label" x="524.2" y="466.4" text-anchor="middle"></text>
-</g>
-<g class="spoke" data-spoke="4">
-  <line class="sp-line" x1="420.4" y1="490.9" x2="463.8" y2="610.2"/>
-  <path class="sp-arrow sp-arrow-in" d="M422.2 496.1L427.6 502.9L422.5 504.7Z"/>
-  <path class="sp-arrow sp-arrow-out" d="M461.9 605L456.5 598.2L461.7 596.3Z"/>
-  <rect class="sp-plate" x="400.1" y="543" width="84" height="15"/>
-  <text class="sp-label" x="442.1" y="553.7" text-anchor="middle"></text>
-</g>
-<g class="spoke" data-spoke="5">
-  <line class="sp-line" x1="339.6" y1="490.9" x2="296.2" y2="610.2"/>
-  <path class="sp-arrow sp-arrow-in" d="M337.8 496.1L337.5 504.7L332.4 502.9Z"/>
-  <path class="sp-arrow sp-arrow-out" d="M298.1 605L298.3 596.3L303.5 598.2Z"/>
-  <rect class="sp-plate" x="275.9" y="543" width="84" height="15"/>
-  <text class="sp-label" x="317.9" y="553.7" text-anchor="middle"></text>
-</g>
-<g class="spoke" data-spoke="6">
-  <line class="sp-line" x1="277.8" y1="439" x2="193.8" y2="487.5"/>
-  <path class="sp-arrow sp-arrow-in" d="M273 441.8L267.3 448.3L264.5 443.5Z"/>
-  <path class="sp-arrow sp-arrow-out" d="M198.6 484.8L204.3 478.2L207.1 483Z"/>
-  <rect class="sp-plate" x="193.8" y="455.8" width="84" height="15"/>
-  <text class="sp-label" x="235.8" y="466.4" text-anchor="middle"></text>
-</g>
-<g class="spoke" data-spoke="7">
-  <line class="sp-line" x1="263.8" y1="359.5" x2="171.2" y2="343.2"/>
-  <path class="sp-arrow sp-arrow-in" d="M258.4 358.6L249.8 359.8L250.7 354.4Z"/>
-  <path class="sp-arrow sp-arrow-out" d="M176.7 344.1L185.3 342.9L184.3 348.3Z"/>
-  <rect class="sp-plate" x="175.5" y="343.8" width="84" height="15"/>
-  <text class="sp-label" x="217.5" y="354.5" text-anchor="middle"></text>
-</g>
-<g class="spoke" data-spoke="8">
-  <line class="sp-line" x1="304.2" y1="289.6" x2="227.5" y2="198.3"/>
-  <path class="sp-arrow sp-arrow-in" d="M300.6 285.4L293.2 280.8L297.4 277.3Z"/>
-  <path class="sp-arrow sp-arrow-out" d="M231 202.5L238.5 207L234.2 210.6Z"/>
-  <rect class="sp-plate" x="223.8" y="236.4" width="84" height="15"/>
-  <text class="sp-label" x="265.8" y="247.1" text-anchor="middle"></text>
-</g>
-        <g id="hub">
-          <rect class="hub-box" x="298" y="298" width="164" height="164"/>
-          <text class="hub-cap" x="380" y="328" text-anchor="middle">Orchestration layer</text>
-          <line class="hub-rule" x1="334" y1="336" x2="426" y2="336"/>
-          <text class="hub-name" x="380" y="372" text-anchor="middle">EVE</text>
-          <polyline class="wave" id="wave" points="322,398 325.7,398 329.5,398 333.2,398 337,398 340.7,398 344.5,398 348.2,398 351.9,398 355.7,398 359.4,398 363.2,398 366.9,398 370.6,398 374.4,398 378.1,398 381.9,398 385.6,398 389.4,398 393.1,398 396.8,398 400.6,398 404.3,398 408.1,398 411.8,398 415.5,398 419.3,398 423,398 426.8,398 430.5,398 434.3,398 438,398"/>
-          <text class="hub-state" id="hub-state" x="380" y="436" text-anchor="middle">At rest</text>
-        </g>
-<g class="node" data-node="0" tabindex="0" role="button" aria-label="ARCHITECTURAL DRAWING">
-  <rect class="nd-box" x="314" y="60" width="132" height="64"/>
-  <rect class="nd-mark" x="314" y="60" width="3" height="64"/>
-  <g class="nd-icon" transform="translate(325 69) scale(0.75)"><path d="M5 2.5h9l5 5v14H5z"/><path d="M14 2.5v5h5"/><path d="M8 13h8M8 17h8"/></g>
-  <text class="nd-idx" x="435" y="80" text-anchor="end">01</text>
-  <text class="nd-t1" x="325" y="104">ARCHITECTURAL</text>
-  <text class="nd-t2" x="325" y="115">DRAWING</text>
-</g>
-<g class="node" data-node="1" tabindex="0" role="button" aria-label="STRUCTURAL DRAWING">
-  <rect class="nd-box" x="499.1" y="127.4" width="132" height="64"/>
-  <rect class="nd-mark" x="499.1" y="127.4" width="3" height="64"/>
-  <g class="nd-icon" transform="translate(510.1 136.4) scale(0.75)"><path d="M5 2.5h9l5 5v14H5z"/><path d="M14 2.5v5h5"/><path d="M8 11l8 8M16 11l-8 8"/></g>
-  <text class="nd-idx" x="620.1" y="147.4" text-anchor="end">02</text>
-  <text class="nd-t1" x="510.1" y="171.4">STRUCTURAL</text>
-  <text class="nd-t2" x="510.1" y="182.4">DRAWING</text>
-</g>
-<g class="node" data-node="2" tabindex="0" role="button" aria-label="COST PLAN">
-  <rect class="nd-box" x="597.6" y="298" width="132" height="64"/>
-  <rect class="nd-mark" x="597.6" y="298" width="3" height="64"/>
-  <g class="nd-icon" transform="translate(608.6 307) scale(0.75)"><path d="M5 2.5h9l5 5v14H5z"/><path d="M14 2.5v5h5"/><path d="M8 12h4M8 15h6M8 18h8"/></g>
-  <text class="nd-idx" x="718.6" y="318" text-anchor="end">03</text>
-  <text class="nd-t1" x="608.6" y="342">COST PLAN</text>
-</g>
-<g class="node" data-node="3" tabindex="0" role="button" aria-label="BILL OF QUANTITIES">
-  <rect class="nd-box" x="563.4" y="492" width="132" height="64"/>
-  <rect class="nd-mark" x="563.4" y="492" width="3" height="64"/>
-  <g class="nd-icon" transform="translate(574.4 501) scale(0.75)"><path d="M5 2.5h9l5 5v14H5z"/><path d="M14 2.5v5h5"/><path d="M8 12h8M8 15h8M8 18h8M12 12v6"/></g>
-  <text class="nd-idx" x="684.4" y="512" text-anchor="end">04</text>
-  <text class="nd-t1" x="574.4" y="536">BOQ</text>
-</g>
-<g class="node" data-node="4" tabindex="0" role="button" aria-label="CONTRACT">
-  <rect class="nd-box" x="412.5" y="618.6" width="132" height="64"/>
-  <rect class="nd-mark" x="412.5" y="618.6" width="3" height="64"/>
-  <g class="nd-icon" transform="translate(423.5 627.6) scale(0.75)"><path d="M5 2.5h9l5 5v14H5z"/><path d="M14 2.5v5h5"/><path d="M8 12h8M8 15h8M8 19h4"/></g>
-  <text class="nd-idx" x="533.5" y="638.6" text-anchor="end">05</text>
-  <text class="nd-t1" x="423.5" y="662.6">CONTRACT</text>
-</g>
-<g class="node" data-node="5" tabindex="0" role="button" aria-label="PROGRAMME">
-  <rect class="nd-box" x="215.5" y="618.6" width="132" height="64"/>
-  <rect class="nd-mark" x="215.5" y="618.6" width="3" height="64"/>
-  <g class="nd-icon" transform="translate(226.5 627.6) scale(0.75)"><path d="M5 2.5h9l5 5v14H5z"/><path d="M14 2.5v5h5"/><path d="M8 12h5M10 15h6M8 18h4"/></g>
-  <text class="nd-idx" x="336.5" y="638.6" text-anchor="end">06</text>
-  <text class="nd-t1" x="226.5" y="662.6">PROGRAMME</text>
-</g>
-<g class="node" data-node="6" tabindex="0" role="button" aria-label="PROCUREMENT PACKAGE">
-  <rect class="nd-box" x="64.6" y="492" width="132" height="64"/>
-  <rect class="nd-mark" x="64.6" y="492" width="3" height="64"/>
-  <g class="nd-icon" transform="translate(75.6 501) scale(0.75)"><path d="M5 2.5h9l5 5v14H5z"/><path d="M14 2.5v5h5"/><path d="M8 12h8v6H8z"/></g>
-  <text class="nd-idx" x="185.6" y="512" text-anchor="end">07</text>
-  <text class="nd-t1" x="75.6" y="536">PROCUREMENT</text>
-  <text class="nd-t2" x="75.6" y="547">PACKAGE</text>
-</g>
-<g class="node" data-node="7" tabindex="0" role="button" aria-label="SITE PROGRESS">
-  <rect class="nd-box" x="30.4" y="298" width="132" height="64"/>
-  <rect class="nd-mark" x="30.4" y="298" width="3" height="64"/>
-  <g class="nd-icon" transform="translate(41.4 307) scale(0.75)"><path d="M5 2.5h9l5 5v14H5z"/><path d="M14 2.5v5h5"/><path d="M8 18l3-4 2 2 3-5"/></g>
-  <text class="nd-idx" x="151.4" y="318" text-anchor="end">08</text>
-  <text class="nd-t1" x="41.4" y="342">SITE</text>
-  <text class="nd-t2" x="41.4" y="353">PROGRESS</text>
-</g>
-<g class="node" data-node="8" tabindex="0" role="button" aria-label="COMPLIANCE">
-  <rect class="nd-box" x="128.9" y="127.4" width="132" height="64"/>
-  <rect class="nd-mark" x="128.9" y="127.4" width="3" height="64"/>
-  <g class="nd-icon" transform="translate(139.9 136.4) scale(0.75)"><path d="M5 2.5h9l5 5v14H5z"/><path d="M14 2.5v5h5"/><path d="M8 15l3 3 5-6"/></g>
-  <text class="nd-idx" x="249.9" y="147.4" text-anchor="end">09</text>
-  <text class="nd-t1" x="139.9" y="171.4">COMPLIANCE</text>
-</g>
-
-      </svg>
-    </div>
+  <div aria-hidden="true" style="position:relative;width:1256px;height:1px;background:#59636E;margin-top:56px;display:flex;justify-content:center;align-items:flex-start"><span style="position:absolute;left:0;top:-5px;width:1px;height:11px;background:#59636E"></span><span style="position:absolute;right:0;top:-5px;width:1px;height:11px;background:#59636E"></span><span style="position:relative;top:-7px;background:#F9FAFB;padding:0 12px;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:0.16em;color:#59636E;line-height:14px;white-space:nowrap">9 DOCUMENTS · IN THE ORDER A BUILDING PRODUCES THEM · 1 RECORD</span></div>
+  <div style="display:flex;align-items:stretch;margin-top:28px">
+    <div style="display:flex;flex-direction:column;justify-content:space-between;width:120px;height:150px;padding:14px;box-sizing:border-box;background:#FFFFFF;border:1px solid #C9D0D7"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#12161B" stroke-width="1"><path d="M5 2.5h9l5 5v14H5z"></path><path d="M14 2.5v5h5"></path><path d="M8 13h8M8 17h8"></path></svg><span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;font-weight:500;letter-spacing:0.14em;line-height:1.4;color:#12161B">ARCHITECTURAL DRAWING</span></div>
+    <span style="display:flex;align-items:center;width:22px"><span style="display:block;width:100%;height:1px;background:#9AA4AD"></span></span>
+    <div style="display:flex;flex-direction:column;justify-content:space-between;width:120px;height:150px;padding:14px;box-sizing:border-box;background:#FFFFFF;border:1px solid #C9D0D7"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#12161B" stroke-width="1"><path d="M5 2.5h9l5 5v14H5z"></path><path d="M14 2.5v5h5"></path><path d="M8 11l8 8M16 11l-8 8"></path></svg><span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;font-weight:500;letter-spacing:0.14em;line-height:1.4;color:#12161B">STRUCTURAL DRAWING</span></div>
+    <span style="display:flex;align-items:center;width:22px"><span style="display:block;width:100%;height:1px;background:#9AA4AD"></span></span>
+    <div style="display:flex;flex-direction:column;justify-content:space-between;width:120px;height:150px;padding:14px;box-sizing:border-box;background:#FFFFFF;border:1px solid #C9D0D7"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#12161B" stroke-width="1"><path d="M5 2.5h9l5 5v14H5z"></path><path d="M14 2.5v5h5"></path><path d="M8 12h4M8 15h6M8 18h8"></path></svg><span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;font-weight:500;letter-spacing:0.14em;line-height:1.4;color:#12161B">COST PLAN</span></div>
+    <span style="display:flex;align-items:center;width:22px"><span style="display:block;width:100%;height:1px;background:#9AA4AD"></span></span>
+    <div style="display:flex;flex-direction:column;justify-content:space-between;width:120px;height:150px;padding:14px;box-sizing:border-box;background:#FFFFFF;border:1px solid #C9D0D7"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#12161B" stroke-width="1"><path d="M5 2.5h9l5 5v14H5z"></path><path d="M14 2.5v5h5"></path><path d="M8 12h8M8 15h8M8 18h8M12 12v6"></path></svg><span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;font-weight:500;letter-spacing:0.14em;line-height:1.4;color:#12161B">BOQ</span></div>
+    <span style="display:flex;align-items:center;width:22px"><span style="display:block;width:100%;height:1px;background:#9AA4AD"></span></span>
+    <div style="display:flex;flex-direction:column;justify-content:space-between;width:120px;height:150px;padding:14px;box-sizing:border-box;background:#FFFFFF;border:1px solid #C9D0D7"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#12161B" stroke-width="1"><path d="M5 2.5h9l5 5v14H5z"></path><path d="M14 2.5v5h5"></path><path d="M8 12h8M8 15h8M8 19h4"></path></svg><span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;font-weight:500;letter-spacing:0.14em;line-height:1.4;color:#12161B">CONTRACT</span></div>
+    <span style="display:flex;align-items:center;width:22px"><span style="display:block;width:100%;height:1px;background:#9AA4AD"></span></span>
+    <div style="display:flex;flex-direction:column;justify-content:space-between;width:120px;height:150px;padding:14px;box-sizing:border-box;background:#FFFFFF;border:1px solid #C9D0D7"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#12161B" stroke-width="1"><path d="M5 2.5h9l5 5v14H5z"></path><path d="M14 2.5v5h5"></path><path d="M8 12h5M10 15h6M8 18h4"></path></svg><span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;font-weight:500;letter-spacing:0.14em;line-height:1.4;color:#12161B">PROGRAMME</span></div>
+    <span style="display:flex;align-items:center;width:22px"><span style="display:block;width:100%;height:1px;background:#9AA4AD"></span></span>
+    <div style="display:flex;flex-direction:column;justify-content:space-between;width:120px;height:150px;padding:14px;box-sizing:border-box;background:#FFFFFF;border:1px solid #C9D0D7"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#12161B" stroke-width="1"><path d="M5 2.5h9l5 5v14H5z"></path><path d="M14 2.5v5h5"></path><path d="M8 12h8v6H8z"></path></svg><span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;font-weight:500;letter-spacing:0.14em;line-height:1.4;color:#12161B">PROCUREMENT PACKAGE</span></div>
+    <span style="display:flex;align-items:center;width:22px"><span style="display:block;width:100%;height:1px;background:#9AA4AD"></span></span>
+    <div style="display:flex;flex-direction:column;justify-content:space-between;width:120px;height:150px;padding:14px;box-sizing:border-box;background:#FFFFFF;border:1px solid #C9D0D7"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#12161B" stroke-width="1"><path d="M5 2.5h9l5 5v14H5z"></path><path d="M14 2.5v5h5"></path><path d="M8 18l3-4 2 2 3-5"></path></svg><span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;font-weight:500;letter-spacing:0.14em;line-height:1.4;color:#12161B">SITE PROGRESS</span></div>
+    <span style="display:flex;align-items:center;width:22px"><span style="display:block;width:100%;height:1px;background:#9AA4AD"></span></span>
+    <div style="display:flex;flex-direction:column;justify-content:space-between;width:120px;height:150px;padding:14px;box-sizing:border-box;background:#FFFFFF;border:1px solid #C9D0D7"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#12161B" stroke-width="1"><path d="M5 2.5h9l5 5v14H5z"></path><path d="M14 2.5v5h5"></path><path d="M8 15l3 3 5-6"></path></svg><span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;font-weight:500;letter-spacing:0.14em;line-height:1.4;color:#12161B">COMPLIANCE</span></div>
   </div>
-
-  <div class="foot">
-    <div>
-      <div class="ctl-cap">How far EVE is allowed to go &mdash; you set it, per agent</div>
-      <div class="slider" id="slider">
-        <span class="track"></span>
-        <button class="detent" type="button" data-stop="0" style="left:0"   aria-label="Copilot"><i></i></button>
-        <button class="detent" type="button" data-stop="1" style="left:280px" aria-label="Supervised"><i></i></button>
-        <button class="detent" type="button" data-stop="2" style="left:560px" aria-label="Autopilot"><i></i></button>
-        <span class="knob" id="knob" style="left:0"></span>
-      </div>
-      <div class="stops" id="stops">
-        <button type="button" data-stop="0" aria-pressed="true">Copilot</button>
-        <button type="button" data-stop="1" aria-pressed="false">Supervised</button>
-        <button type="button" data-stop="2" aria-pressed="false">Autopilot</button>
-      </div>
-      <p class="mode-line" id="mode-line">EVE drafts. A person approves every one, and the
-        draft carries the document it was drawn from.</p>
+  <div style="display:grid;grid-template-columns:minmax(0, 1fr) 620px;gap:40px;align-items:end;margin-top:80px;padding-top:32px;border-top:1px solid #C9D0D7">
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <span style="font-size:200px;line-height:.9;font-weight:500;letter-spacing:-0.05em;color:#FF5500">$5B+</span>
+      <span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;font-weight:500;letter-spacing:0.16em;color:#3D4650">REAL HIGH-DENSITY RESIDENTIAL CONSTRUCTION PROJECT DATA</span>
+      <p style="margin:20px 0 0;max-width:520px;font-size:17px;color:#59636E;text-wrap:pretty">Not a general model taught to talk about buildings. A system that has read the drawings, the cost plans, the claims and the defect registers of completed Class 2 projects — and knows how one leads to the next.</p>
     </div>
-    <div>
-      <div class="guarantees">
-        <span>No autonomous approvals by default</span>
-        <span>Every draft carries its source document</span>
-        <span>Every relation is traceable to a record</span>
-      </div>
-      <div class="placeholder">[ Training corpus &mdash; scale and source pending
-        verification. No figure to be published until confirmed. ]</div>
-    </div>
+    <figure style="margin:0;display:flex;flex-direction:column;gap:12px">
+      <div style="border:1px solid #12161B;padding:12px;background:#FFFFFF"><div style="position:relative;width:100%;height:340px;background:#E9ECEF"><image-slot id="photo-01-site" shape="rect" placeholder="Drop site photography — a Class 2 tower in construction"></image-slot></div></div>
+      <figcaption style="display:flex;justify-content:space-between;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:0.16em;color:#59636E"><span>PHOTO 01 — HIGH-DENSITY RESIDENTIAL, IN CONSTRUCTION</span><span>PLATED · NTS</span></figcaption>
+    </figure>
   </div>
-</section>
-</div>
 </section>
 
 <!-- 07 EVE -->
-
+<section id="eve" data-screen-label="07 EVE" style="padding:96px 80px;border-bottom:1px solid #C9D0D7">
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;padding-bottom:20px;border-bottom:1px solid #12161B">
+    <div style="display:flex;flex-direction:column;gap:20px;max-width:760px">
+      <span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;font-weight:500;letter-spacing:0.16em;color:#59636E">ORCHESTRATION</span>
+      <h2 style="margin:0;font-size:44px;line-height:1.1;font-weight:500;letter-spacing:-0.03em;text-wrap:pretty">EVE keeps every stage talking to the next.</h2>
+    </div>
+    <p style="margin:0;max-width:400px;font-size:17px;color:#59636E;text-wrap:pretty">The AI layer inside Biltflow. Specialist agents draft; your people sign. You set how far it goes.</p>
+  </div>
+  <div style="display:grid;grid-template-columns:400px minmax(0, 1fr);gap:80px;margin-top:56px;align-items:start">
+    <div style="display:flex;flex-direction:column;gap:32px;font-size:17px;color:#3D4650">
+      <p style="margin:0;text-wrap:pretty">EVE is not a character. It is an indicator in the interface — a waveform when it is working, a row in a table when it has something for you to check.</p>
+      <p style="margin:0;text-wrap:pretty">Every agent starts in Copilot: it drafts, you approve. Move the slider only when the record shows it has earned it.</p>
+      <div style="display:flex;flex-direction:column;gap:8px;padding-top:24px;border-top:1px solid #C9D0D7;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;letter-spacing:0.16em;color:#9AA4AD"><span>NO AUTONOMOUS APPROVALS BY DEFAULT</span><span>EVERY DRAFT CARRIES ITS SOURCE DOCUMENT</span></div>
+    </div>
+    <div style="display:flex;flex-direction:column;background:#FFFFFF;border:1px solid #C9D0D7">
+      <div style="display:grid;grid-template-columns:200px minmax(0, 1fr) auto;gap:32px;align-items:center;padding:20px 24px;border-bottom:1px solid #C9D0D7">
+        <div style="display:flex;align-items:center;gap:12px"><span style="width:8px;height:8px;background:#FF5500;display:block"></span><span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;font-weight:500;letter-spacing:0.16em;color:#12161B">EVE · LISTENING</span></div>
+        <svg width="100%" height="28" viewBox="0 0 400 28" preserveAspectRatio="none" fill="none" stroke="#12161B" stroke-width="1"><path d="M0 14h40l6-6 6 12 6-10 6 8 6-4h40l6-9 6 16 6-12 6 6 6-2h40l6-5 6 8 6-10 6 6h40l6-8 6 14 6-10 6 4h40l6-6 6 10 6-8 6 4h40"></path></svg>
+        <span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;letter-spacing:0.16em;color:#9AA4AD">ORCHESTRATION LAYER</span>
+      </div>
+      <div style="display:grid;grid-template-columns:200px minmax(0, 1fr);gap:32px;align-items:center;padding:20px 24px;border-bottom:1px solid #C9D0D7">
+        <span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;font-weight:500;letter-spacing:0.16em;color:#59636E">AUTONOMY</span>
+        <div style="display:flex;align-items:center;gap:16px;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;font-weight:500;letter-spacing:0.16em">
+          <span style="color:#12161B">COPILOT</span>
+          <span style="position:relative;flex:1;height:1px;background:#12161B;display:block"><span style="position:absolute;left:0;top:50%;width:14px;height:14px;background:#FF5500;transform:translate(0,-50%)"></span><span style="position:absolute;left:25%;top:50%;width:1px;height:8px;background:#12161B;transform:translateY(-50%)"></span><span style="position:absolute;left:50%;top:50%;width:1px;height:8px;background:#12161B;transform:translateY(-50%)"></span><span style="position:absolute;left:75%;top:50%;width:1px;height:8px;background:#12161B;transform:translateY(-50%)"></span></span>
+          <span style="color:#9AA4AD">AUTOPILOT</span>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:200px minmax(0, 1fr) 160px;gap:32px;padding:12px 24px;border-bottom:1px solid #C9D0D7;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;font-weight:500;letter-spacing:0.16em;color:#9AA4AD"><span>AGENT</span><span>DRAFTS</span><span>SIGNS</span></div>
+      <div style="display:grid;grid-template-columns:200px minmax(0, 1fr) 160px;gap:32px;padding:18px 24px;border-bottom:1px solid #C9D0D7;font-size:15px;align-items:baseline"><span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;font-weight:500;letter-spacing:0.16em;color:#12161B">ESTIMATING</span><span style="color:#3D4650">Quantities from the drawing set, priced against your rates library.</span><span style="color:#12161B">Contracts Manager</span></div>
+      <div style="display:grid;grid-template-columns:200px minmax(0, 1fr) 160px;gap:32px;padding:18px 24px;border-bottom:1px solid #C9D0D7;font-size:15px;align-items:baseline"><span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;font-weight:500;letter-spacing:0.16em;color:#12161B">PROCUREMENT</span><span style="color:#3D4650">Trade packages, scope splits and tender comparisons.</span><span style="color:#12161B">Contracts Manager</span></div>
+      <div style="display:grid;grid-template-columns:200px minmax(0, 1fr) 160px;gap:32px;padding:18px 24px;border-bottom:1px solid #C9D0D7;font-size:15px;align-items:baseline"><span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;font-weight:500;letter-spacing:0.16em;color:#12161B">COMMERCIAL</span><span style="color:#3D4650">Variation assessments and progress-claim reconciliations.</span><span style="color:#12161B">Contracts Manager</span></div>
+      <div style="display:grid;grid-template-columns:200px minmax(0, 1fr) 160px;gap:32px;padding:18px 24px;border-bottom:1px solid #C9D0D7;font-size:15px;align-items:baseline"><span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;font-weight:500;letter-spacing:0.16em;color:#12161B">PROGRAMME</span><span style="color:#3D4650">Sequence and duration checks against site progress.</span><span style="color:#12161B">Project Manager</span></div>
+      <div style="display:grid;grid-template-columns:200px minmax(0, 1fr) 160px;gap:32px;padding:18px 24px;font-size:15px;align-items:baseline"><span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;font-weight:500;letter-spacing:0.16em;color:#12161B">COMPLIANCE</span><span style="color:#3D4650">Inspection schedules and certificate gaps before handover.</span><span style="color:#12161B">Project Manager</span></div>
+    </div>
+  </div>
+</section>
 
 <!-- 08 COMPOUNDING -->
-<section class="bf-compounding" data-bf="compounding">
-<div class="sec-head">
-    <div class="eyebrow mono"><i></i>08 — The compounding advantage</div>
-    <h2>Every building creates knowledge.<br>Biltflow remembers it.</h2>
-    <p class="sub">Rates, durations, subcontractor performance and defect patterns carry from one project into the next site brief.</p>
-  </div>
-
-  <div class="frame-scroll">
-  <figure class="frame" id="frame">
-
-    <figcaption class="frame-bar">
-      <span class="mono">Section through the knowledge base</span>
-      <span class="mono dim">Equal depth drawn — composition varies</span>
-    </figcaption>
-
-    <div class="grid">
-
-      <!-- ============ LEGEND GUTTER ============ -->
-      <div class="cell gutter">
-        <div class="head">
-          <span class="mono hd-label">Knowledge base</span>
-          <span class="mono hd-foot dim" >Site brief datum &#9660;</span>
-        </div>
-        <div class="datum"></div>
-        <div class="sub-zone">
-          <div class="lrow"><span class="lname">Rates</span><span class="lnum">L1</span></div>
-          <div class="lrow"><span class="lname">Durations</span><span class="lnum">L2</span></div>
-          <div class="lrow"><span class="lname">Subcontractor performance</span><span class="lnum">L3</span></div>
-          <div class="lrow"><span class="lname">Defect patterns</span><span class="lnum">L4</span></div>
-          <div class="lbase"><span class="mono dim">Industry baseline</span></div>
-        </div>
-      </div>
-
-      <!-- ============ PROJECT 01 ============ -->
-      <div class="cell col">
-        <div class="head">
-          <span class="mono hd-label">Project</span>
-          <span class="ref">01</span>
-          <p class="cap">Built on the industry baseline.</p>
-          <span class="mono hd-foot dim">Prior buildings<b>None</b></span>
-        </div>
-        <div class="datum"></div>
-        <div class="sub-zone">
-          <div class="hatch" style="--i:0">
-            <svg aria-hidden="true" preserveAspectRatio="none">
-              <defs><pattern id="h1" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-                <line x1="0" y1="0" x2="0" y2="9" stroke="#BCC5CC" stroke-width="1"/>
-              </pattern></defs>
-              <rect width="100%" height="100%" fill="url(#h1)"/>
-            </svg>
-          </div>
-        </div>
-      </div>
-
-      <!-- ============ PROJECT 02 ============ -->
-      <div class="cell col">
-        <div class="head">
-          <span class="chev" aria-hidden="true">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF5500" stroke-width="2" stroke-linecap="square"><path d="M9 5l7 7-7 7"/></svg>
-          </span>
-          <span class="mono hd-label">Project</span>
-          <span class="ref">02</span>
-          <p class="cap">Estimated with Project 01&#8217;s real rates.</p>
-          <span class="mono hd-foot dim">Prior buildings<b>01</b></span>
-        </div>
-        <div class="datum"></div>
-        <div class="sub-zone">
-          <div class="band l1" style="--i:1"><span class="mono lv">L1</span><span class="mono from">From 01</span></div>
-          <div class="hatch" style="--i:2">
-            <svg aria-hidden="true" preserveAspectRatio="none">
-              <defs><pattern id="h2" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-                <line x1="0" y1="0" x2="0" y2="9" stroke="#BCC5CC" stroke-width="1"/>
-              </pattern></defs>
-              <rect width="100%" height="100%" fill="url(#h2)"/>
-            </svg>
-          </div>
-        </div>
-      </div>
-
-      <!-- ============ PROJECT 03 ============ -->
-      <div class="cell col">
-        <div class="head">
-          <span class="chev" aria-hidden="true">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF5500" stroke-width="2" stroke-linecap="square"><path d="M9 5l7 7-7 7"/></svg>
-          </span>
-          <span class="mono hd-label">Project</span>
-          <span class="ref">03</span>
-          <p class="cap">Programmed with two projects&#8217; real durations.</p>
-          <span class="mono hd-foot dim">Prior buildings<b>01, 02</b></span>
-        </div>
-        <div class="datum"></div>
-        <div class="sub-zone">
-          <div class="band l1" style="--i:3"><span class="mono lv">L1</span><span class="mono from">From 01&#8211;02</span></div>
-          <div class="band l2" style="--i:4"><span class="mono lv">L2</span><span class="mono from">From 01&#8211;02</span></div>
-          <div class="hatch" style="--i:5">
-            <svg aria-hidden="true" preserveAspectRatio="none">
-              <defs><pattern id="h3" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-                <line x1="0" y1="0" x2="0" y2="9" stroke="#BCC5CC" stroke-width="1"/>
-              </pattern></defs>
-              <rect width="100%" height="100%" fill="url(#h3)"/>
-            </svg>
-          </div>
-        </div>
-      </div>
-
-      <!-- ============ PROJECT 04 ============ -->
-      <div class="cell col">
-        <div class="head">
-          <span class="chev" aria-hidden="true">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF5500" stroke-width="2" stroke-linecap="square"><path d="M9 5l7 7-7 7"/></svg>
-          </span>
-          <span class="mono hd-label">Project</span>
-          <span class="ref">04</span>
-          <p class="cap">Defect patterns from three buildings, designed out before tender.</p>
-          <span class="mono hd-foot dim">Prior buildings<b>01, 02, 03</b></span>
-        </div>
-        <div class="datum"></div>
-        <div class="sub-zone">
-          <div class="band l1" style="--i:6"><span class="mono lv">L1</span><span class="mono from">From 01&#8211;03</span></div>
-          <div class="band l2" style="--i:7"><span class="mono lv">L2</span><span class="mono from">From 01&#8211;03</span></div>
-          <div class="band l3" style="--i:8"><span class="mono lv">L3</span><span class="mono from">From 01&#8211;03</span></div>
-          <div class="band l4" style="--i:9"><span class="mono lv">L4</span><span class="mono from">From 01&#8211;03</span></div>
-          <div class="hatch" style="--i:10">
-            <svg aria-hidden="true" preserveAspectRatio="none">
-              <defs><pattern id="h4" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-                <line x1="0" y1="0" x2="0" y2="9" stroke="#BCC5CC" stroke-width="1"/>
-              </pattern></defs>
-              <rect width="100%" height="100%" fill="url(#h4)"/>
-            </svg>
-          </div>
-        </div>
-      </div>
-
+<section data-screen-label="08 Compounding advantage" style="padding:96px 80px;border-bottom:1px solid #C9D0D7">
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;padding-bottom:20px;border-bottom:1px solid #12161B">
+    <div style="display:flex;flex-direction:column;gap:20px;max-width:760px">
+      <span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;font-weight:500;letter-spacing:0.16em;color:#59636E">THE COMPOUNDING ADVANTAGE</span>
+      <h2 style="margin:0;font-size:44px;line-height:1.1;font-weight:500;letter-spacing:-0.03em;text-wrap:pretty">Every building creates knowledge. Biltflow remembers it.</h2>
     </div>
-
-    <div class="key">
-      <span class="k"><i class="sw sw-carried"></i><span class="mono">From completed buildings</span></span>
-      <span class="k"><i class="rule"></i><span class="mono">Depth of real knowledge</span></span>
-      <span class="k">
-        <i class="sw sw-base">
-          <svg width="12" height="12" aria-hidden="true">
-            <defs><pattern id="hk" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-              <line x1="0" y1="0" x2="0" y2="9" stroke="#BCC5CC" stroke-width="1"/>
-            </pattern></defs>
-            <rect width="100%" height="100%" fill="url(#hk)"/>
-          </svg>
-        </i>
-        <span class="mono">Industry baseline — no history</span>
-      </span>
-      <span class="right mono">Carries into the next site brief &#8594;</span>
-    </div>
-
-  </figure>
+    <p style="margin:0;max-width:400px;font-size:17px;color:#59636E;text-wrap:pretty">Rates, durations, subcontractor performance and defect patterns carry from one project into the next site brief.</p>
   </div>
-
-  <div class="slot mono">[ Worked example — pending first completed project ]</div>
+  <div style="display:grid;grid-template-columns:repeat(4, minmax(0, 1fr));gap:24px;margin-top:56px;align-items:end">
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div style="display:flex;justify-content:space-between;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;font-weight:500;letter-spacing:0.16em;color:#12161B"><span>PROJECT 01</span><span style="color:#9AA4AD">→</span></div>
+      <div style="height:220px;border:1px solid #12161B;background:#FFFFFF;display:flex;flex-direction:column;justify-content:flex-end;padding:16px;box-sizing:border-box"><span style="font-size:15px;color:#3D4650">Built on the industry baseline.</span></div>
+      <div style="display:flex;flex-direction:column">
+        <div style="display:flex;justify-content:space-between;align-items:center;height:36px;padding:0 14px;border:1px solid #C9D0D7;background:#F9FAFB;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:0.16em;color:#3D4650"><span>RATES</span><span style="color:#9AA4AD">L1</span></div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div style="display:flex;justify-content:space-between;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;font-weight:500;letter-spacing:0.16em;color:#12161B"><span>PROJECT 02</span><span style="color:#9AA4AD">→</span></div>
+      <div style="height:220px;border:1px solid #12161B;background:#FFFFFF;display:flex;flex-direction:column;justify-content:flex-end;padding:16px;box-sizing:border-box"><span style="font-size:15px;color:#3D4650">Estimated with Project 01's real rates.</span></div>
+      <div style="display:flex;flex-direction:column">
+        <div style="display:flex;justify-content:space-between;align-items:center;height:36px;padding:0 14px;border:1px solid #C9D0D7;border-bottom:none;background:#F9FAFB;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:0.16em;color:#3D4650"><span>DURATIONS</span><span style="color:#9AA4AD">L2</span></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;height:36px;padding:0 14px;border:1px solid #C9D0D7;background:#F1F3F5;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:0.16em;color:#3D4650"><span>RATES</span><span style="color:#9AA4AD">L1</span></div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div style="display:flex;justify-content:space-between;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;font-weight:500;letter-spacing:0.16em;color:#12161B"><span>PROJECT 03</span><span style="color:#9AA4AD">→</span></div>
+      <div style="height:220px;border:1px solid #12161B;background:#FFFFFF;display:flex;flex-direction:column;justify-content:flex-end;padding:16px;box-sizing:border-box"><span style="font-size:15px;color:#3D4650">Programmed with two projects' real durations.</span></div>
+      <div style="display:flex;flex-direction:column">
+        <div style="display:flex;justify-content:space-between;align-items:center;height:36px;padding:0 14px;border:1px solid #C9D0D7;border-bottom:none;background:#F9FAFB;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:0.16em;color:#3D4650"><span>SUBCONTRACTOR PERFORMANCE</span><span style="color:#9AA4AD">L3</span></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;height:36px;padding:0 14px;border:1px solid #C9D0D7;border-bottom:none;background:#F1F3F5;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:0.16em;color:#3D4650"><span>DURATIONS</span><span style="color:#9AA4AD">L2</span></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;height:36px;padding:0 14px;border:1px solid #C9D0D7;background:#E9ECEF;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:0.16em;color:#3D4650"><span>RATES</span><span style="color:#9AA4AD">L1</span></div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div style="display:flex;justify-content:space-between;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;font-weight:500;letter-spacing:0.16em;color:#12161B"><span>PROJECT 04</span><span style="color:#0E6FC2">⟳</span></div>
+      <div style="height:220px;border:1px solid #12161B;background:#FFFFFF;display:flex;flex-direction:column;justify-content:flex-end;padding:16px;box-sizing:border-box"><span style="font-size:15px;color:#3D4650">Defect patterns from three buildings, designed out before tender.</span></div>
+      <div style="display:flex;flex-direction:column">
+        <div style="display:flex;justify-content:space-between;align-items:center;height:36px;padding:0 14px;border:1px solid #FF5500;border-bottom:none;background:#F9FAFB;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:0.16em;color:#C43D00"><span>DEFECT PATTERNS</span><span>L4</span></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;height:36px;padding:0 14px;border:1px solid #C9D0D7;border-bottom:none;background:#F1F3F5;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:0.16em;color:#3D4650"><span>SUBCONTRACTOR PERFORMANCE</span><span style="color:#9AA4AD">L3</span></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;height:36px;padding:0 14px;border:1px solid #C9D0D7;border-bottom:none;background:#E9ECEF;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:0.16em;color:#3D4650"><span>DURATIONS</span><span style="color:#9AA4AD">L2</span></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;height:36px;padding:0 14px;border:1px solid #C9D0D7;background:#E1E5E9;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:0.16em;color:#3D4650"><span>RATES</span><span style="color:#9AA4AD">L1</span></div>
+      </div>
+    </div>
+  </div>
+  <p style="margin:32px 0 0;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;letter-spacing:0.16em;color:#9AA4AD">FIG. 04 — KNOWLEDGE LAYERS ACCUMULATE BENEATH EACH PROJECT. THE LOOP CLOSES AT STAGE 13.</p>
 </section>
 
 <!-- 09 WHO IT'S FOR -->
-<section class="bf-roles" data-bf="roles">
-<section id="roles" data-live="true">
-
-    <div class="head">
-      <div>
-        <p class="mono eyebrow"><b>09</b> &nbsp;/&nbsp; Who it's for</p>
-        <h2>Six roles. One record.</h2>
-      </div>
-      <p class="sub">Each role sees the stages it signs for &mdash; and the ones upstream that decide its week.</p>
+<section id="roles" data-screen-label="09 Who it's for" style="padding:96px 80px;border-bottom:1px solid #C9D0D7">
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;padding-bottom:20px;border-bottom:1px solid #12161B">
+    <div style="display:flex;flex-direction:column;gap:20px;max-width:760px">
+      <span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;font-weight:500;letter-spacing:0.16em;color:#59636E">WHO IT'S FOR</span>
+      <h2 style="margin:0;font-size:44px;line-height:1.1;font-weight:500;letter-spacing:-0.03em;text-wrap:pretty">Six roles. One record.</h2>
     </div>
-
-    <div class="ruler">
-      <div class="rulerbar">
-        <p class="mono lab">The thirteen stages</p>
-        <p class="mono readout" data-readout>All six roles &mdash; how many sign for each stage</p>
-      </div>
-      <div class="cols" data-ruler>
-          <div class="col" data-col="1" data-state="tally" data-tally="1"><span class="ref">01</span><span class="stack"><i class="t" data-t="1"></i><i class="t" data-t="2"></i><i class="t" data-t="3"></i></span><span class="nm">SITE SOURCING</span></div>
-          <div class="col" data-col="2" data-state="tally" data-tally="1"><span class="ref">02</span><span class="stack"><i class="t" data-t="1"></i><i class="t" data-t="2"></i><i class="t" data-t="3"></i></span><span class="nm">FEASIBILITY</span></div>
-          <div class="col" data-col="3" data-state="tally" data-tally="1"><span class="ref">03</span><span class="stack"><i class="t" data-t="1"></i><i class="t" data-t="2"></i><i class="t" data-t="3"></i></span><span class="nm">APPROVALS</span></div>
-          <div class="col" data-col="4" data-state="tally" data-tally="1"><span class="ref">04</span><span class="stack"><i class="t" data-t="1"></i><i class="t" data-t="2"></i><i class="t" data-t="3"></i></span><span class="nm">DESIGN</span></div>
-          <div class="col" data-col="5" data-state="tally" data-tally="1"><span class="ref">05</span><span class="stack"><i class="t" data-t="1"></i><i class="t" data-t="2"></i><i class="t" data-t="3"></i></span><span class="nm">ESTIMATING</span></div>
-          <div class="col" data-col="6" data-state="tally" data-tally="1"><span class="ref">06</span><span class="stack"><i class="t" data-t="1"></i><i class="t" data-t="2"></i><i class="t" data-t="3"></i></span><span class="nm">PROCUREMENT</span></div>
-          <div class="col" data-col="7" data-state="tally" data-tally="1"><span class="ref">07</span><span class="stack"><i class="t" data-t="1"></i><i class="t" data-t="2"></i><i class="t" data-t="3"></i></span><span class="nm">COMMERCIAL</span></div>
-          <div class="col" data-col="8" data-state="tally" data-tally="3"><span class="ref">08</span><span class="stack"><i class="t" data-t="1"></i><i class="t" data-t="2"></i><i class="t" data-t="3"></i></span><span class="nm">CONSTRUCTION</span></div>
-          <div class="col" data-col="9" data-state="tally" data-tally="2"><span class="ref">09</span><span class="stack"><i class="t" data-t="1"></i><i class="t" data-t="2"></i><i class="t" data-t="3"></i></span><span class="nm">COMPLIANCE</span></div>
-          <div class="col" data-col="10" data-state="tally" data-tally="2"><span class="ref">10</span><span class="stack"><i class="t" data-t="1"></i><i class="t" data-t="2"></i><i class="t" data-t="3"></i></span><span class="nm">HANDOVER</span></div>
-          <div class="col" data-col="11" data-state="tally" data-tally="1"><span class="ref">11</span><span class="stack"><i class="t" data-t="1"></i><i class="t" data-t="2"></i><i class="t" data-t="3"></i></span><span class="nm">DEFECTS</span></div>
-          <div class="col" data-col="12" data-state="tally" data-tally="1"><span class="ref">12</span><span class="stack"><i class="t" data-t="1"></i><i class="t" data-t="2"></i><i class="t" data-t="3"></i></span><span class="nm">MAINTENANCE</span></div>
-          <div class="col" data-col="13" data-state="tally" data-tally="1"><span class="ref">13</span><span class="stack"><i class="t" data-t="1"></i><i class="t" data-t="2"></i><i class="t" data-t="3"></i></span><span class="nm">LEARNING</span></div>
-      </div>
-    </div>
-
-    <div class="legend">
-      <span class="key mono"><i class="sw own"></i> Owns it &middot; signs for it</span>
-      <span class="key mono"><i class="sw need"></i> Reads it &middot; decides its week</span>
-      <span class="key mono"><i class="sw off"></i> Not in this role's path</span>
-      <span class="key mono" style="color:#9AA4AD;margin-left:auto">Hover a role to resolve the ruler</span>
-    </div>
-
-    <div class="grid" data-grid>
-          <article class="card" data-role tabindex="0"
-                   data-owns="8,9,11" data-needs="4,6,7"
-                   data-readout="SITE MANAGER — OWNS 3 · READS 3 UPSTREAM">
-            <span class="mark" aria-hidden="true"></span>
-            <h3 class="rname">SITE MANAGER</h3>
-            <p class="rline">The diary, the RFIs and the defects list, without re-typing any of them.</p>
-            <div class="strip" role="img" aria-label="SITE MANAGER owns 3 of the 13 lifecycle stages and reads 3 upstream of them."><i class="b" data-b="off" title="SITE SOURCING"></i><i class="b" data-b="off" title="FEASIBILITY"></i><i class="b" data-b="off" title="APPROVALS"></i><i class="b" data-b="need" title="DESIGN"></i><i class="b" data-b="off" title="ESTIMATING"></i><i class="b" data-b="need" title="PROCUREMENT"></i><i class="b" data-b="need" title="COMMERCIAL"></i><i class="b" data-b="own" title="CONSTRUCTION"></i><i class="b" data-b="own" title="COMPLIANCE"></i><i class="b" data-b="off" title="HANDOVER"></i><i class="b" data-b="own" title="DEFECTS"></i><i class="b" data-b="off" title="MAINTENANCE"></i><i class="b" data-b="off" title="LEARNING"></i></div>
-            <p class="count">Owns <b>3</b> of 13 &middot; reads <b>3</b> upstream</p>
-            <p class="slot">[ FOR SITE MANAGER — PENDING ]</p>
-          </article>
-          <article class="card" data-role tabindex="0"
-                   data-owns="8,9,10" data-needs="3,4,6,7"
-                   data-readout="PROJECT MANAGER — OWNS 3 · READS 4 UPSTREAM">
-            <span class="mark" aria-hidden="true"></span>
-            <h3 class="rname">PROJECT MANAGER</h3>
-            <p class="rline">Programme, compliance and handover held against one set of dates.</p>
-            <div class="strip" role="img" aria-label="PROJECT MANAGER owns 3 of the 13 lifecycle stages and reads 4 upstream of them."><i class="b" data-b="off" title="SITE SOURCING"></i><i class="b" data-b="off" title="FEASIBILITY"></i><i class="b" data-b="need" title="APPROVALS"></i><i class="b" data-b="need" title="DESIGN"></i><i class="b" data-b="off" title="ESTIMATING"></i><i class="b" data-b="need" title="PROCUREMENT"></i><i class="b" data-b="need" title="COMMERCIAL"></i><i class="b" data-b="own" title="CONSTRUCTION"></i><i class="b" data-b="own" title="COMPLIANCE"></i><i class="b" data-b="own" title="HANDOVER"></i><i class="b" data-b="off" title="DEFECTS"></i><i class="b" data-b="off" title="MAINTENANCE"></i><i class="b" data-b="off" title="LEARNING"></i></div>
-            <p class="count">Owns <b>3</b> of 13 &middot; reads <b>4</b> upstream</p>
-            <p class="slot">[ FOR PROJECT MANAGER — PENDING ]</p>
-          </article>
-          <article class="card" data-role tabindex="0"
-                   data-owns="5,6,7" data-needs="2,4"
-                   data-readout="CONTRACTS MANAGER — OWNS 3 · READS 2 UPSTREAM">
-            <span class="mark" aria-hidden="true"></span>
-            <h3 class="rname">CONTRACTS MANAGER</h3>
-            <p class="rline">Every package, award, variation and claim traced back to the BOQ line it came from.</p>
-            <div class="strip" role="img" aria-label="CONTRACTS MANAGER owns 3 of the 13 lifecycle stages and reads 2 upstream of them."><i class="b" data-b="off" title="SITE SOURCING"></i><i class="b" data-b="need" title="FEASIBILITY"></i><i class="b" data-b="off" title="APPROVALS"></i><i class="b" data-b="need" title="DESIGN"></i><i class="b" data-b="own" title="ESTIMATING"></i><i class="b" data-b="own" title="PROCUREMENT"></i><i class="b" data-b="own" title="COMMERCIAL"></i><i class="b" data-b="off" title="CONSTRUCTION"></i><i class="b" data-b="off" title="COMPLIANCE"></i><i class="b" data-b="off" title="HANDOVER"></i><i class="b" data-b="off" title="DEFECTS"></i><i class="b" data-b="off" title="MAINTENANCE"></i><i class="b" data-b="off" title="LEARNING"></i></div>
-            <p class="count">Owns <b>3</b> of 13 &middot; reads <b>2</b> upstream</p>
-            <p class="slot">[ FOR CONTRACTS MANAGER — PENDING ]</p>
-          </article>
-          <article class="card" data-role tabindex="0"
-                   data-owns="3,4" data-needs="1,2"
-                   data-readout="DESIGN MANAGER — OWNS 2 · READS 2 UPSTREAM">
-            <span class="mark" aria-hidden="true"></span>
-            <h3 class="rname">DESIGN MANAGER</h3>
-            <p class="rline">Drawing revisions that know which cost line and which package they change.</p>
-            <div class="strip" role="img" aria-label="DESIGN MANAGER owns 2 of the 13 lifecycle stages and reads 2 upstream of them."><i class="b" data-b="need" title="SITE SOURCING"></i><i class="b" data-b="need" title="FEASIBILITY"></i><i class="b" data-b="own" title="APPROVALS"></i><i class="b" data-b="own" title="DESIGN"></i><i class="b" data-b="off" title="ESTIMATING"></i><i class="b" data-b="off" title="PROCUREMENT"></i><i class="b" data-b="off" title="COMMERCIAL"></i><i class="b" data-b="off" title="CONSTRUCTION"></i><i class="b" data-b="off" title="COMPLIANCE"></i><i class="b" data-b="off" title="HANDOVER"></i><i class="b" data-b="off" title="DEFECTS"></i><i class="b" data-b="off" title="MAINTENANCE"></i><i class="b" data-b="off" title="LEARNING"></i></div>
-            <p class="count">Owns <b>2</b> of 13 &middot; reads <b>2</b> upstream</p>
-            <p class="slot">[ FOR DESIGN MANAGER — PENDING ]</p>
-          </article>
-          <article class="card" data-role tabindex="0"
-                   data-owns="1,2,12" data-needs="5,13"
-                   data-readout="DEVELOPER — OWNS 3 · READS 2 UPSTREAM">
-            <span class="mark" aria-hidden="true"></span>
-            <h3 class="rname">DEVELOPER</h3>
-            <p class="rline">Feasibility built on what your last building actually cost, not the industry average.</p>
-            <div class="strip" role="img" aria-label="DEVELOPER owns 3 of the 13 lifecycle stages and reads 2 upstream of them."><i class="b" data-b="own" title="SITE SOURCING"></i><i class="b" data-b="own" title="FEASIBILITY"></i><i class="b" data-b="off" title="APPROVALS"></i><i class="b" data-b="off" title="DESIGN"></i><i class="b" data-b="need" title="ESTIMATING"></i><i class="b" data-b="off" title="PROCUREMENT"></i><i class="b" data-b="off" title="COMMERCIAL"></i><i class="b" data-b="off" title="CONSTRUCTION"></i><i class="b" data-b="off" title="COMPLIANCE"></i><i class="b" data-b="off" title="HANDOVER"></i><i class="b" data-b="off" title="DEFECTS"></i><i class="b" data-b="own" title="MAINTENANCE"></i><i class="b" data-b="need" title="LEARNING"></i></div>
-            <p class="count">Owns <b>3</b> of 13 &middot; reads <b>2</b> upstream</p>
-            <p class="slot">[ FOR DEVELOPER — PENDING ]</p>
-          </article>
-          <article class="card" data-role tabindex="0"
-                   data-owns="8,10,13" data-needs="5,6,7,9,11"
-                   data-readout="CONSTRUCTION DIRECTOR — OWNS 3 · READS 5 UPSTREAM">
-            <span class="mark" aria-hidden="true"></span>
-            <h3 class="rname">CONSTRUCTION DIRECTOR</h3>
-            <p class="rline">One view across every project, and a record that gets better with each one.</p>
-            <div class="strip" role="img" aria-label="CONSTRUCTION DIRECTOR owns 3 of the 13 lifecycle stages and reads 5 upstream of them."><i class="b" data-b="off" title="SITE SOURCING"></i><i class="b" data-b="off" title="FEASIBILITY"></i><i class="b" data-b="off" title="APPROVALS"></i><i class="b" data-b="off" title="DESIGN"></i><i class="b" data-b="need" title="ESTIMATING"></i><i class="b" data-b="need" title="PROCUREMENT"></i><i class="b" data-b="need" title="COMMERCIAL"></i><i class="b" data-b="own" title="CONSTRUCTION"></i><i class="b" data-b="need" title="COMPLIANCE"></i><i class="b" data-b="own" title="HANDOVER"></i><i class="b" data-b="need" title="DEFECTS"></i><i class="b" data-b="off" title="MAINTENANCE"></i><i class="b" data-b="own" title="LEARNING"></i></div>
-            <p class="count">Owns <b>3</b> of 13 &middot; reads <b>5</b> upstream</p>
-            <p class="slot">[ FOR CONSTRUCTION DIRECTOR — PENDING ]</p>
-          </article>
-    </div>
-
-    <div class="foot mono">
-      <p>Fig. 09 &mdash; Stage ownership by role &middot; NTS</p>
-      <p>Stage assignment drafted from construction practice &mdash; to be confirmed</p>
-    </div>
-
-  </section>
+    <p style="margin:0;max-width:400px;font-size:17px;color:#59636E;text-wrap:pretty">Each role sees the stages it signs for — and the ones upstream that decide its week.</p>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3, minmax(0, 1fr));gap:1px;margin-top:56px;background:#C9D0D7;border:1px solid #C9D0D7">
+    <a href="#" style="display:flex;flex-direction:column;justify-content:space-between;gap:40px;min-height:220px;padding:28px;background:#FFFFFF;color:#12161B;transition:background-color 120ms linear" style-hover="background:#F9FAFB;color:#12161B"><div style="display:flex;justify-content:space-between;align-items:flex-start;gap:24px"><div style="display:flex;flex-direction:column;gap:14px"><span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;font-weight:500;letter-spacing:0.16em;color:#C43D00">SITE MANAGER</span><span style="font-size:20px;line-height:1.35;letter-spacing:-0.01em;text-wrap:pretty">The diary, the RFIs and the defects list, without re-typing any of them.</span></div><svg aria-hidden="true" width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;flex:none"><circle cx="32" cy="32" r="24" stroke="#C9D0D7" stroke-width="1"></circle><circle cx="32" cy="32" r="24" stroke="#FF5500" stroke-width="3" stroke-dasharray="11.6 139.2" stroke-dashoffset="-75.4" style="transform:rotate(-90deg);transform-origin:32px 32px"></circle><circle cx="32" cy="32" r="24" stroke="#FF5500" stroke-width="3" stroke-dasharray="11.6 139.2" stroke-dashoffset="-110.2" style="transform:rotate(-90deg);transform-origin:32px 32px"></circle><line x1="32" y1="11" x2="32" y2="5" stroke="#59636E" stroke-width="1"></line><line x1="41.76" y1="13.41" x2="44.55" y2="8.09" stroke="#59636E" stroke-width="1"></line><line x1="49.28" y1="20.07" x2="54.22" y2="16.66" stroke="#59636E" stroke-width="1"></line><line x1="52.85" y1="29.47" x2="58.8" y2="28.75" stroke="#59636E" stroke-width="1"></line><line x1="51.64" y1="39.45" x2="57.25" y2="41.57" stroke="#59636E" stroke-width="1"></line><line x1="45.93" y1="47.72" x2="49.9" y2="52.21" stroke="#59636E" stroke-width="1"></line><line x1="37.03" y1="52.39" x2="38.46" y2="58.22" stroke="#59636E" stroke-width="1"></line><line x1="26.97" y1="52.39" x2="25.54" y2="58.22" stroke="#FF5500" stroke-width="1"></line><line x1="18.07" y1="47.72" x2="14.1" y2="52.21" stroke="#59636E" stroke-width="1"></line><line x1="12.36" y1="39.45" x2="6.75" y2="41.57" stroke="#59636E" stroke-width="1"></line><line x1="11.15" y1="29.47" x2="5.2" y2="28.75" stroke="#FF5500" stroke-width="1"></line><line x1="14.72" y1="20.07" x2="9.78" y2="16.66" stroke="#59636E" stroke-width="1"></line><line x1="22.24" y1="13.41" x2="19.45" y2="8.09" stroke="#59636E" stroke-width="1"></line></svg></div><span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;letter-spacing:0.16em;color:#9AA4AD">FOR SITE → PENDING</span></a>
+    <a href="#" style="display:flex;flex-direction:column;justify-content:space-between;gap:40px;min-height:220px;padding:28px;background:#FFFFFF;color:#12161B;transition:background-color 120ms linear" style-hover="background:#F9FAFB;color:#12161B"><div style="display:flex;justify-content:space-between;align-items:flex-start;gap:24px"><div style="display:flex;flex-direction:column;gap:14px"><span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;font-weight:500;letter-spacing:0.16em;color:#C43D00">PROJECT MANAGER</span><span style="font-size:20px;line-height:1.35;letter-spacing:-0.01em;text-wrap:pretty">Programme, compliance and handover held against one set of dates.</span></div><svg aria-hidden="true" width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;flex:none"><circle cx="32" cy="32" r="24" stroke="#C9D0D7" stroke-width="1"></circle><circle cx="32" cy="32" r="24" stroke="#FF5500" stroke-width="3" stroke-dasharray="11.6 139.2" stroke-dashoffset="-87" style="transform:rotate(-90deg);transform-origin:32px 32px"></circle><circle cx="32" cy="32" r="24" stroke="#FF5500" stroke-width="3" stroke-dasharray="11.6 139.2" stroke-dashoffset="-98.6" style="transform:rotate(-90deg);transform-origin:32px 32px"></circle><line x1="32" y1="11" x2="32" y2="5" stroke="#59636E" stroke-width="1"></line><line x1="41.76" y1="13.41" x2="44.55" y2="8.09" stroke="#59636E" stroke-width="1"></line><line x1="49.28" y1="20.07" x2="54.22" y2="16.66" stroke="#59636E" stroke-width="1"></line><line x1="52.85" y1="29.47" x2="58.8" y2="28.75" stroke="#59636E" stroke-width="1"></line><line x1="51.64" y1="39.45" x2="57.25" y2="41.57" stroke="#59636E" stroke-width="1"></line><line x1="45.93" y1="47.72" x2="49.9" y2="52.21" stroke="#59636E" stroke-width="1"></line><line x1="37.03" y1="52.39" x2="38.46" y2="58.22" stroke="#59636E" stroke-width="1"></line><line x1="26.97" y1="52.39" x2="25.54" y2="58.22" stroke="#59636E" stroke-width="1"></line><line x1="18.07" y1="47.72" x2="14.1" y2="52.21" stroke="#FF5500" stroke-width="1"></line><line x1="12.36" y1="39.45" x2="6.75" y2="41.57" stroke="#FF5500" stroke-width="1"></line><line x1="11.15" y1="29.47" x2="5.2" y2="28.75" stroke="#59636E" stroke-width="1"></line><line x1="14.72" y1="20.07" x2="9.78" y2="16.66" stroke="#59636E" stroke-width="1"></line><line x1="22.24" y1="13.41" x2="19.45" y2="8.09" stroke="#59636E" stroke-width="1"></line></svg></div><span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;letter-spacing:0.16em;color:#9AA4AD">FOR DELIVERY → PENDING</span></a>
+    <a href="./persona.dc.html" style="display:flex;flex-direction:column;justify-content:space-between;gap:40px;min-height:220px;padding:28px;background:#FFFFFF;color:#12161B;transition:background-color 120ms linear" style-hover="background:#F9FAFB;color:#12161B"><div style="display:flex;justify-content:space-between;align-items:flex-start;gap:24px"><div style="display:flex;flex-direction:column;gap:14px"><span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;font-weight:500;letter-spacing:0.16em;color:#C43D00">CONTRACTS MANAGER</span><span style="font-size:20px;line-height:1.35;letter-spacing:-0.01em;text-wrap:pretty">Every package, award, variation and claim traced back to the BOQ line it came from.</span></div><svg aria-hidden="true" width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;flex:none"><circle cx="32" cy="32" r="24" stroke="#C9D0D7" stroke-width="1"></circle><circle cx="32" cy="32" r="24" stroke="#FF5500" stroke-width="3" stroke-dasharray="11.6 139.2" stroke-dashoffset="-40.6" style="transform:rotate(-90deg);transform-origin:32px 32px"></circle><circle cx="32" cy="32" r="24" stroke="#FF5500" stroke-width="3" stroke-dasharray="11.6 139.2" stroke-dashoffset="-52.2" style="transform:rotate(-90deg);transform-origin:32px 32px"></circle><circle cx="32" cy="32" r="24" stroke="#FF5500" stroke-width="3" stroke-dasharray="11.6 139.2" stroke-dashoffset="-63.8" style="transform:rotate(-90deg);transform-origin:32px 32px"></circle><line x1="32" y1="11" x2="32" y2="5" stroke="#59636E" stroke-width="1"></line><line x1="41.76" y1="13.41" x2="44.55" y2="8.09" stroke="#59636E" stroke-width="1"></line><line x1="49.28" y1="20.07" x2="54.22" y2="16.66" stroke="#59636E" stroke-width="1"></line><line x1="52.85" y1="29.47" x2="58.8" y2="28.75" stroke="#59636E" stroke-width="1"></line><line x1="51.64" y1="39.45" x2="57.25" y2="41.57" stroke="#FF5500" stroke-width="1"></line><line x1="45.93" y1="47.72" x2="49.9" y2="52.21" stroke="#FF5500" stroke-width="1"></line><line x1="37.03" y1="52.39" x2="38.46" y2="58.22" stroke="#FF5500" stroke-width="1"></line><line x1="26.97" y1="52.39" x2="25.54" y2="58.22" stroke="#59636E" stroke-width="1"></line><line x1="18.07" y1="47.72" x2="14.1" y2="52.21" stroke="#59636E" stroke-width="1"></line><line x1="12.36" y1="39.45" x2="6.75" y2="41.57" stroke="#59636E" stroke-width="1"></line><line x1="11.15" y1="29.47" x2="5.2" y2="28.75" stroke="#59636E" stroke-width="1"></line><line x1="14.72" y1="20.07" x2="9.78" y2="16.66" stroke="#59636E" stroke-width="1"></line><line x1="22.24" y1="13.41" x2="19.45" y2="8.09" stroke="#59636E" stroke-width="1"></line></svg></div><span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;letter-spacing:0.16em;color:#12161B">FOR COMMERCIAL &amp; PROCUREMENT →</span></a>
+    <a href="#" style="display:flex;flex-direction:column;justify-content:space-between;gap:40px;min-height:220px;padding:28px;background:#FFFFFF;color:#12161B;transition:background-color 120ms linear" style-hover="background:#F9FAFB;color:#12161B"><div style="display:flex;justify-content:space-between;align-items:flex-start;gap:24px"><div style="display:flex;flex-direction:column;gap:14px"><span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;font-weight:500;letter-spacing:0.16em;color:#C43D00">DESIGN MANAGER</span><span style="font-size:20px;line-height:1.35;letter-spacing:-0.01em;text-wrap:pretty">Drawing revisions that know which cost line and which package they change.</span></div><svg aria-hidden="true" width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;flex:none"><circle cx="32" cy="32" r="24" stroke="#C9D0D7" stroke-width="1"></circle><circle cx="32" cy="32" r="24" stroke="#FF5500" stroke-width="3" stroke-dasharray="11.6 139.2" stroke-dashoffset="-29" style="transform:rotate(-90deg);transform-origin:32px 32px"></circle><line x1="32" y1="11" x2="32" y2="5" stroke="#59636E" stroke-width="1"></line><line x1="41.76" y1="13.41" x2="44.55" y2="8.09" stroke="#59636E" stroke-width="1"></line><line x1="49.28" y1="20.07" x2="54.22" y2="16.66" stroke="#59636E" stroke-width="1"></line><line x1="52.85" y1="29.47" x2="58.8" y2="28.75" stroke="#FF5500" stroke-width="1"></line><line x1="51.64" y1="39.45" x2="57.25" y2="41.57" stroke="#59636E" stroke-width="1"></line><line x1="45.93" y1="47.72" x2="49.9" y2="52.21" stroke="#59636E" stroke-width="1"></line><line x1="37.03" y1="52.39" x2="38.46" y2="58.22" stroke="#59636E" stroke-width="1"></line><line x1="26.97" y1="52.39" x2="25.54" y2="58.22" stroke="#59636E" stroke-width="1"></line><line x1="18.07" y1="47.72" x2="14.1" y2="52.21" stroke="#59636E" stroke-width="1"></line><line x1="12.36" y1="39.45" x2="6.75" y2="41.57" stroke="#59636E" stroke-width="1"></line><line x1="11.15" y1="29.47" x2="5.2" y2="28.75" stroke="#59636E" stroke-width="1"></line><line x1="14.72" y1="20.07" x2="9.78" y2="16.66" stroke="#59636E" stroke-width="1"></line><line x1="22.24" y1="13.41" x2="19.45" y2="8.09" stroke="#59636E" stroke-width="1"></line></svg></div><span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;letter-spacing:0.16em;color:#9AA4AD">FOR DESIGN → PENDING</span></a>
+    <a href="#" style="display:flex;flex-direction:column;justify-content:space-between;gap:40px;min-height:220px;padding:28px;background:#FFFFFF;color:#12161B;transition:background-color 120ms linear" style-hover="background:#F9FAFB;color:#12161B"><div style="display:flex;justify-content:space-between;align-items:flex-start;gap:24px"><div style="display:flex;flex-direction:column;gap:14px"><span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;font-weight:500;letter-spacing:0.16em;color:#C43D00">DEVELOPER</span><span style="font-size:20px;line-height:1.35;letter-spacing:-0.01em;text-wrap:pretty">Feasibility built on what your last building actually cost, not the industry average.</span></div><svg aria-hidden="true" width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;flex:none"><circle cx="32" cy="32" r="24" stroke="#C9D0D7" stroke-width="1"></circle><circle cx="32" cy="32" r="24" stroke="#FF5500" stroke-width="3" stroke-dasharray="11.6 139.2" stroke-dashoffset="5.8" style="transform:rotate(-90deg);transform-origin:32px 32px"></circle><circle cx="32" cy="32" r="24" stroke="#FF5500" stroke-width="3" stroke-dasharray="11.6 139.2" stroke-dashoffset="-17.4" style="transform:rotate(-90deg);transform-origin:32px 32px"></circle><circle cx="32" cy="32" r="24" stroke="#FF5500" stroke-width="3" stroke-dasharray="11.6 139.2" stroke-dashoffset="-121.8" style="transform:rotate(-90deg);transform-origin:32px 32px"></circle><line x1="32" y1="11" x2="32" y2="5" stroke="#FF5500" stroke-width="1"></line><line x1="41.76" y1="13.41" x2="44.55" y2="8.09" stroke="#59636E" stroke-width="1"></line><line x1="49.28" y1="20.07" x2="54.22" y2="16.66" stroke="#FF5500" stroke-width="1"></line><line x1="52.85" y1="29.47" x2="58.8" y2="28.75" stroke="#59636E" stroke-width="1"></line><line x1="51.64" y1="39.45" x2="57.25" y2="41.57" stroke="#59636E" stroke-width="1"></line><line x1="45.93" y1="47.72" x2="49.9" y2="52.21" stroke="#59636E" stroke-width="1"></line><line x1="37.03" y1="52.39" x2="38.46" y2="58.22" stroke="#59636E" stroke-width="1"></line><line x1="26.97" y1="52.39" x2="25.54" y2="58.22" stroke="#59636E" stroke-width="1"></line><line x1="18.07" y1="47.72" x2="14.1" y2="52.21" stroke="#59636E" stroke-width="1"></line><line x1="12.36" y1="39.45" x2="6.75" y2="41.57" stroke="#59636E" stroke-width="1"></line><line x1="11.15" y1="29.47" x2="5.2" y2="28.75" stroke="#59636E" stroke-width="1"></line><line x1="14.72" y1="20.07" x2="9.78" y2="16.66" stroke="#FF5500" stroke-width="1"></line><line x1="22.24" y1="13.41" x2="19.45" y2="8.09" stroke="#59636E" stroke-width="1"></line></svg></div><span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;letter-spacing:0.16em;color:#9AA4AD">FOR DEVELOPMENT → PENDING</span></a>
+    <a href="#" style="display:flex;flex-direction:column;justify-content:space-between;gap:40px;min-height:220px;padding:28px;background:#FFFFFF;color:#12161B;transition:background-color 120ms linear" style-hover="background:#F9FAFB;color:#12161B"><div style="display:flex;justify-content:space-between;align-items:flex-start;gap:24px"><div style="display:flex;flex-direction:column;gap:14px"><span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;font-weight:500;letter-spacing:0.16em;color:#C43D00">CONSTRUCTION DIRECTOR</span><span style="font-size:20px;line-height:1.35;letter-spacing:-0.01em;text-wrap:pretty">One view across every project, and a record that gets better with each one.</span></div><svg aria-hidden="true" width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;flex:none"><circle cx="32" cy="32" r="24" stroke="#C9D0D7" stroke-width="1"></circle><circle cx="32" cy="32" r="24" stroke="#FF5500" stroke-width="3" stroke-dasharray="11.6 139.2" stroke-dashoffset="-5.8" style="transform:rotate(-90deg);transform-origin:32px 32px"></circle><circle cx="32" cy="32" r="24" stroke="#FF5500" stroke-width="3" stroke-dasharray="11.6 139.2" stroke-dashoffset="-133.4" style="transform:rotate(-90deg);transform-origin:32px 32px"></circle><line x1="32" y1="11" x2="32" y2="5" stroke="#59636E" stroke-width="1"></line><line x1="41.76" y1="13.41" x2="44.55" y2="8.09" stroke="#FF5500" stroke-width="1"></line><line x1="49.28" y1="20.07" x2="54.22" y2="16.66" stroke="#59636E" stroke-width="1"></line><line x1="52.85" y1="29.47" x2="58.8" y2="28.75" stroke="#59636E" stroke-width="1"></line><line x1="51.64" y1="39.45" x2="57.25" y2="41.57" stroke="#59636E" stroke-width="1"></line><line x1="45.93" y1="47.72" x2="49.9" y2="52.21" stroke="#59636E" stroke-width="1"></line><line x1="37.03" y1="52.39" x2="38.46" y2="58.22" stroke="#59636E" stroke-width="1"></line><line x1="26.97" y1="52.39" x2="25.54" y2="58.22" stroke="#59636E" stroke-width="1"></line><line x1="18.07" y1="47.72" x2="14.1" y2="52.21" stroke="#59636E" stroke-width="1"></line><line x1="12.36" y1="39.45" x2="6.75" y2="41.57" stroke="#59636E" stroke-width="1"></line><line x1="11.15" y1="29.47" x2="5.2" y2="28.75" stroke="#59636E" stroke-width="1"></line><line x1="14.72" y1="20.07" x2="9.78" y2="16.66" stroke="#59636E" stroke-width="1"></line><line x1="22.24" y1="13.41" x2="19.45" y2="8.09" stroke="#FF5500" stroke-width="1"></line></svg></div><span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;letter-spacing:0.16em;color:#9AA4AD">FOR LEADERSHIP → PENDING</span></a>
+  </div>
 </section>
 
 <!-- 10 PROOF -->
-<section class="bf-repurpose" data-bf="repurpose">
-<section class="sec">
-  <div class="bleed">
-    <div class="rule-top" aria-hidden="true"></div>
-
-    <div class="sec-head">
-      <div>
-        <p class="mono eyebrow">FIG. 10 — OBJECTION REGISTER · RAISED / ANSWERED / OPEN</p>
-        <h2>The five questions we get asked. Answered, or marked open.</h2>
-        <p class="deck">Every one came out of the same conversations as the two notes on the
-        right. Three of them have answers. Two don't yet — and we would rather leave those
-        marked open than write something in the box that falls over on the second call.</p>
-      </div>
-
-      <aside class="source">
-        <p class="mono cap">Source — practitioner interviews · unattributed at request</p>
-        <div class="q">
-          <p>“Every variation lives in three places, and none of them agree with each other.”</p>
-          <p class="mono who">Contracts Manager · 180-apartment build · Sydney</p>
-        </div>
-        <div class="q">
-          <p>“I found out the pour was pushed from a photo in the site WhatsApp. The programme
-          still said Tuesday.”</p>
-          <p class="mono who">Project Manager · Mixed-use tower · Melbourne</p>
-        </div>
-      </aside>
+<section data-screen-label="10 Proof" style="padding:96px 80px;border-bottom:1px solid #C9D0D7">
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;padding-bottom:20px;border-bottom:1px solid #12161B">
+    <div style="display:flex;flex-direction:column;gap:20px;max-width:760px">
+      <span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;font-weight:500;letter-spacing:0.16em;color:#59636E">WHAT WE HEAR ON CLASS 2 JOBS</span>
+      <h2 style="margin:0;font-size:44px;line-height:1.1;font-weight:500;letter-spacing:-0.03em;text-wrap:pretty">You'll recognise these.</h2>
     </div>
-
-    <div class="mono legend">
-      <span><i class="sq filled" aria-hidden="true"></i> Answered here</span>
-      <span><i class="sq open" aria-hidden="true"></i> Open — not answered here</span>
-      <span class="right">Three answered · two open</span>
-    </div>
-
-    <div class="reg" id="reg">
-
-      <!-- 01 -->
-      <div class="row" data-open="true">
-        <button class="rowbtn" aria-expanded="true" aria-controls="a1" id="b1">
-          <span class="mono idx">RFI-01</span>
-          <span class="qn">“We already run eleven systems. We are not ripping them out mid-job.”</span>
-          <span class="mono status st-ans"><i class="sq filled" aria-hidden="true"></i><span class="lbl">Answered</span></span>
-          <svg class="sign" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <line x1="4" y1="12" x2="20" y2="12"/><line class="v" x1="12" y1="4" x2="12" y2="20"/>
-          </svg>
-        </button>
-        <div class="ans" id="a1" role="region" aria-labelledby="b1">
-          <div class="clip"><div class="inner">
-            <p class="lede">You shouldn't. Pulling a working system out mid-project is how a programme slips.</p>
-            <p>Biltflow is built to connect first. It reads from the tools you already run and
-            gives you one place where the variation, the RFI and the programme are forced to
-            agree with each other. What you eventually replace, and when, stays your call —
-            a builder who replaces nothing for two years is a supported outcome here, not a
-            failed rollout. Your existing vendors are not the problem in this story; the gaps
-            between them are.</p>
-            <span class="mono xref">See § Biltflow works with your existing stack</span>
-          </div></div>
-        </div>
-      </div>
-
-      <!-- 02 -->
-      <div class="row" data-open="false">
-        <button class="rowbtn" aria-expanded="false" aria-controls="a2" id="b2">
-          <span class="mono idx">RFI-02</span>
-          <span class="qn">“My site guys will not log into another piece of software.”</span>
-          <span class="mono status st-ans"><i class="sq filled" aria-hidden="true"></i><span class="lbl">Answered · with a condition</span></span>
-          <svg class="sign" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <line x1="4" y1="12" x2="20" y2="12"/><line class="v" x1="12" y1="4" x2="12" y2="20"/>
-          </svg>
-        </button>
-        <div class="ans" id="a2" role="region" aria-labelledby="b2">
-          <div class="clip"><div class="inner">
-            <p class="lede">Mostly they shouldn't have to. The rule we design to: if a foreman has
-            to open Biltflow to do his job, we have built that stage wrong.</p>
-            <p>Site facts arrive from the tools already on the phone. The reconciling happens in
-            the office layer, where the commercial and contracts roles already sit and already
-            get paid to reconcile things.</p>
-            <p>The condition, stated plainly: there are a handful of points in the lifecycle —
-            practical completion, defect sign-off, a variation instruction — where a person on
-            site has to put their name to something. No software removes that, and any vendor
-            telling you otherwise is selling you a reporting problem for later. Our job is to
-            make those moments one field and a signature, not a form.</p>
-          </div></div>
-        </div>
-      </div>
-
-      <!-- 03 -->
-      <div class="row" data-open="false">
-        <button class="rowbtn" aria-expanded="false" aria-controls="a3" id="b3">
-          <span class="mono idx">RFI-03</span>
-          <span class="qn">“Who owns the data — our cost plans, our rates, our subcontractor pricing?”</span>
-          <span class="mono status st-ans"><i class="sq filled" aria-hidden="true"></i><span class="lbl">Answered · contract pending</span></span>
-          <svg class="sign" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <line x1="4" y1="12" x2="20" y2="12"/><line class="v" x1="12" y1="4" x2="12" y2="20"/>
-          </svg>
-        </button>
-        <div class="ans" id="a3" role="region" aria-labelledby="b3">
-          <div class="clip"><div class="inner">
-            <p class="lede">You do. Your drawings, your cost plans and your rates stay yours, and
-            you can take them out.</p>
-            <p>Your commercial data is not pooled into something that prices a competitor's job.
-            That is not generosity — a company that wants to hold Australian builders' bills of
-            quantities has exactly one defensible position available to it, and that is the one.</p>
-            <p>What we will not do is show you a trust badge and move on. The version that
-            matters is written, signed and enforceable, and that document is not finished.</p>
-            <span class="mono pending">[ Data &amp; IP schedule — with counsel, not yet issued ]</span>
-          </div></div>
-        </div>
-      </div>
-
-      <!-- 04 -->
-      <div class="row" data-open="false">
-        <button class="rowbtn" aria-expanded="false" aria-controls="a4" id="b4">
-          <span class="mono idx">RFI-04</span>
-          <span class="qn">“How long until it is actually running on a live job?”</span>
-          <span class="mono status st-open"><i class="sq open" aria-hidden="true"></i><span class="lbl">Open — no honest answer yet</span></span>
-          <svg class="sign" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <line x1="4" y1="12" x2="20" y2="12"/><line class="v" x1="12" y1="4" x2="12" y2="20"/>
-          </svg>
-        </button>
-        <div class="ans" id="a4" role="region" aria-labelledby="b4">
-          <div class="clip"><div class="inner">
-            <p class="lede">We cannot tell you, and we are not going to guess in public.</p>
-            <p>Biltflow has not yet run a full lifecycle on a live high-density job. That means
-            we have no implementation timeline we would be willing to put in a contract, so we
-            are not going to print one on a website.</p>
-            <p>What we can do is scope it against your project: which stage you would start with,
-            what condition your data is actually in, who owns it internally, and what has to be
-            true before it is useful. You get a range with the assumptions attached, in writing.
-            Any vendor quoting you a fixed number before they have seen your drawings is quoting
-            you somebody else's job.</p>
-          </div></div>
-        </div>
-      </div>
-
-      <!-- 05 -->
-      <div class="row" data-open="false">
-        <button class="rowbtn" aria-expanded="false" aria-controls="a5" id="b5">
-          <span class="mono idx">RFI-05</span>
-          <span class="qn">“What does it cost?”</span>
-          <span class="mono status st-open"><i class="sq open" aria-hidden="true"></i><span class="lbl">Open — not answered here</span></span>
-          <svg class="sign" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <line x1="4" y1="12" x2="20" y2="12"/><line class="v" x1="12" y1="4" x2="12" y2="20"/>
-          </svg>
-        </button>
-        <div class="ans" id="a5" role="region" aria-labelledby="b5">
-          <div class="clip"><div class="inner">
-            <p class="lede">There is no price on this website, because there is not yet a price
-            worth publishing.</p>
-            <p>It depends on how many stages you switch on and how much work runs through them,
-            and it is settled in a conversation with commercial terms attached — not read off a
-            three-column table. We would rather leave this box visibly empty than fill it with a
-            figure that changes the moment you ask a real question about your own job.</p>
-          </div></div>
-        </div>
-      </div>
-
-    </div><!-- /reg -->
-
-    <div class="slot">
-      <span class="mono idx">RFI-06</span>
-      <span class="mono box">[ Your question — not yet raised ]</span>
-      <span><button class="cta" type="button">Book a demo</button></span>
-      <span aria-hidden="true"></span>
-    </div>
-
-    <div class="mono footnote">
-      <span>No customer references appear on this page. Biltflow has none yet.</span>
-      <span>Register maintained by Biltflow · answers change when the facts do</span>
-    </div>
-
+    <span style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;letter-spacing:0.16em;color:#9AA4AD">UNATTRIBUTED · PRACTITIONER INTERVIEWS</span>
   </div>
-</section>
+  <div style="display:grid;grid-template-columns:repeat(2, minmax(0, 1fr));gap:40px;margin-top:56px">
+    <blockquote style="margin:0;display:flex;flex-direction:column;justify-content:space-between;gap:32px;min-height:240px;padding:32px;background:#FFFFFF;border:1px solid #C9D0D7"><p style="margin:0;font-size:26px;line-height:1.3;letter-spacing:-0.02em;text-wrap:pretty">"Every variation lives in three places, and none of them agree with each other."</p><footer style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;letter-spacing:0.16em;color:#59636E">CONTRACTS MANAGER · 180-APARTMENT BUILD · SYDNEY</footer></blockquote>
+    <blockquote style="margin:0;display:flex;flex-direction:column;justify-content:space-between;gap:32px;min-height:240px;padding:32px;background:#FFFFFF;border:1px solid #C9D0D7"><p style="margin:0;font-size:26px;line-height:1.3;letter-spacing:-0.02em;text-wrap:pretty">"I found out the pour was pushed from a photo in the site WhatsApp. The programme still said Tuesday."</p><footer style="font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;letter-spacing:0.16em;color:#59636E">PROJECT MANAGER · MIXED-USE TOWER · MELBOURNE</footer></blockquote>
+    <div style="display:flex;align-items:center;justify-content:center;min-height:160px;border:1px dashed #9AA4AD;background:repeating-linear-gradient(-45deg,transparent 0 9px,#12161B0F 9px 10px);font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;letter-spacing:0.16em;color:#59636E;text-align:center;padding:24px"><span style="background:#F9FAFB;padding:6px 12px">[ CLIENT LOGO — PENDING CORONATION SIGN-OFF ]</span></div>
+    <div style="display:flex;align-items:center;justify-content:center;min-height:160px;border:1px dashed #9AA4AD;background:repeating-linear-gradient(-45deg,transparent 0 9px,#12161B0F 9px 10px);font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;letter-spacing:0.16em;color:#59636E;text-align:center;padding:24px"><span style="background:#F9FAFB;padding:6px 12px">[ TESTIMONIAL — PENDING ]</span></div>
+  </div>
 </section>
 
 <!-- 11 CLOSE -->

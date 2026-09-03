@@ -1,0 +1,107 @@
+<section class="bf-integrations" data-bf="integrations">
+<div class="page">
+<section class="sec" id="integrations" aria-labelledby="int-title">
+<div class="inner">
+
+  <div class="eyebrow mono">Integrations</div>
+
+  <div class="head">
+    <div>
+      <h2 class="title" id="int-title">Biltflow works with your existing stack.</h2>
+      <p class="sub">Connect first. Replace on your timeline, not ours.</p>
+    </div>
+    <div class="head-r">
+      <div class="legend">
+        <span class="mono">How to read this</span>
+        <p>Each system on the left and right already holds part of the job. Hover or tab a system to trace what lives in it today, and where it lands.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ DIAGRAM ============ -->
+  <div class="diagram">
+    <div class="colhead l mono">Project &amp; commercial systems</div>
+    <div class="colhead r mono">Finance, measure &amp; messaging</div>
+
+    <div class="wire" id="wire">
+      <svg viewBox="0 0 1240 538" aria-hidden="true" focusable="false">
+        <!-- bus reference ticks -->
+        <g class="tick">
+          <line x1="430" y1="30" x2="430" y2="39"/>
+          <line x1="430" y1="499" x2="430" y2="508"/>
+          <line x1="810" y1="30" x2="810" y2="39"/>
+          <line x1="810" y1="499" x2="810" y2="508"/>
+        </g>
+        <g id="routes">
+          <path class="route" d="M300,39 H430 V269 H460"/>
+          <path class="route" d="M300,131 H430 V269 H460"/>
+          <path class="route" d="M300,223 H430 V269 H460"/>
+          <path class="route" d="M300,315 H430 V269 H460"/>
+          <path class="route" d="M300,407 H430 V269 H460"/>
+          <path class="route" d="M300,499 H430 V269 H460"/>
+          <path class="route" d="M940,39 H810 V269 H780"/>
+          <path class="route" d="M940,131 H810 V269 H780"/>
+          <path class="route" d="M940,223 H810 V269 H780"/>
+          <path class="route" d="M940,315 H810 V269 H780"/>
+          <path class="route" d="M940,407 H810 V269 H780"/>
+          <path class="route" d="M940,499 H810 V269 H780"/>
+        </g>
+        <g id="lives">
+          <path class="live" d="M300,39 H430 V269 H460"/>
+          <path class="live" d="M300,131 H430 V269 H460"/>
+          <path class="live" d="M300,223 H430 V269 H460"/>
+          <path class="live" d="M300,315 H430 V269 H460"/>
+          <path class="live" d="M300,407 H430 V269 H460"/>
+          <path class="live" d="M300,499 H430 V269 H460"/>
+          <path class="live" d="M940,39 H810 V269 H780"/>
+          <path class="live" d="M940,131 H810 V269 H780"/>
+          <path class="live" d="M940,223 H810 V269 H780"/>
+          <path class="live" d="M940,315 H810 V269 H780"/>
+          <path class="live" d="M940,407 H810 V269 H780"/>
+          <path class="live" d="M940,499 H810 V269 H780"/>
+        </g>
+      </svg>
+
+      <span class="arrive l" id="arrL"></span>
+      <span class="arrive r" id="arrR"></span>
+
+      <!-- vendor nodes are written by script from one data table -->
+
+      <div class="rec" id="rec">
+        <div class="rec-top">
+          <span class="mono">One record</span>
+          <span class="idx" id="recIdx">—</span>
+        </div>
+        <p class="rec-name" id="recName">Twelve systems.<br>One record.</p>
+        <div class="rec-rule"></div>
+        <div class="rec-cap" id="recCap">What lives there today</div>
+        <ul class="rec-list" id="recList">
+          <li class="hint">Hover a system to trace what it already holds — and see it land in one record.</li>
+        </ul>
+        <div class="rec-foot">[ Connector scope to confirm ]</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <p>Product names and logos are the property of their respective owners and appear here for identification only. No partnership, affiliation or endorsement is implied. Record types listed describe what each system typically holds on a project; the scope of each connection is confirmed during onboarding.</p>
+    <span class="mono">Fig. — connection schedule</span>
+  </div>
+
+</div>
+</section>
+</div>
+
+<!-- ============================================================
+     VENDOR LOGO SOURCES
+     The unmodified monochrome files from ../logos/, base64-inlined so this
+     demo page opens standalone. Rendered through grayscale(1) brightness(0)
+     so twelve brand palettes do not turn the section into confetti.
+     Three sources are parent-brand marks rather than product wordmarks --
+     Oracle (Aconex), Viewpoint (Jobpac) and RIB (CostX) -- so those cards set
+     name:1 and keep the product name beside the mark, which is the real lockup.
+     Bluebeam and Payapps are cropped to drop the "a Nemetschek/Autodesk company"
+     straplines: illegible at 15px and irrelevant here. Sources in ../logos/ are
+     untouched. Nominative use only - see the footnote in the section above.
+     ============================================================ -->
+</section>
