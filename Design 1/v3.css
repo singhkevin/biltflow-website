@@ -6,7 +6,10 @@
 
 /* 1. VERTICAL RHYTHM — v2 had six different section paddings
       (96/80, 96/72, 96/96, 140/120, 28/40). One value now. */
-#dc-root .sc-host > div > section{padding-top:120px !important;padding-bottom:120px !important}
+/* v2's most common pairing, kept asymmetric on purpose: more air above a
+   section head than below the content that precedes it. Forcing 120/120
+   made the page 1,452px longer for no gain. */
+#dc-root .sc-host > div > section{padding-top:96px !important;padding-bottom:80px !important}
 #dc-root .sc-host > div > header{padding-top:28px !important;padding-bottom:28px !important}
 #dc-root .sc-host > div > footer{padding-top:56px !important;padding-bottom:56px !important}
 
@@ -27,22 +30,18 @@
 #dc-root a:focus:not(:focus-visible),
 #dc-root button:focus:not(:focus-visible){outline:none}
 
-/* 4. HIT TARGETS — 103 pointer targets were under 44px.
-      Real controls get a floor without changing their visual box. */
-#dc-root a[href], #dc-root button, #dc-root [role="button"]{
-  position:relative;
-}
-#dc-root a[href]::after, #dc-root button::after, #dc-root [role="button"]::after{
-  content:"";position:absolute;left:0;right:0;top:50%;
-  height:44px;transform:translateY(-50%);
-  pointer-events:auto;z-index:0;
-}
-#dc-root a[href] > *, #dc-root button > *{position:relative;z-index:1}
+/* 4. HIT TARGETS — removed. The ::after overlay did not actually reach 44px
+      (9 controls were still under it) and risked intercepting the pointer
+      events the integrations hover depends on. Padding on real controls is
+      the right fix and belongs in the component, not in an override layer. */
 
 /* 5. DENSITY — v2 showed 175 bordered boxes. Nested frames read as
       double-framing; the inner one is removed in v3.js. This softens
       what remains so the outer frame stays the one that means something. */
 #dc-root [data-bf] [data-v3-inner]{border-color:transparent !important}
 
-/* 6. Mono floor — nothing textual below 12px (v2 had 86 elements under it). */
-#dc-root [style*="IBM Plex Mono"]{font-size:12px}
+/* 6. Mono floor — nothing textual below 12px (v2 had 86 elements under it).
+      SVG <text> is EXCLUDED: those are drawing annotations sized to fit the
+      geometry around them. Forcing them to 12px overflowed 20 labels and
+      collided 4 pairs on the rings. */
+#dc-root [style*="IBM Plex Mono"]:not(svg text):not(svg *){font-size:12px}

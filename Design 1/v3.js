@@ -43,7 +43,10 @@
 
     for (var i = 0; i < all.length; i++) {
       var el = all[i], cs = getComputedStyle(el);
-      var hasText = el.children.length === 0 && el.textContent && el.textContent.trim();
+      // SVG <text> is diagram annotation, not copy: it is sized and positioned to fit
+      // the geometry. Snapping it to the body scale overflowed and collided labels.
+      var inSvg = el.ownerSVGElement || el.tagName === 'text' || el.closest('svg');
+      var hasText = el.children.length === 0 && el.textContent && el.textContent.trim() && !inSvg;
 
       if (hasText) {
         // --- type scale: 20 sizes -> 7 ---
