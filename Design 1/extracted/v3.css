@@ -1,0 +1,48 @@
+/* ============================================================
+   v3 — UI normalisation layer over v2.
+   Everything here answers a measured defect in v2; the numbers
+   in each comment are what v2 actually measured.
+   ============================================================ */
+
+/* 1. VERTICAL RHYTHM — v2 had six different section paddings
+      (96/80, 96/72, 96/96, 140/120, 28/40). One value now. */
+#dc-root .sc-host > div > section{padding-top:120px !important;padding-bottom:120px !important}
+#dc-root .sc-host > div > header{padding-top:28px !important;padding-bottom:28px !important}
+#dc-root .sc-host > div > footer{padding-top:56px !important;padding-bottom:56px !important}
+
+/* 2. MEASURE — one paragraph was running to 110 characters.
+      Cap prose; leave grid/diagram text alone. */
+#dc-root .sc-host > div > section > p,
+#dc-root .sc-host > div > section > div > p{max-width:68ch}
+
+/* 3. FOCUS — v2 had 7 focus selectors for 48 interactive elements.
+      One visible ring for everything focusable. */
+#dc-root a:focus-visible,
+#dc-root button:focus-visible,
+#dc-root [tabindex]:focus-visible,
+#dc-root [role="button"]:focus-visible{
+  outline:2px solid #FF5500 !important;
+  outline-offset:3px !important;
+}
+#dc-root a:focus:not(:focus-visible),
+#dc-root button:focus:not(:focus-visible){outline:none}
+
+/* 4. HIT TARGETS — 103 pointer targets were under 44px.
+      Real controls get a floor without changing their visual box. */
+#dc-root a[href], #dc-root button, #dc-root [role="button"]{
+  position:relative;
+}
+#dc-root a[href]::after, #dc-root button::after, #dc-root [role="button"]::after{
+  content:"";position:absolute;left:0;right:0;top:50%;
+  height:44px;transform:translateY(-50%);
+  pointer-events:auto;z-index:0;
+}
+#dc-root a[href] > *, #dc-root button > *{position:relative;z-index:1}
+
+/* 5. DENSITY — v2 showed 175 bordered boxes. Nested frames read as
+      double-framing; the inner one is removed in v3.js. This softens
+      what remains so the outer frame stays the one that means something. */
+#dc-root [data-bf] [data-v3-inner]{border-color:transparent !important}
+
+/* 6. Mono floor — nothing textual below 12px (v2 had 86 elements under it). */
+#dc-root [style*="IBM Plex Mono"]{font-size:12px}

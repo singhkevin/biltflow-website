@@ -29,6 +29,16 @@
       "width": 1920,
       "height": 12000,
       "expand": "fill"
+    },
+    {
+      "id": "v3",
+      "file": "v3.dc.html",
+      "title": "Biltflow — Homepage v3 (normalised)",
+      "x": 5400,
+      "y": 0,
+      "width": 1920,
+      "height": 17000,
+      "expand": "fill"
     }
   ],
   "annotations": [
@@ -80,7 +90,8 @@
       "artboards": [
         "main",
         "persona",
-        "v2"
+        "v2",
+        "v3"
       ]
     }
   ],
