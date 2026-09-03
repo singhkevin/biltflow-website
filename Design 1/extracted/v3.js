@@ -108,26 +108,43 @@
 
   /* ---------- requested changes ---------- */
   function enhance(root) {
-    // 1. Biltflow mark at the centre of the lifecycle ring, replacing the crosshair.
-    var marker = root.querySelector('[data-marker]');
-    var ring = marker && marker.ownerSVGElement;
-    if (ring && !ring.querySelector('[data-bf-mark]')) {
-      // the crosshair is two short 20px lines through the centre
+    // 1. Biltflow mark at the centre of EVERY full lifecycle ring, replacing the
+    //    crosshair. The centre is derived from each ring's own viewBox — the hero
+    //    ring is 640x640 (centre 320,320) and the lifecycle ring 560x560
+    //    (centre 280,280). Hardcoding 280,280 silently skipped the hero one.
+    [].slice.call(root.querySelectorAll('svg')).forEach(function (ring) {
+      if (ring.querySelectorAll('[data-label]').length !== 13) return;   // not a full ring
+      if (ring.hasAttribute('data-dial')) return;                        // not a module dial
+      if (ring.querySelector('[data-bf-mark]')) return;                  // already done
+
+      var vb = (ring.getAttribute('viewBox') || '').split(/\s+/).map(Number);
+      if (vb.length !== 4) return;
+      var cx = vb[0] + vb[2] / 2, cy = vb[1] + vb[3] / 2;
+
+      // radius, so the mark scales with the ring rather than sitting at a fixed size
+      var r = 0;
+      [].slice.call(ring.querySelectorAll('circle')).forEach(function (c) {
+        r = Math.max(r, parseFloat(c.getAttribute('r')) || 0);
+      });
+      if (!r) r = vb[2] * 0.35;
+
+      // the crosshair is two short lines through the centre
       [].slice.call(ring.querySelectorAll('line')).forEach(function (l) {
         var mx = (parseFloat(l.getAttribute('x1')) + parseFloat(l.getAttribute('x2'))) / 2;
         var my = (parseFloat(l.getAttribute('y1')) + parseFloat(l.getAttribute('y2'))) / 2;
-        if (Math.hypot(mx - 280, my - 280) < 20) l.remove();
+        if (Math.hypot(mx - cx, my - cy) < 20) l.remove();
       });
-      var W = 132, H = W * (30 / 114);              // logo is 114x30
+
+      var W = r * 0.66, H = W * (30 / 114);          // logo is 114x30
       var img = document.createElementNS('http://www.w3.org/2000/svg', 'image');
       img.setAttribute('data-bf-mark', '');
       img.setAttribute('href', './assets/biltflow-logo-black.svg');
-      img.setAttribute('x', 280 - W / 2); img.setAttribute('y', 280 - H / 2);
+      img.setAttribute('x', cx - W / 2); img.setAttribute('y', cy - H / 2);
       img.setAttribute('width', W); img.setAttribute('height', H);
       img.setAttribute('opacity', '.9');
       ring.appendChild(img);
-      report.ringMark = 1;
-    }
+      report.ringMark++;
+    });
 
     // 2. Video slot in the noise band — the film's NOISE beat plays here.
     var noise = null;
