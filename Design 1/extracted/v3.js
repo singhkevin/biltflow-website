@@ -12,7 +12,7 @@
                  innerBordersDropped: 0, copyFixed: 0, tinyRaised: 0,
                  orangeDowngraded: 0, darkBandFixed: 0,
                  ringMark: 0, videoSlot: 0,
-                 guideRemoved: 0, scatterRemoved: 0 };
+                 guideRemoved: 0, scatterRemoved: 0, marksRemoved: 0 };
 
   // luminance of the nearest painted background behind an element
   function onDark(el) {
@@ -213,6 +213,24 @@
           c.remove(); report.scatterRemoved++;
         }
       });
+    }
+
+    // 5. The closing lockup repeated the Biltflow mark 13 times (one per lifecycle
+    //    stage) as a decorative strip. One reads as a sign-off; thirteen reads as
+    //    a loading bar. Keep the first, drop the rest, and size it to be deliberate.
+    var strip = null;
+    [].slice.call(root.querySelectorAll('img')).forEach(function (im) {
+      if (!/biltflow-mark/.test(im.getAttribute('src') || '')) return;
+      var p = im.parentElement;
+      if (p && p.children.length > 3) strip = p;
+    });
+    if (strip) {
+      var keep = strip.firstElementChild;
+      while (strip.children.length > 1) strip.lastElementChild.remove();
+      strip.style.justifyContent = 'center';
+      strip.style.opacity = '0.5';
+      if (keep) { keep.style.height = '26px'; keep.style.width = 'auto'; }
+      report.marksRemoved = 12;
     }
   }
 
