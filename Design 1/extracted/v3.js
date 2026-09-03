@@ -12,7 +12,8 @@
                  innerBordersDropped: 0, copyFixed: 0, tinyRaised: 0,
                  orangeDowngraded: 0, darkBandFixed: 0,
                  ringMark: 0, videoSlot: 0,
-                 guideRemoved: 0, scatterRemoved: 0, marksRemoved: 0 };
+                 guideRemoved: 0, scatterRemoved: 0, marksRemoved: 0,
+                 videoWidened: 0, modulesRebuilt: 0 };
 
   // luminance of the nearest painted background behind an element
   function onDark(el) {
@@ -231,6 +232,94 @@
       strip.style.opacity = '0.5';
       if (keep) { keep.style.height = '26px'; keep.style.width = 'auto'; }
       report.marksRemoved = 12;
+    }
+
+    // 6. NOISE BAND — heading first, then the widest possible video frame.
+    //    The slot was rendering above the heading, and boxed to 900px inside a
+    //    160px gutter. Reordered, and broken out to full viewport width.
+    if (noise) {
+      var vid = noise.querySelector('[data-bf-video]');
+      var head = null, tail = null;
+      [].slice.call(noise.children).forEach(function (c) {
+        if (c === vid) return;
+        if (/More software/.test(c.textContent)) head = c;
+        if (/LESS CLARITY/.test(c.textContent)) tail = c;
+      });
+      if (vid && head) {
+        head.parentNode.insertBefore(vid, head.nextSibling);          // heading, then video
+        if (tail) noise.appendChild(tail);                            // then LESS CLARITY
+        vid.style.maxWidth = 'none';
+        vid.style.width = '100vw';
+        vid.style.marginLeft = 'calc(50% - 50vw)';                    // escape the gutter
+        vid.style.marginTop = '56px';
+        vid.style.marginBottom = '56px';
+        var bar = vid.firstElementChild;                              // FILM · NOISE SEQUENCE / 16:9
+        if (bar) { bar.style.paddingLeft = '160px'; bar.style.paddingRight = '160px'; }
+        var frame = vid.lastElementChild;
+        if (frame) { frame.style.borderLeft = 'none'; frame.style.borderRight = 'none'; }
+        report.videoWidened = 1;
+      }
+    }
+
+    // 7. MODULES — the three ring dials replaced. Three near-identical circles
+    //    where only arc length differed made the reader diff them; a 13-cell
+    //    strip states the count outright, and stacking the three rows turns the
+    //    section into a progression you read downward.
+    var mods = null;
+    [].slice.call(root.querySelectorAll('section')).forEach(function (sec) {
+      if (/Start anywhere/.test(sec.textContent)) mods = sec;
+    });
+    if (mods && !mods.querySelector('[data-bf-strip]')) {
+      var STAGES = ['Site sourcing','Feasibility','Approvals','Design','Estimating',
+                    'Procurement','Commercial','Construction','Compliance','Handover',
+                    'Defects','Maintenance','Learning'];
+      var grid = mods.querySelector('div[style*="repeat(3"]');
+      if (grid) {
+        var cards = [].slice.call(grid.children);
+        grid.style.cssText = 'display:flex;flex-direction:column;gap:0;margin-top:48px;' +
+                             'border-top:1px solid #C9D0D7';
+        cards.forEach(function (card) {
+          var txt = (card.textContent || '');
+          var m = txt.match(/(\d+)\s*\/\s*13/);
+          var lit = m ? parseInt(m[1], 10) : 1;
+          var label = (txt.match(/[A-C]\s*—\s*[A-Z ]+/) || ['MODULE'])[0].trim();
+          // which stages: 1 -> Procurement, 2 -> Procurement+Commercial, 13 -> all
+          var from = lit === 13 ? 0 : 5, to = lit === 13 ? 12 : 5 + lit - 1;
+          var cap = (card.querySelector('p') || {}).textContent || '';
+
+          var cells = '';
+          for (var i = 0; i < 13; i++) {
+            var on = i >= from && i <= to;
+            cells += '<span title="' + STAGES[i] + '" style="flex:1;height:' +
+              (on ? '44px' : '26px') + ';background:' + (on ? '#FF5500' : '#C9D0D7') +
+              ';align-self:flex-end"></span>';
+          }
+          var names = [];
+          for (var j = from; j <= to; j++) names.push(STAGES[j]);
+          var nameLine = lit === 13 ? 'All thirteen stages' : names.join(' + ');
+
+          var row = document.createElement('div');
+          row.setAttribute('data-bf-strip', '');
+          row.style.cssText = 'display:grid;grid-template-columns:210px 1fr 320px;gap:48px;' +
+            'align-items:center;padding:40px 0;border-bottom:1px solid #C9D0D7';
+          row.innerHTML =
+            '<div>' +
+              '<div style="font:500 12px/1 \'IBM Plex Mono\',ui-monospace,monospace;' +
+                'letter-spacing:.16em;text-transform:uppercase;color:#59636E">' + label + '</div>' +
+              '<div style="font:500 34px/1.1 Archivo,sans-serif;letter-spacing:-.02em;' +
+                'margin-top:10px">' + lit + '<span style="color:#9AA4AD">/13</span></div>' +
+            '</div>' +
+            '<div>' +
+              '<div style="display:flex;gap:6px;align-items:flex-end;height:44px">' + cells + '</div>' +
+              '<div style="font:500 12px/1 \'IBM Plex Mono\',ui-monospace,monospace;' +
+                'letter-spacing:.16em;text-transform:uppercase;color:#C43D00;margin-top:14px">' +
+                nameLine + '</div>' +
+            '</div>' +
+            '<p style="margin:0;font-size:17px;line-height:1.5;color:#3D4650">' + cap + '</p>';
+          card.replaceWith(row);
+        });
+        report.modulesRebuilt = 1;
+      }
     }
   }
 
