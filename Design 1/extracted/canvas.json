@@ -1,0 +1,90 @@
+{
+  "artboards": [
+    {
+      "id": "main",
+      "file": "main.dc.html",
+      "title": "Biltflow — Homepage",
+      "x": 0,
+      "y": 0,
+      "width": 1920,
+      "height": 12000,
+      "expand": "fill"
+    },
+    {
+      "id": "persona",
+      "file": "persona.dc.html",
+      "title": "Persona — For Commercial & Procurement",
+      "x": 1560,
+      "y": 0,
+      "width": 1920,
+      "height": 5200,
+      "expand": "fill"
+    },
+    {
+      "id": "v2",
+      "file": "v2.dc.html",
+      "title": "Biltflow — Homepage v2 (live ground)",
+      "x": 3480,
+      "y": 0,
+      "width": 1920,
+      "height": 12000,
+      "expand": "fill"
+    }
+  ],
+  "annotations": [
+    {
+      "id": "a1",
+      "artboard": "main",
+      "x": 80,
+      "y": 30,
+      "width": 360,
+      "text": "LOGO CASING — The supplied vector is lowercase “biltflow”; the film sets BILTFLOW in caps. This design follows the vector. Confirm which is the actual brand wordmark."
+    },
+    {
+      "id": "a2",
+      "artboard": "main",
+      "x": 80,
+      "y": 560,
+      "width": 360,
+      "text": "WORDING — The locked script uses “AI-native” and “for construction”; Raj argued against both on the 26 Aug call. This design uses the script’s wording. Raj to confirm."
+    },
+    {
+      "id": "a3",
+      "artboard": "main",
+      "x": 80,
+      "y": 10650,
+      "width": 360,
+      "text": "CORONATION — Named as a client in the reference pack, never confirmed on any recorded call. Slot designed, left empty."
+    },
+    {
+      "id": "a4",
+      "artboard": "main",
+      "x": 80,
+      "y": 7100,
+      "width": 360,
+      "text": "$5B+ — The script’s figure. Raj said $4.5B and $9B on the call. Script wins; verify before launch."
+    },
+    {
+      "id": "a5",
+      "artboard": "main",
+      "x": 780,
+      "y": 30,
+      "width": 360,
+      "text": "PALETTE — Light ground is deliberate. Raj’s investor storyboard is dark with blue; every competitor is dark-navy or blue. Light reads as a drawing set, not another AI product. Overrule if he objects."
+    }
+  ],
+  "pages": [
+    {
+      "id": "home",
+      "title": "Biltflow v3",
+      "artboards": [
+        "main",
+        "persona",
+        "v2"
+      ]
+    }
+  ],
+  "launch": {
+    "focus": "main.dc.html"
+  }
+}

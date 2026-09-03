@@ -1,0 +1,28 @@
+/* Paste into the <helmet><style> block of main.dc.html and persona.dc.html
+   in Claude Design, then re-seed. Makes the page full-bleed on wide screens:
+   section backgrounds run edge to edge, the text column stays at 1280px. */
+x-dc > div,
+#dc-root .sc-host > div{width:100% !important;max-width:none !important;margin:0 !important}
+x-dc > div > div[aria-hidden="true"],
+#dc-root .sc-host > div > div[aria-hidden="true"]{width:100% !important;margin:0 !important}
+x-dc > div > header, x-dc > div > section, x-dc > div > footer,
+#dc-root .sc-host > div > header,
+#dc-root .sc-host > div > section,
+#dc-root .sc-host > div > footer{
+  padding-left:max(80px,calc((100% - 1280px)/2)) !important;
+  padding-right:max(80px,calc((100% - 1280px)/2)) !important;
+}
+@media (max-width:900px){
+  x-dc > div > header, x-dc > div > section, x-dc > div > footer,
+  #dc-root .sc-host > div > header,
+  #dc-root .sc-host > div > section,
+  #dc-root .sc-host > div > footer{padding-left:32px !important;padding-right:32px !important}
+}
+
+/* figures scale instead of forcing a scrollbar */
+x-dc > div svg,
+#dc-root .sc-host > div svg{max-width:100% !important;height:auto}
+/* the fragmentation band is MEANT to bleed off the edge — clip it, don't scroll the page.
+   `clip` (not `hidden`) so it doesn't become a scroll container and break position:sticky. */
+x-dc > div > section,
+#dc-root .sc-host > div > section{overflow-x:clip}

@@ -1,0 +1,32 @@
+/* ---- QUIET PASS ----
+   The drawing-set concept was applied as wallpaper. Keep the language,
+   cut the instances, so the headline is the loudest thing on screen.
+   NOTE: the runtime re-serializes inline styles with spaces after colons,
+   so every selector matches BOTH the authored and the normalized form. */
+
+/* 1. Station rulers down the page edges — 65 numbers of pure decoration. */
+div[aria-hidden="true"][style*="width:80px"],
+div[aria-hidden="true"][style*="width: 80px"]{display:none !important}
+
+/* 2. The A–I column-letter bar under the header. */
+div[aria-hidden="true"][style*="repeat(9"]{display:none !important}
+
+/* 3. Grid overlay: drop the 40px fine grid, keep only the 160px major at
+      the lower alpha. Four layers of graph paper becomes one whisper. */
+div[aria-hidden="true"][style*="background-size:160px 200px"],
+div[aria-hidden="true"][style*="background-size: 160px 200px"]{
+  background-image:
+    linear-gradient(to right,#12161B0A 1px,transparent 1px),
+    linear-gradient(to bottom,#12161B0A 1px,transparent 1px) !important;
+  background-size:160px 200px,160px 200px !important;
+}
+
+/* 4. The fake drafting title block under the hero — 16 labels of pretend
+      metadata (DRAWN: EVE / CHECKED: HUMAN / STATUS: FOR CONSTRUCTION).
+      A nice in-joke; it costs the headline its focus and says nothing to a buyer. */
+div[style*="grid-template-columns: 1.4fr 2.4fr"],
+div[style*="grid-template-columns:1.4fr 2.4fr"]{display:none !important}
+
+/* 5. The "FIG. 01 — LIFECYCLE, CLOSED LOOP · NTS" drafting caption. */
+[style*="bottom: -2px"][style*="letter-spacing: 0.16em"],
+[style*="bottom:-2px"][style*="letter-spacing:0.16em"]{display:none !important}

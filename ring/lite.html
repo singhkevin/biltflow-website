@@ -1,0 +1,57 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Biltflow cursor field — lite</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  html,body{margin:0;height:100%;background:#F9FAFB;color:#12161B;
+    font-family:Archivo,system-ui,sans-serif;overflow:hidden}
+  #field{position:fixed;inset:0;width:100%;height:100%;display:block}
+  .wrap{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;
+    justify-content:center;padding:0 90px;pointer-events:none}
+  .eyebrow{font:500 11px/1 'IBM Plex Mono',monospace;letter-spacing:.16em;
+    text-transform:uppercase;color:#59636E;margin-bottom:22px}
+  h1{font-size:74px;line-height:1.04;letter-spacing:-.035em;font-weight:500;margin:0 0 22px;max-width:15ch}
+  p{font-size:17px;color:#59636E;margin:0 0 30px;max-width:46ch}
+  .cta{display:inline-block;background:#12161B;color:#F9FAFB;padding:15px 30px;
+    font-size:15px;pointer-events:auto;width:max-content}
+  #hud{position:fixed;right:14px;top:14px;z-index:5;background:#fff;border:1px solid #C9D0D7;
+    padding:11px 13px;font:400 11px/1.7 'IBM Plex Mono',monospace;width:210px}
+  #hud b{float:right;font-weight:500;font-variant-numeric:tabular-nums}
+  #hud .t{letter-spacing:.16em;text-transform:uppercase;font-size:9px;color:#59636E;
+    margin-bottom:8px;display:block}
+  .st{color:#0B7B54}.sl{color:#59636E}
+</style></head><body>
+<canvas id="field"></canvas>
+<div id="hud"><span class="t">cost</span>
+  dots<b id="n">–</b><br>frame<b id="ms">–</b><br>fps<b id="fps">–</b><br>state<b id="st">–</b></div>
+<div class="wrap">
+  <div class="eyebrow">High-density residential</div>
+  <h1>The tools changed. The way construction operates didn&rsquo;t.</h1>
+  <p>The AI-native operating system for high-density residential development and construction.</p>
+  <a class="cta" href="#">Book a demo</a>
+</div>
+<script src="./cursor-field.js"></script>
+<script>
+  var f = new CursorField(document.getElementById('field'), {
+    step: 26, radius: 190, ease: 0.12, push: 26, hot: '#FF5500', rest: '#C9D0D7'
+  });
+  // instrumentation only — not part of the component
+  var c = document.getElementById('field'), ctx = c.getContext('2d');
+  var origFill = ctx.fill, count = 0;
+  ctx.fill = function () { count++; return origFill.apply(this, arguments); };
+  var frames = 0, acc = 0, t0 = performance.now(), last = t0, peak = 0;
+  (function loop(){
+    var now = performance.now();
+    if (f.isRunning()) { frames++; acc += now - last; }
+    last = now;
+    if (now - t0 > 500) {
+      document.getElementById('n').textContent = count ? (count / Math.max(frames,1) | 0) : '–';
+      var ms = frames ? (acc / frames) : 0;
+      document.getElementById('ms').textContent = frames ? ms.toFixed(2) + ' ms' : '0.00 ms';
+      document.getElementById('fps').textContent = frames ? (1000 / ms).toFixed(0) : '0';
+      var st = document.getElementById('st');
+      st.textContent = f.isRunning() ? 'running' : 'asleep';
+      st.className = f.isRunning() ? 'sl' : 'st';
+      count = 0; frames = 0; acc = 0; t0 = now;
+    }
+    requestAnimationFrame(loop);
+  })();
+</script></body></html>
