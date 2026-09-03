@@ -3,10 +3,10 @@
 
 window.BF_LOGO = {
   aconex: "__WORDMARK__aconex",
-  procore: "./logos/procore.svg",
-  bluebeam: "./logos/bluebeam.svg",
-  procurepro: "./logos/procurepro.svg",
-  payapps: "./logos/payapps.png",
+  procore: "__WORDMARK__procore",
+  bluebeam: "__WORDMARK__bluebeam",
+  procurepro: "__WORDMARK__procurepro",
+  payapps: "__WORDMARK__payapps",
   buildsoft: "__WORDMARK__buildsoft",
   jobpac: "__WORDMARK__jobpac",
   costx: "__WORDMARK__costx",
@@ -58,6 +58,23 @@ window.BF_LOGO = {
       arrL   = document.getElementById('arrL'),
       arrR   = document.getElementById('arrR');
 
+  /* querySelectorAll returns a static snapshot at THIS exact line. If the artboard
+     runtime hadn't finished inserting the #routes/#lives <path> children yet at this
+     instant (this script is a deferred <script>, and nothing here waits for that),
+     `routes`/`lives` are permanently empty NodeLists -- measure() then silently
+     iterates zero items and --l never gets set, and later code indexing into them
+     (lives[i]) would throw. A synchronous retry can't help here (nothing yields to
+     the event loop, so the DOM can't have changed between iterations); genuinely
+     wait via setTimeout and re-run measure() on a fresh query if the first read was
+     empty, re-binding these SAME closure variables so set()/clear() see the update. */
+  function resyncIfEmpty(triesLeft){
+    if(routes.length && lives.length) return;
+    routes = document.querySelectorAll('#routes .route');
+    lives  = document.querySelectorAll('#lives .live');
+    if(routes.length && lives.length){ measure(routes, true); measure(lives, false); return; }
+    if(triesLeft > 0) setTimeout(function(){ resyncIfEmpty(triesLeft - 1); }, 150);
+  }
+
   var Y = [39,131,223,315,407,499];
   var REST = 'Twelve systems.<br>One record.';
   var nodes = [];
@@ -106,23 +123,54 @@ window.BF_LOGO = {
   });
 
   /* ---------- path lengths for the draw ---------- */
+  // Path length WITHOUT getTotalLength(). Every route/live path here is strictly
+  // axis-aligned ("M x,y H x2 V y2 H x3" -- horizontal/vertical segments only), so
+  // its length is exact, deterministic arithmetic on the d string -- no dependency
+  // on the SVG having completed a layout pass. getTotalLength() is a DOM geometry
+  // query that can throw (InvalidStateError) if called before first layout; since
+  // measure() runs synchronously at the very top of this IIFE, before anything else
+  // in it, an uncaught throw here silently aborted EVERYTHING after it in source
+  // order -- including the nodes.forEach hover/focus/click binding loop and the
+  // IntersectionObserver setup, both of which come later. Confirmed: on this build,
+  // every route AND every live path had --l unset, and dispatching mouseenter/
+  // focus/click on a card never moved #recName off its rest state -- exactly the
+  // signature of measure() throwing on its first call and never returning.
+  function pathLength(d){
+    var nums = d.match(/-?\d+(\.\d+)?/g).map(Number);
+    var x = nums[0], y = nums[1], total = 0, i = 2;
+    var cmds = d.match(/[HV]/g) || [];
+    for(var c=0;c<cmds.length;c++){
+      var v = nums[i++];
+      if(cmds[c] === 'H'){ total += Math.abs(v - x); x = v; }
+      else               { total += Math.abs(v - y); y = v; }
+    }
+    return total;
+  }
   function measure(list, stagger){
     for(var i=0;i<list.length;i++){
-      var L = Math.ceil(list[i].getTotalLength());
+      var d = list[i].getAttribute('d');
+      var L;
+      try{ L = Math.ceil(pathLength(d)); }
+      catch(e){
+        try{ L = Math.ceil(list[i].getTotalLength()); }   // fallback for a non-H/V path
+        catch(e2){ L = 400; }                              // last resort: never let this throw
+      }
       list[i].style.setProperty('--l', L);
       if(stagger) list[i].style.setProperty('--d', (i % 6) * 55 + (i > 5 ? 28 : 0) + 'ms');
     }
   }
   measure(routes, true);
   measure(lives, false);
+  resyncIfEmpty(20);
 
   /* ---------- state ---------- */
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   var visible = false, active = -1;
 
+  function liveAt(i){ return document.querySelectorAll('#lives .live')[i]; }
   function clear(){
     if(active < 0) return;
-    lives[active].classList.remove('on');
+    var l = liveAt(active); if(l) l.classList.remove('on');
     nodes[active].el.classList.remove('act');
     arrL.classList.remove('on'); arrR.classList.remove('on');
     active = -1;
@@ -133,14 +181,23 @@ window.BF_LOGO = {
   }
 
   function set(i){
-    if(!visible || i === active) return;
+    if(i === active) return;
+    if(!visible){
+      /* visible is only ever flipped true by the IntersectionObserver (or its
+         fallback timer). A live user interaction is itself proof the diagram is
+         on screen right now, so check directly rather than trust a flag that, in
+         some embedding contexts, the observer never gets a chance to set. */
+      var r = wire.getBoundingClientRect();
+      if(r.top < innerHeight && r.bottom > 0){ visible = true; wire.classList.add('in'); }
+      else return;
+    }
     if(active >= 0){
-      lives[active].classList.remove('on');
+      var prev = liveAt(active); if(prev) prev.classList.remove('on');
       nodes[active].el.classList.remove('act');
     }
     active = i;
     var v = V[i];
-    lives[i].classList.add('on');
+    var l = liveAt(i); if(l) l.classList.add('on');
     nodes[i].el.classList.add('act');
     arrL.classList.toggle('on', !nodes[i].right);
     arrR.classList.toggle('on', nodes[i].right);
@@ -171,12 +228,26 @@ window.BF_LOGO = {
     /* threshold 0: the hover gate must open as soon as any part of the diagram is
        on screen, or a short viewport leaves the section inert. Same callback draws
        the routes once, then they rest for good. */
+    var seenAny = false;
     new IntersectionObserver(function(es){
       es.forEach(function(e){
+        seenAny = true;
         visible = e.isIntersecting;
         if(visible) wire.classList.add('in'); else clear();
       });
     }, {threshold:0}).observe(wire);
+    /* Defensive fallback: if the observer never fires at all -- some embedding
+       contexts don't reliably deliver IntersectionObserver callbacks -- fall back
+       to a manual bounding-rect check after a beat, so the diagram is never
+       permanently inert. Costs nothing when the observer works normally. */
+    setTimeout(function(){
+      if(seenAny) return;
+      var r = wire.getBoundingClientRect();
+      if(r.top < innerHeight && r.bottom > 0){
+        visible = true;
+        wire.classList.add('in');
+      }
+    }, 1200);
   } else {
     wire.classList.add('in');
     visible = true;
