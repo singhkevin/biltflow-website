@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Biltflow — The Compounding Advantage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;border-radius:0}
+  html,body{margin:0;padding:0}
+  body{
+    background:#F9FAFB;
+    color:#12161B;
+    font-family:Archivo,"Helvetica Neue",Arial,sans-serif;
+    font-weight:400;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{
+    font-family:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+    font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;
+  }
+  .dim{color:#59636E}
+  .faint{color:#9AA4AD}
+
+  /* ---------- page shell ---------- */
+  .page{width:1440px;margin:0 auto;padding:96px 100px 120px}
+  @media (max-width:1440px){
+    .page{width:auto;min-width:0;padding:56px 24px 80px}
+    .slot{width:auto}
+  }
+  @media (max-width:760px){
+    h2{font-size:30px;letter-spacing:-.018em}
+    .sub{font-size:16px}
+    .frame-scroll{margin-top:36px}
+  }
+
+  /* ---------- section head ---------- */
+  .sec-head{display:flex;gap:0;flex-direction:column;max-width:1240px}
+  .eyebrow{display:flex;align-items:center;gap:16px;color:#59636E}
+  .eyebrow i{display:block;width:40px;height:2px;background:#FF5500;flex:0 0 auto}
+  h2{
+    margin:26px 0 0;font-size:44px;font-weight:500;line-height:1.13;
+    letter-spacing:-.022em;color:#12161B;max-width:760px;
+  }
+  .sub{
+    margin:20px 0 0;font-size:17px;line-height:1.6;color:#59636E;max-width:620px;
+  }
+
+  /* ---------- drawing frame ---------- */
+  .frame-scroll{margin-top:56px;overflow-x:auto;overflow-y:hidden}
+  .frame{
+    margin:0;width:1240px;min-width:1240px;
+    background:#FFFFFF;border:1px solid #C9D0D7;
+  }
+  .frame-bar{
+    display:flex;justify-content:space-between;align-items:center;
+    height:44px;padding:0 20px;border-bottom:1px solid #C9D0D7;color:#3D4650;
+  }
+
+  .grid{display:grid;grid-template-columns:200px repeat(4,minmax(0,1fr))}
+
+  .cell{display:flex;flex-direction:column;min-width:0}
+  .col{border-left:1px solid #C9D0D7;position:relative}
+
+  /* header zone (above datum) */
+  .head{flex:1 1 auto;padding:22px 20px 18px;display:flex;flex-direction:column;min-height:150px}
+  .gutter .head{align-items:flex-end;text-align:right;padding-right:16px}
+  .hd-label{color:#59636E}
+  .ref{
+    margin-top:8px;font-size:34px;font-weight:500;letter-spacing:-.02em;
+    line-height:1;color:#12161B;
+  }
+  .cap{
+    margin:14px 0 0;font-size:16px;line-height:1.5;color:#3D4650;max-width:250px;
+  }
+  .hd-foot{margin-top:auto;padding-top:18px}
+  .hd-foot b{display:block;font-weight:500;color:#3D4650;margin-top:5px}
+  .gutter .hd-foot{margin-top:auto;padding-top:18px}
+
+  /* datum rule — margin-top:auto pins it to one line across every column */
+  .datum{height:2px;background:#12161B;flex:0 0 2px}
+  .gutter .datum{background:transparent}
+
+  /* substrate zone (below datum) */
+  .sub-zone{height:344px;display:flex;flex-direction:column}
+
+  .band{
+    position:relative;height:74px;flex:0 0 74px;
+    border-bottom:1px solid #C9D0D7;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:0 20px 0 26px;
+    transition:opacity 120ms linear;
+  }
+  .band::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:#0E6FC2}
+  .band .lv{color:#12161B}
+  .band .from{color:#3D4650}
+
+  .l1{background:#E7ECEF}
+  .l2{background:#D5DEE4}
+  .l3{background:#BFCBD4}
+  .l4{background:#A9B8C3}
+
+  /* the orange rule is the base of real knowledge — it steps down 01 -> 04 */
+  .hatch{
+    flex:1 1 auto;min-height:0;position:relative;background:#F9FAFB;
+    border-top:3px solid #FF5500;
+  }
+  .hatch svg{display:block;width:100%;height:100%}
+
+  /* gutter legend rows */
+  .lrow{
+    height:74px;flex:0 0 74px;border-bottom:1px solid #E4E8EB;
+    display:flex;align-items:center;justify-content:flex-end;gap:12px;
+    padding-right:16px;
+  }
+  .lname{
+    font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+    font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;
+    color:#3D4650;text-align:right;max-width:132px;line-height:1.5;
+  }
+  .lnum{
+    font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+    font-size:12px;font-weight:500;letter-spacing:.16em;color:#9AA4AD;
+    width:20px;text-align:right;
+  }
+  .lbase{
+    flex:1 1 auto;display:flex;align-items:center;justify-content:flex-end;
+    padding-right:16px;
+  }
+
+  /* flow chevrons on the header dividers */
+  .chev{
+    position:absolute;top:36px;left:0;transform:translate(-50%,0);
+    background:#FFFFFF;padding:4px 2px;line-height:0;
+  }
+
+  /* key row */
+  .key{
+    display:flex;align-items:center;gap:26px;
+    border-top:1px solid #C9D0D7;padding:0 20px;height:56px;color:#59636E;
+  }
+  .key .k{display:flex;align-items:center;gap:10px;white-space:nowrap}
+  .sw{width:12px;height:12px;flex:0 0 auto;display:block}
+  .rule{width:18px;height:2px;background:#FF5500;flex:0 0 auto;display:block}
+  .sw-carried{background:#0E6FC2}
+  .sw-base{border:1px solid #C9D0D7;background:#F9FAFB;padding:0;overflow:hidden}
+  .key .right{margin-left:auto;color:#3D4650;white-space:nowrap}
+
+  /* honest placeholder */
+  .slot{
+    margin-top:28px;width:1240px;max-width:100%;height:64px;
+    border:1px dashed #9AA4AD;display:flex;align-items:center;justify-content:center;
+    color:#59636E;background:transparent;
+  }
+
+  /* ---------- hover state: rests, no movement ---------- */
+  .grid:hover .col:not(:hover) .band{opacity:.42}
+  .grid:hover .col:not(:hover) .cap{color:#9AA4AD}
+  .grid:hover .col:not(:hover) .ref{color:#9AA4AD}
+  .cap,.ref{transition:color 120ms linear}
+
+  /* ---------- deposit animation ---------- */
+  .js .band{clip-path:inset(0 0 100% 0)}
+  .js .is-in .band{
+    clip-path:inset(0 0 0 0);
+    transition:clip-path 340ms cubic-bezier(.4,0,.2,1), opacity 120ms linear;
+    transition-delay:calc(var(--i) * 90ms), 0ms;
+  }
+  .js .hatch{border-top-color:transparent}
+  .js .is-in .hatch{
+    border-top-color:#FF5500;
+    transition:border-top-color 200ms linear;
+    transition-delay:calc(var(--i) * 90ms);
+  }
+  @media (prefers-reduced-motion: reduce){
+    .js .band{clip-path:none}
+    .js .hatch{border-top-color:#FF5500}
+    *{transition:none !important}
+  }
+</style>
+<script>
+  /* Motion opt-in. If JS or IntersectionObserver is missing, or the reader asked
+     for reduced motion, the drawing simply renders composed. */
+  (function(){
+    var ok = !(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)
+             && ('IntersectionObserver' in window);
+    if (ok) document.documentElement.className += ' js';
+  })();
+</script>
+</head>
+<body>
+<main class="page">
+
+  <div class="sec-head">
+    <div class="eyebrow mono"><i></i>08 — The compounding advantage</div>
+    <h2>Every building creates knowledge.<br>Biltflow remembers it.</h2>
+    <p class="sub">Rates, durations, subcontractor performance and defect patterns carry from one project into the next site brief.</p>
+  </div>
+
+  <div class="frame-scroll">
+  <figure class="frame" id="frame">
+
+    <figcaption class="frame-bar">
+      <span class="mono">Section through the knowledge base</span>
+      <span class="mono dim">Equal depth drawn — composition varies</span>
+    </figcaption>
+
+    <div class="grid">
+
+      <!-- ============ LEGEND GUTTER ============ -->
+      <div class="cell gutter">
+        <div class="head">
+          <span class="mono hd-label">Knowledge base</span>
+          <span class="mono hd-foot dim" >Site brief datum &#9660;</span>
+        </div>
+        <div class="datum"></div>
+        <div class="sub-zone">
+          <div class="lrow"><span class="lname">Rates</span><span class="lnum">L1</span></div>
+          <div class="lrow"><span class="lname">Durations</span><span class="lnum">L2</span></div>
+          <div class="lrow"><span class="lname">Subcontractor performance</span><span class="lnum">L3</span></div>
+          <div class="lrow"><span class="lname">Defect patterns</span><span class="lnum">L4</span></div>
+          <div class="lbase"><span class="mono dim">Industry baseline</span></div>
+        </div>
+      </div>
+
+      <!-- ============ PROJECT 01 ============ -->
+      <div class="cell col">
+        <div class="head">
+          <span class="mono hd-label">Project</span>
+          <span class="ref">01</span>
+          <p class="cap">Built on the industry baseline.</p>
+          <span class="mono hd-foot dim">Prior buildings<b>None</b></span>
+        </div>
+        <div class="datum"></div>
+        <div class="sub-zone">
+          <div class="hatch" style="--i:0">
+            <svg aria-hidden="true" preserveAspectRatio="none">
+              <defs><pattern id="h1" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                <line x1="0" y1="0" x2="0" y2="9" stroke="#BCC5CC" stroke-width="1"/>
+              </pattern></defs>
+              <rect width="100%" height="100%" fill="url(#h1)"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ PROJECT 02 ============ -->
+      <div class="cell col">
+        <div class="head">
+          <span class="chev" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF5500" stroke-width="2" stroke-linecap="square"><path d="M9 5l7 7-7 7"/></svg>
+          </span>
+          <span class="mono hd-label">Project</span>
+          <span class="ref">02</span>
+          <p class="cap">Estimated with Project 01&#8217;s real rates.</p>
+          <span class="mono hd-foot dim">Prior buildings<b>01</b></span>
+        </div>
+        <div class="datum"></div>
+        <div class="sub-zone">
+          <div class="band l1" style="--i:1"><span class="mono lv">L1</span><span class="mono from">From 01</span></div>
+          <div class="hatch" style="--i:2">
+            <svg aria-hidden="true" preserveAspectRatio="none">
+              <defs><pattern id="h2" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                <line x1="0" y1="0" x2="0" y2="9" stroke="#BCC5CC" stroke-width="1"/>
+              </pattern></defs>
+              <rect width="100%" height="100%" fill="url(#h2)"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ PROJECT 03 ============ -->
+      <div class="cell col">
+        <div class="head">
+          <span class="chev" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF5500" stroke-width="2" stroke-linecap="square"><path d="M9 5l7 7-7 7"/></svg>
+          </span>
+          <span class="mono hd-label">Project</span>
+          <span class="ref">03</span>
+          <p class="cap">Programmed with two projects&#8217; real durations.</p>
+          <span class="mono hd-foot dim">Prior buildings<b>01, 02</b></span>
+        </div>
+        <div class="datum"></div>
+        <div class="sub-zone">
+          <div class="band l1" style="--i:3"><span class="mono lv">L1</span><span class="mono from">From 01&#8211;02</span></div>
+          <div class="band l2" style="--i:4"><span class="mono lv">L2</span><span class="mono from">From 01&#8211;02</span></div>
+          <div class="hatch" style="--i:5">
+            <svg aria-hidden="true" preserveAspectRatio="none">
+              <defs><pattern id="h3" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                <line x1="0" y1="0" x2="0" y2="9" stroke="#BCC5CC" stroke-width="1"/>
+              </pattern></defs>
+              <rect width="100%" height="100%" fill="url(#h3)"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ PROJECT 04 ============ -->
+      <div class="cell col">
+        <div class="head">
+          <span class="chev" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF5500" stroke-width="2" stroke-linecap="square"><path d="M9 5l7 7-7 7"/></svg>
+          </span>
+          <span class="mono hd-label">Project</span>
+          <span class="ref">04</span>
+          <p class="cap">Defect patterns from three buildings, designed out before tender.</p>
+          <span class="mono hd-foot dim">Prior buildings<b>01, 02, 03</b></span>
+        </div>
+        <div class="datum"></div>
+        <div class="sub-zone">
+          <div class="band l1" style="--i:6"><span class="mono lv">L1</span><span class="mono from">From 01&#8211;03</span></div>
+          <div class="band l2" style="--i:7"><span class="mono lv">L2</span><span class="mono from">From 01&#8211;03</span></div>
+          <div class="band l3" style="--i:8"><span class="mono lv">L3</span><span class="mono from">From 01&#8211;03</span></div>
+          <div class="band l4" style="--i:9"><span class="mono lv">L4</span><span class="mono from">From 01&#8211;03</span></div>
+          <div class="hatch" style="--i:10">
+            <svg aria-hidden="true" preserveAspectRatio="none">
+              <defs><pattern id="h4" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                <line x1="0" y1="0" x2="0" y2="9" stroke="#BCC5CC" stroke-width="1"/>
+              </pattern></defs>
+              <rect width="100%" height="100%" fill="url(#h4)"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="key">
+      <span class="k"><i class="sw sw-carried"></i><span class="mono">From completed buildings</span></span>
+      <span class="k"><i class="rule"></i><span class="mono">Depth of real knowledge</span></span>
+      <span class="k">
+        <i class="sw sw-base">
+          <svg width="12" height="12" aria-hidden="true">
+            <defs><pattern id="hk" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+              <line x1="0" y1="0" x2="0" y2="9" stroke="#BCC5CC" stroke-width="1"/>
+            </pattern></defs>
+            <rect width="100%" height="100%" fill="url(#hk)"/>
+          </svg>
+        </i>
+        <span class="mono">Industry baseline — no history</span>
+      </span>
+      <span class="right mono">Carries into the next site brief &#8594;</span>
+    </div>
+
+  </figure>
+  </div>
+
+  <div class="slot mono">[ Worked example — pending first completed project ]</div>
+
+</main>
+
+<script>
+(function(){
+  if (document.documentElement.className.indexOf('js') === -1) return;
+  var frame = document.getElementById('frame');
+  if (!frame) return;
+
+  var done = false;
+  function deposit(){
+    if (done) return;
+    done = true;
+    frame.className += ' is-in';
+  }
+
+  /* Runs once, only when the drawing is actually on screen, then rests. */
+  var io = new IntersectionObserver(function(entries){
+    for (var i = 0; i < entries.length; i++){
+      if (entries[i].isIntersecting){ deposit(); io.disconnect(); }
+    }
+  }, { threshold: 0.25 });
+  io.observe(frame);
+
+  /* Failsafe: never leave the drawing half-built. */
+  setTimeout(function(){ if (!done){ deposit(); io.disconnect(); } }, 2200);
+})();
+</script>
+</body>
+</html>

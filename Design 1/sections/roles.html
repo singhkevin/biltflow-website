@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Biltflow — Who it's for</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;border-radius:0}
+  html,body{margin:0;padding:0}
+  body{
+    background:#F9FAFB;
+    color:#12161B;
+    font-family:Archivo,"Helvetica Neue",Arial,sans-serif;
+    font-size:17px;line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  .page{width:1440px;max-width:100%;margin:0 auto;padding:96px}
+
+  .mono{
+    font-family:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+    font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;
+  }
+
+  /* ---------- section head ---------- */
+  .head{display:flex;align-items:flex-end;justify-content:space-between;gap:48px;
+        border-bottom:1px solid #12161B;padding-bottom:20px}
+  .eyebrow{color:#59636E;margin:0}
+  .eyebrow b{color:#C43D00;font-weight:500}
+  h2{font-family:Archivo;font-size:44px;font-weight:500;letter-spacing:-.02em;
+     line-height:1.05;margin:14px 0 0}
+  .sub{color:#59636E;margin:0;max-width:520px;padding-bottom:4px}
+
+  /* ---------- the ruler ---------- */
+  .ruler{
+    background:#FFFFFF;border:1px solid #C9D0D7;border-top:none;
+    padding:26px 28px 22px;
+  }
+  .rulerbar{display:flex;align-items:baseline;justify-content:space-between;gap:32px;
+            padding-bottom:22px}
+  .rulerbar .lab{color:#59636E;margin:0}
+  .readout{color:#12161B;margin:0;text-align:right;
+           transition:color 120ms linear}
+  .cols{display:grid;grid-template-columns:repeat(13,minmax(0,1fr));gap:10px;
+        border-top:1px solid #C9D0D7;padding-top:14px}
+  .col{display:flex;flex-direction:column;align-items:stretch;gap:10px}
+  .ref{font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:500;
+       letter-spacing:.14em;color:#9AA4AD;transition:color 140ms linear}
+  .stack{display:flex;flex-direction:column-reverse;gap:5px;height:55px}
+  .t{display:block;height:15px;background:transparent;border:1px solid transparent;
+     opacity:0;transition:opacity 160ms linear,background-color 160ms linear,border-color 160ms linear}
+  .nm{writing-mode:vertical-rl;transform:rotate(180deg);
+      font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:500;
+      letter-spacing:.14em;text-transform:uppercase;color:#9AA4AD;height:126px;
+      transition:color 140ms linear}
+
+  /* resting composite: column height = how many of the six roles sign for that stage */
+  [data-live="true"] .col[data-state="tally"][data-tally="1"] .t[data-t="1"],
+  [data-live="true"] .col[data-state="tally"][data-tally="2"] .t[data-t="1"],
+  [data-live="true"] .col[data-state="tally"][data-tally="2"] .t[data-t="2"],
+  [data-live="true"] .col[data-state="tally"][data-tally="3"] .t[data-t="1"],
+  [data-live="true"] .col[data-state="tally"][data-tally="3"] .t[data-t="2"],
+  [data-live="true"] .col[data-state="tally"][data-tally="3"] .t[data-t="3"]{opacity:1;background:#FF5500}
+  [data-live="true"] .col[data-state="tally"] .nm{color:#3D4650}
+
+  /* one role resolved */
+  [data-live="true"] .col[data-state="own"] .t{opacity:1;background:#FF5500}
+  [data-live="true"] .col[data-state="own"] .nm{color:#12161B;font-weight:600}
+  [data-live="true"] .col[data-state="own"] .ref{color:#C43D00}
+  [data-live="true"] .col[data-state="need"] .t{opacity:1;background:transparent;border-color:#0E6FC2}
+  [data-live="true"] .col[data-state="need"] .nm{color:#3D4650}
+  [data-live="true"] .col[data-state="off"] .t[data-t="1"]{opacity:1;background:#C9D0D7}
+  [data-live="true"] .col[data-state="off"] .nm{color:#C9D0D7}
+  [data-live="true"] .col[data-state="off"] .ref{color:#C9D0D7}
+
+  /* ---------- legend ---------- */
+  .legend{display:flex;gap:36px;flex-wrap:wrap;padding:22px 28px;
+          border:1px solid #C9D0D7;border-top:none;background:#FFFFFF}
+  .key{display:flex;align-items:center;gap:10px;color:#59636E}
+  .sw{width:22px;height:11px;display:block;flex:none}
+  .sw.own{background:#FF5500}
+  .sw.need{border:1px solid #0E6FC2}
+  .sw.off{background:#C9D0D7;height:4px}
+
+  /* ---------- cards ---------- */
+  .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;
+        background:#C9D0D7;border:1px solid #C9D0D7;border-top:none;margin-top:0}
+  .card{position:relative;background:#FFFFFF;padding:28px 28px 26px;
+        display:flex;flex-direction:column;gap:16px;outline:none}
+  .card .mark{position:absolute;left:0;top:0;bottom:0;width:3px;background:transparent;
+              transition:background-color 120ms linear}
+  .card[data-on="true"] .mark,.card:focus-visible .mark{background:#FF5500}
+  .card:focus-visible{outline:1px solid #12161B;outline-offset:-1px}
+  .rname{font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:600;
+         letter-spacing:.16em;text-transform:uppercase;color:#C43D00;margin:0}
+  .rline{margin:0;color:#3D4650;font-size:17px;line-height:1.45;min-height:74px}
+  .strip{display:grid;grid-template-columns:repeat(13,minmax(0,1fr));gap:4px;
+         align-items:end;height:30px}
+  .b{display:block;height:30px}
+  .b[data-b="own"]{background:#FF5500}
+  .b[data-b="need"]{border:1px solid #0E6FC2}
+  .b[data-b="off"]{height:4px;background:#C9D0D7}
+  .count{margin:0;font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:500;
+         letter-spacing:.14em;text-transform:uppercase;color:#59636E;
+         border-top:1px solid #C9D0D7;padding-top:10px}
+  .count b{color:#12161B;font-weight:600}
+  .slot{margin:0;font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:500;
+        letter-spacing:.12em;text-transform:uppercase;color:#59636E;white-space:nowrap;
+        overflow:hidden;border:1px solid #C9D0D7;padding:9px 12px}
+
+  .foot{display:flex;justify-content:space-between;gap:32px;color:#9AA4AD;
+        padding-top:18px}
+  .foot p{margin:0}
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important;animation:none !important}
+  }
+  @media (max-width:1100px){
+    .page{padding:48px 24px}
+    .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .nm{font-size:9px;letter-spacing:.08em;height:112px}
+  }
+  @media (max-width:700px){
+    .page{padding:36px 18px}
+    .grid{grid-template-columns:minmax(0,1fr)}
+    .head{flex-direction:column;align-items:flex-start;gap:18px}
+    h2{font-size:32px}
+    .rulerbar{flex-direction:column;gap:8px}
+    .readout{text-align:left}
+    .nm{display:none}
+    .cols{gap:5px}
+  }
+</style>
+</head>
+<body>
+<main class="page">
+  <section id="roles" data-live="true">
+
+    <div class="head">
+      <div>
+        <p class="mono eyebrow"><b>09</b> &nbsp;/&nbsp; Who it's for</p>
+        <h2>Six roles. One record.</h2>
+      </div>
+      <p class="sub">Each role sees the stages it signs for &mdash; and the ones upstream that decide its week.</p>
+    </div>
+
+    <div class="ruler">
+      <div class="rulerbar">
+        <p class="mono lab">The thirteen stages</p>
+        <p class="mono readout" data-readout>All six roles &mdash; how many sign for each stage</p>
+      </div>
+      <div class="cols" data-ruler>
+          <div class="col" data-col="1" data-state="tally" data-tally="1"><span class="ref">01</span><span class="stack"><i class="t" data-t="1"></i><i class="t" data-t="2"></i><i class="t" data-t="3"></i></span><span class="nm">SITE SOURCING</span></div>
+          <div class="col" data-col="2" data-state="tally" data-tally="1"><span class="ref">02</span><span class="stack"><i class="t" data-t="1"></i><i class="t" data-t="2"></i><i class="t" data-t="3"></i></span><span class="nm">FEASIBILITY</span></div>
+          <div class="col" data-col="3" data-state="tally" data-tally="1"><span class="ref">03</span><span class="stack"><i class="t" data-t="1"></i><i class="t" data-t="2"></i><i class="t" data-t="3"></i></span><span class="nm">APPROVALS</span></div>
+          <div class="col" data-col="4" data-state="tally" data-tally="1"><span class="ref">04</span><span class="stack"><i class="t" data-t="1"></i><i class="t" data-t="2"></i><i class="t" data-t="3"></i></span><span class="nm">DESIGN</span></div>
+          <div class="col" data-col="5" data-state="tally" data-tally="1"><span class="ref">05</span><span class="stack"><i class="t" data-t="1"></i><i class="t" data-t="2"></i><i class="t" data-t="3"></i></span><span class="nm">ESTIMATING</span></div>
+          <div class="col" data-col="6" data-state="tally" data-tally="1"><span class="ref">06</span><span class="stack"><i class="t" data-t="1"></i><i class="t" data-t="2"></i><i class="t" data-t="3"></i></span><span class="nm">PROCUREMENT</span></div>
+          <div class="col" data-col="7" data-state="tally" data-tally="1"><span class="ref">07</span><span class="stack"><i class="t" data-t="1"></i><i class="t" data-t="2"></i><i class="t" data-t="3"></i></span><span class="nm">COMMERCIAL</span></div>
+          <div class="col" data-col="8" data-state="tally" data-tally="3"><span class="ref">08</span><span class="stack"><i class="t" data-t="1"></i><i class="t" data-t="2"></i><i class="t" data-t="3"></i></span><span class="nm">CONSTRUCTION</span></div>
+          <div class="col" data-col="9" data-state="tally" data-tally="2"><span class="ref">09</span><span class="stack"><i class="t" data-t="1"></i><i class="t" data-t="2"></i><i class="t" data-t="3"></i></span><span class="nm">COMPLIANCE</span></div>
+          <div class="col" data-col="10" data-state="tally" data-tally="2"><span class="ref">10</span><span class="stack"><i class="t" data-t="1"></i><i class="t" data-t="2"></i><i class="t" data-t="3"></i></span><span class="nm">HANDOVER</span></div>
+          <div class="col" data-col="11" data-state="tally" data-tally="1"><span class="ref">11</span><span class="stack"><i class="t" data-t="1"></i><i class="t" data-t="2"></i><i class="t" data-t="3"></i></span><span class="nm">DEFECTS</span></div>
+          <div class="col" data-col="12" data-state="tally" data-tally="1"><span class="ref">12</span><span class="stack"><i class="t" data-t="1"></i><i class="t" data-t="2"></i><i class="t" data-t="3"></i></span><span class="nm">MAINTENANCE</span></div>
+          <div class="col" data-col="13" data-state="tally" data-tally="1"><span class="ref">13</span><span class="stack"><i class="t" data-t="1"></i><i class="t" data-t="2"></i><i class="t" data-t="3"></i></span><span class="nm">LEARNING</span></div>
+      </div>
+    </div>
+
+    <div class="legend">
+      <span class="key mono"><i class="sw own"></i> Owns it &middot; signs for it</span>
+      <span class="key mono"><i class="sw need"></i> Reads it &middot; decides its week</span>
+      <span class="key mono"><i class="sw off"></i> Not in this role's path</span>
+      <span class="key mono" style="color:#9AA4AD;margin-left:auto">Hover a role to resolve the ruler</span>
+    </div>
+
+    <div class="grid" data-grid>
+          <article class="card" data-role tabindex="0"
+                   data-owns="8,9,11" data-needs="4,6,7"
+                   data-readout="SITE MANAGER — OWNS 3 · READS 3 UPSTREAM">
+            <span class="mark" aria-hidden="true"></span>
+            <h3 class="rname">SITE MANAGER</h3>
+            <p class="rline">The diary, the RFIs and the defects list, without re-typing any of them.</p>
+            <div class="strip" role="img" aria-label="SITE MANAGER owns 3 of the 13 lifecycle stages and reads 3 upstream of them."><i class="b" data-b="off" title="SITE SOURCING"></i><i class="b" data-b="off" title="FEASIBILITY"></i><i class="b" data-b="off" title="APPROVALS"></i><i class="b" data-b="need" title="DESIGN"></i><i class="b" data-b="off" title="ESTIMATING"></i><i class="b" data-b="need" title="PROCUREMENT"></i><i class="b" data-b="need" title="COMMERCIAL"></i><i class="b" data-b="own" title="CONSTRUCTION"></i><i class="b" data-b="own" title="COMPLIANCE"></i><i class="b" data-b="off" title="HANDOVER"></i><i class="b" data-b="own" title="DEFECTS"></i><i class="b" data-b="off" title="MAINTENANCE"></i><i class="b" data-b="off" title="LEARNING"></i></div>
+            <p class="count">Owns <b>3</b> of 13 &middot; reads <b>3</b> upstream</p>
+            <p class="slot">[ FOR SITE MANAGER — PENDING ]</p>
+          </article>
+          <article class="card" data-role tabindex="0"
+                   data-owns="8,9,10" data-needs="3,4,6,7"
+                   data-readout="PROJECT MANAGER — OWNS 3 · READS 4 UPSTREAM">
+            <span class="mark" aria-hidden="true"></span>
+            <h3 class="rname">PROJECT MANAGER</h3>
+            <p class="rline">Programme, compliance and handover held against one set of dates.</p>
+            <div class="strip" role="img" aria-label="PROJECT MANAGER owns 3 of the 13 lifecycle stages and reads 4 upstream of them."><i class="b" data-b="off" title="SITE SOURCING"></i><i class="b" data-b="off" title="FEASIBILITY"></i><i class="b" data-b="need" title="APPROVALS"></i><i class="b" data-b="need" title="DESIGN"></i><i class="b" data-b="off" title="ESTIMATING"></i><i class="b" data-b="need" title="PROCUREMENT"></i><i class="b" data-b="need" title="COMMERCIAL"></i><i class="b" data-b="own" title="CONSTRUCTION"></i><i class="b" data-b="own" title="COMPLIANCE"></i><i class="b" data-b="own" title="HANDOVER"></i><i class="b" data-b="off" title="DEFECTS"></i><i class="b" data-b="off" title="MAINTENANCE"></i><i class="b" data-b="off" title="LEARNING"></i></div>
+            <p class="count">Owns <b>3</b> of 13 &middot; reads <b>4</b> upstream</p>
+            <p class="slot">[ FOR PROJECT MANAGER — PENDING ]</p>
+          </article>
+          <article class="card" data-role tabindex="0"
+                   data-owns="5,6,7" data-needs="2,4"
+                   data-readout="CONTRACTS MANAGER — OWNS 3 · READS 2 UPSTREAM">
+            <span class="mark" aria-hidden="true"></span>
+            <h3 class="rname">CONTRACTS MANAGER</h3>
+            <p class="rline">Every package, award, variation and claim traced back to the BOQ line it came from.</p>
+            <div class="strip" role="img" aria-label="CONTRACTS MANAGER owns 3 of the 13 lifecycle stages and reads 2 upstream of them."><i class="b" data-b="off" title="SITE SOURCING"></i><i class="b" data-b="need" title="FEASIBILITY"></i><i class="b" data-b="off" title="APPROVALS"></i><i class="b" data-b="need" title="DESIGN"></i><i class="b" data-b="own" title="ESTIMATING"></i><i class="b" data-b="own" title="PROCUREMENT"></i><i class="b" data-b="own" title="COMMERCIAL"></i><i class="b" data-b="off" title="CONSTRUCTION"></i><i class="b" data-b="off" title="COMPLIANCE"></i><i class="b" data-b="off" title="HANDOVER"></i><i class="b" data-b="off" title="DEFECTS"></i><i class="b" data-b="off" title="MAINTENANCE"></i><i class="b" data-b="off" title="LEARNING"></i></div>
+            <p class="count">Owns <b>3</b> of 13 &middot; reads <b>2</b> upstream</p>
+            <p class="slot">[ FOR CONTRACTS MANAGER — PENDING ]</p>
+          </article>
+          <article class="card" data-role tabindex="0"
+                   data-owns="3,4" data-needs="1,2"
+                   data-readout="DESIGN MANAGER — OWNS 2 · READS 2 UPSTREAM">
+            <span class="mark" aria-hidden="true"></span>
+            <h3 class="rname">DESIGN MANAGER</h3>
+            <p class="rline">Drawing revisions that know which cost line and which package they change.</p>
+            <div class="strip" role="img" aria-label="DESIGN MANAGER owns 2 of the 13 lifecycle stages and reads 2 upstream of them."><i class="b" data-b="need" title="SITE SOURCING"></i><i class="b" data-b="need" title="FEASIBILITY"></i><i class="b" data-b="own" title="APPROVALS"></i><i class="b" data-b="own" title="DESIGN"></i><i class="b" data-b="off" title="ESTIMATING"></i><i class="b" data-b="off" title="PROCUREMENT"></i><i class="b" data-b="off" title="COMMERCIAL"></i><i class="b" data-b="off" title="CONSTRUCTION"></i><i class="b" data-b="off" title="COMPLIANCE"></i><i class="b" data-b="off" title="HANDOVER"></i><i class="b" data-b="off" title="DEFECTS"></i><i class="b" data-b="off" title="MAINTENANCE"></i><i class="b" data-b="off" title="LEARNING"></i></div>
+            <p class="count">Owns <b>2</b> of 13 &middot; reads <b>2</b> upstream</p>
+            <p class="slot">[ FOR DESIGN MANAGER — PENDING ]</p>
+          </article>
+          <article class="card" data-role tabindex="0"
+                   data-owns="1,2,12" data-needs="5,13"
+                   data-readout="DEVELOPER — OWNS 3 · READS 2 UPSTREAM">
+            <span class="mark" aria-hidden="true"></span>
+            <h3 class="rname">DEVELOPER</h3>
+            <p class="rline">Feasibility built on what your last building actually cost, not the industry average.</p>
+            <div class="strip" role="img" aria-label="DEVELOPER owns 3 of the 13 lifecycle stages and reads 2 upstream of them."><i class="b" data-b="own" title="SITE SOURCING"></i><i class="b" data-b="own" title="FEASIBILITY"></i><i class="b" data-b="off" title="APPROVALS"></i><i class="b" data-b="off" title="DESIGN"></i><i class="b" data-b="need" title="ESTIMATING"></i><i class="b" data-b="off" title="PROCUREMENT"></i><i class="b" data-b="off" title="COMMERCIAL"></i><i class="b" data-b="off" title="CONSTRUCTION"></i><i class="b" data-b="off" title="COMPLIANCE"></i><i class="b" data-b="off" title="HANDOVER"></i><i class="b" data-b="off" title="DEFECTS"></i><i class="b" data-b="own" title="MAINTENANCE"></i><i class="b" data-b="need" title="LEARNING"></i></div>
+            <p class="count">Owns <b>3</b> of 13 &middot; reads <b>2</b> upstream</p>
+            <p class="slot">[ FOR DEVELOPER — PENDING ]</p>
+          </article>
+          <article class="card" data-role tabindex="0"
+                   data-owns="8,10,13" data-needs="5,6,7,9,11"
+                   data-readout="CONSTRUCTION DIRECTOR — OWNS 3 · READS 5 UPSTREAM">
+            <span class="mark" aria-hidden="true"></span>
+            <h3 class="rname">CONSTRUCTION DIRECTOR</h3>
+            <p class="rline">One view across every project, and a record that gets better with each one.</p>
+            <div class="strip" role="img" aria-label="CONSTRUCTION DIRECTOR owns 3 of the 13 lifecycle stages and reads 5 upstream of them."><i class="b" data-b="off" title="SITE SOURCING"></i><i class="b" data-b="off" title="FEASIBILITY"></i><i class="b" data-b="off" title="APPROVALS"></i><i class="b" data-b="off" title="DESIGN"></i><i class="b" data-b="need" title="ESTIMATING"></i><i class="b" data-b="need" title="PROCUREMENT"></i><i class="b" data-b="need" title="COMMERCIAL"></i><i class="b" data-b="own" title="CONSTRUCTION"></i><i class="b" data-b="need" title="COMPLIANCE"></i><i class="b" data-b="own" title="HANDOVER"></i><i class="b" data-b="need" title="DEFECTS"></i><i class="b" data-b="off" title="MAINTENANCE"></i><i class="b" data-b="own" title="LEARNING"></i></div>
+            <p class="count">Owns <b>3</b> of 13 &middot; reads <b>5</b> upstream</p>
+            <p class="slot">[ FOR CONSTRUCTION DIRECTOR — PENDING ]</p>
+          </article>
+    </div>
+
+    <div class="foot mono">
+      <p>Fig. 09 &mdash; Stage ownership by role &middot; NTS</p>
+      <p>Stage assignment drafted from construction practice &mdash; to be confirmed</p>
+    </div>
+
+  </section>
+</main>
+
+<script>
+/* Biltflow — roles ruler. ~1.4 KB. No library. Rests between states. */
+(function () {
+  var sec = document.getElementById('roles');
+  if (!sec) return;
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var cols  = [].slice.call(sec.querySelectorAll('[data-col]'));
+  var cards = [].slice.call(sec.querySelectorAll('[data-role]'));
+  var grid  = sec.querySelector('[data-grid]');
+  var out   = sec.querySelector('[data-readout]');
+  var rest  = out.textContent;
+  var awake = false, cur;
+
+  function paint(card) {
+    if (card === cur) return;
+    cur = card;
+    var owns = card ? card.getAttribute('data-owns').split(',') : [];
+    var need = card ? card.getAttribute('data-needs').split(',') : [];
+    for (var i = 0; i < cols.length; i++) {
+      var n = cols[i].getAttribute('data-col');
+      cols[i].setAttribute('data-state',
+        !card ? 'tally' : owns.indexOf(n) > -1 ? 'own' : need.indexOf(n) > -1 ? 'need' : 'off');
+    }
+    for (var j = 0; j < cards.length; j++) {
+      cards[j].setAttribute('data-on', cards[j] === card ? 'true' : 'false');
+    }
+    out.textContent = card ? card.getAttribute('data-readout') : rest;
+  }
+
+  cards.forEach(function (k) {
+    k.addEventListener('mouseenter', function () { if (awake) paint(k); });
+    k.addEventListener('focus',      function () { if (awake) paint(k); });
+  });
+  grid.addEventListener('mouseleave', function () { if (awake) paint(null); });
+  grid.addEventListener('focusout', function (e) {
+    if (awake && !grid.contains(e.relatedTarget)) paint(null);
+  });
+
+  /* entrance: the thirteen columns fill once, left to right, then rest. */
+  var drawn = false;
+  function draw() {
+    if (drawn) return;
+    drawn = true;
+    if (reduce) { sec.setAttribute('data-live', 'true'); return; }
+    for (var i = 0; i < cols.length; i++) cols[i].style.transitionDelay = (i * 26) + 'ms';
+    sec.setAttribute('data-live', 'true');
+    setTimeout(function () {
+      for (var i = 0; i < cols.length; i++) cols[i].style.transitionDelay = '';
+    }, cols.length * 26 + 260);
+  }
+
+  if ('IntersectionObserver' in window) {
+    sec.setAttribute('data-live', 'false');           /* only after JS is confirmed alive */
+    new IntersectionObserver(function (es) {
+      for (var i = 0; i < es.length; i++) {
+        if (es[i].isIntersecting) { awake = true; draw(); }
+        else { awake = false; paint(null); }          /* off-screen: nothing listens, nothing moves */
+      }
+    }, { threshold: 0.2 }).observe(sec);
+  } else {
+    awake = true; drawn = true;
+  }
+})();
+</script>
+</body>
+</html>

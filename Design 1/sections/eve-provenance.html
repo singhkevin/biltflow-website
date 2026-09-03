@@ -1,0 +1,460 @@
+<meta charset="utf-8">
+<title>EVE Relationship Map</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;border-radius:0}
+html,body{margin:0;padding:0}
+[hidden]{display:none !important}
+body{background:#F9FAFB;color:#12161B;
+  font-family:'Archivo','Helvetica Neue',Arial,sans-serif;font-size:17px;font-weight:400;
+  -webkit-font-smoothing:antialiased}
+.page{width:1440px;margin:0 auto}
+.mono{font-family:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase}
+
+/* ---------- section shell ---------- */
+.sec{padding:96px 80px;border-top:1px solid #C9D0D7;border-bottom:1px solid #C9D0D7}
+.head{display:flex;justify-content:space-between;align-items:flex-end;gap:64px;
+  padding-bottom:20px;border-bottom:1px solid #12161B}
+.head h2{margin:0;font-size:44px;line-height:1.1;font-weight:500;letter-spacing:-.03em;
+  max-width:760px;text-wrap:pretty}
+.head .eyebrow{display:block;margin-bottom:20px;color:#59636E}
+.head p{margin:0;max-width:400px;font-size:17px;line-height:1.5;color:#59636E;text-wrap:pretty}
+
+.body{display:grid;grid-template-columns:420px minmax(0,1fr);gap:100px;margin-top:56px;
+  align-items:start}
+
+/* ---------- readout panel ---------- */
+.panel{display:flex;flex-direction:column;background:#FFFFFF;border:1px solid #C9D0D7;
+  min-height:392px}
+.panel-bar{display:flex;justify-content:space-between;align-items:center;
+  padding:12px 20px;border-bottom:1px solid #C9D0D7}
+.panel-bar span{font-size:11px;letter-spacing:.16em;color:#59636E}
+.panel-main{padding:24px 20px 20px;flex:1;display:flex;flex-direction:column}
+.panel-title{margin:0;font-size:26px;line-height:1.15;font-weight:500;letter-spacing:-.02em}
+.panel-desc{margin:12px 0 0;font-size:15px;line-height:1.5;color:#59636E;text-wrap:pretty;
+  min-height:66px}
+.panel-rule{height:1px;background:#C9D0D7;margin:20px 0 16px}
+.panel-cap{font-size:11px;letter-spacing:.16em;color:#9AA4AD;margin-bottom:12px}
+.rels{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:1px;
+  background:#C9D0D7;border-top:1px solid #C9D0D7;border-bottom:1px solid #C9D0D7}
+.rels li{display:grid;grid-template-columns:9px minmax(0,1fr) auto;gap:10px;align-items:center;
+  background:#FFFFFF;padding:11px 2px}
+.rels .dot{width:7px;height:7px;background:#0E6FC2;display:block}
+.rels .rn{font-size:12px;letter-spacing:.1em;color:#12161B;
+  font-family:'IBM Plex Mono',ui-monospace,monospace;font-weight:500}
+.rels .rl{font-size:11px;letter-spacing:.12em;color:#59636E;
+  font-family:'IBM Plex Mono',ui-monospace,monospace;white-space:nowrap}
+.hint{display:flex;align-items:center;gap:10px;font-size:11px;letter-spacing:.16em;
+  color:#9AA4AD;font-family:'IBM Plex Mono',ui-monospace,monospace;padding:14px 0;
+  border-top:1px solid #C9D0D7}
+.hint svg{flex:none}
+
+/* ---------- legend ---------- */
+.legend{margin-top:32px;padding-top:20px;border-top:1px solid #C9D0D7}
+.legend dl{margin:0;display:flex;flex-direction:column;gap:10px}
+.legend .row{display:flex;align-items:center;gap:12px;font-size:11px;letter-spacing:.16em;
+  color:#59636E;font-family:'IBM Plex Mono',ui-monospace,monospace}
+.legend .sw{width:16px;height:3px;flex:none;display:block}
+.figref{margin-top:24px;font-size:11px;letter-spacing:.16em;color:#9AA4AD;
+  font-family:'IBM Plex Mono',ui-monospace,monospace}
+
+/* ---------- diagram ---------- */
+.plate{position:relative;background:#FFFFFF;border:1px solid #C9D0D7;padding:8px}
+.plate .reg{position:absolute;width:9px;height:9px;border:0 solid #9AA4AD}
+.plate .reg.tl{top:7px;left:7px;border-top-width:1px;border-left-width:1px}
+.plate .reg.tr{top:7px;right:7px;border-top-width:1px;border-right-width:1px}
+.plate .reg.bl{bottom:7px;left:7px;border-bottom-width:1px;border-left-width:1px}
+.plate .reg.br{bottom:7px;right:7px;border-bottom-width:1px;border-right-width:1px}
+.map{display:block;width:100%;height:auto}
+.map text{font-family:'IBM Plex Mono',ui-monospace,monospace;font-weight:500}
+
+.guide{fill:none;stroke:#C9D0D7;stroke-width:1;stroke-dasharray:2 6}
+
+.spoke .sp-line{stroke:#C9D0D7;stroke-width:1;transition:stroke 160ms linear,stroke-width 160ms linear}
+.spoke .sp-arrow{fill:#0E6FC2;opacity:0;transition:opacity 160ms linear}
+.spoke .sp-plate{fill:#FFFFFF;opacity:0;transition:opacity 160ms linear}
+.spoke .sp-label{font-size:9px;letter-spacing:.08em;fill:#0E6FC2;opacity:0;
+  transition:opacity 160ms linear}
+.spoke.is-target .sp-line{stroke:#0E6FC2;stroke-width:1.5}
+.spoke.is-target .sp-arrow-out,.spoke.is-target .sp-plate,.spoke.is-target .sp-label{opacity:1}
+.spoke.is-source .sp-line{stroke:#FF5500;stroke-width:1.5}
+.spoke.is-source .sp-arrow-in{fill:#FF5500;opacity:1}
+.spoke.is-mute{opacity:.45}
+
+.node{cursor:pointer;outline:none}
+.node .nd-box{fill:#FFFFFF;stroke:#C9D0D7;stroke-width:1;
+  transition:stroke 180ms linear,stroke-width 180ms linear}
+.node .nd-mark{fill:#FF5500;opacity:0;transition:opacity 180ms linear}
+.node .nd-icon path{fill:none;stroke:#12161B;stroke-width:1;
+  transition:stroke 180ms linear}
+.node .nd-idx{font-size:9px;letter-spacing:.1em;fill:#9AA4AD;transition:fill 180ms linear}
+.node .nd-t1,.node .nd-t2{font-size:10px;letter-spacing:.11em;fill:#12161B;
+  transition:fill 180ms linear}
+.node{transition:opacity 180ms linear}
+.node.is-mute{opacity:.34}
+.node.is-source .nd-box{stroke:#12161B;stroke-width:1.5}
+.node.is-source .nd-mark{opacity:1}
+.node.is-source .nd-idx{fill:#C43D00}
+.node.is-target .nd-box{stroke:#0E6FC2;stroke-width:1.5}
+.node.is-target .nd-idx{fill:#0E6FC2}
+.node.is-target .nd-icon path{stroke:#0E6FC2}
+.node:focus-visible .nd-box{stroke:#12161B;stroke-width:2}
+
+.hub-box{fill:#FFFFFF;stroke:#12161B;stroke-width:1}
+.hub-name{font-family:'Archivo','Helvetica Neue',Arial,sans-serif;font-size:30px;
+  font-weight:500;letter-spacing:.1em;fill:#12161B}
+.hub-cap{font-size:8px;letter-spacing:.18em;fill:#9AA4AD}
+.hub-state{font-size:9px;letter-spacing:.16em;fill:#59636E}
+.hub-rule{stroke:#C9D0D7;stroke-width:1}
+.wave{fill:none;stroke:#FF5500;stroke-width:1.5;stroke-linejoin:round;stroke-linecap:round}
+
+/* ---------- foot ---------- */
+.foot{display:grid;grid-template-columns:640px minmax(0,1fr);gap:100px;margin-top:64px;
+  padding-top:32px;border-top:1px solid #12161B;align-items:start}
+.ctl-cap{font-size:11px;letter-spacing:.16em;color:#59636E;
+  font-family:'IBM Plex Mono',ui-monospace,monospace;margin-bottom:26px}
+.slider{position:relative;height:44px;width:560px}
+.slider .track{position:absolute;left:0;right:0;top:21px;height:1px;background:#9AA4AD}
+.slider .detent{position:absolute;top:0;width:120px;height:44px;padding:0;margin:0;
+  border:0;background:none;cursor:pointer;transform:translateX(-60px)}
+.slider .detent i{position:absolute;left:59px;top:14px;width:1px;height:15px;
+  background:#9AA4AD;display:block}
+.slider .knob{position:absolute;top:15px;left:0;width:13px;height:13px;background:#12161B;
+  margin-left:-6.5px;pointer-events:none;transition:left 220ms cubic-bezier(.4,0,.2,1)}
+.slider .knob::after{content:'';position:absolute;left:4px;top:4px;width:5px;height:5px;
+  background:#FF5500;display:block}
+.stops{display:flex;justify-content:space-between;width:560px;margin-top:4px}
+.stops button{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;
+  font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:#9AA4AD;
+  background:none;border:0;padding:0;cursor:pointer;transition:color 180ms linear}
+.stops button[aria-pressed="true"]{color:#12161B}
+.mode-line{margin:26px 0 0;font-size:17px;line-height:1.5;color:#3D4650;max-width:560px;
+  min-height:52px;text-wrap:pretty}
+.guarantees{display:flex;flex-direction:column;gap:9px;font-size:11px;letter-spacing:.16em;
+  color:#59636E;font-family:'IBM Plex Mono',ui-monospace,monospace}
+.placeholder{margin-top:28px;padding:16px 18px;border:1px dashed #9AA4AD;
+  font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.14em;
+  line-height:1.7;color:#59636E}
+
+@media (prefers-reduced-motion: reduce){
+  *{transition-duration:1ms !important;animation-duration:1ms !important}
+}
+</style>
+
+<div class="page">
+<section class="sec" id="eve-provenance" aria-labelledby="ep-h">
+  <div class="head">
+    <div>
+      <span class="mono eyebrow">Provenance &middot; Orchestration</span>
+      <h2 id="ep-h">Built on real construction. EVE holds it together.</h2>
+    </div>
+    <p>Trained on the documents a building actually produces &mdash; in the order it produces
+       them. EVE is the layer that knows how each one refers to the next.</p>
+  </div>
+
+  <div class="body">
+    <div>
+      <div class="panel">
+        <div class="panel-bar">
+          <span class="mono" style="letter-spacing:.16em">Relationship readout</span>
+          <span class="mono" id="ro-idx">&mdash;&thinsp;/&thinsp;09</span>
+        </div>
+        <div class="panel-main">
+          <h3 class="panel-title" id="ro-title">Nine document types.</h3>
+          <p class="panel-desc" id="ro-desc">A building produces the same records in the same
+             order, every time. Biltflow is built on those records &mdash; not on a general
+             model taught to talk about buildings.</p>
+          <div class="panel-rule"></div>
+          <div class="panel-cap mono" id="ro-cap" style="letter-spacing:.16em">Select a document</div>
+          <ul class="rels" id="ro-rels" hidden></ul>
+          <div class="hint" id="ro-hint">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9AA4AD"
+                 stroke-width="1" aria-hidden="true"><path d="M7 3.5l11 8.5-4.6 1.2 2.6 5.4-2.2 1-2.6-5.4L7 17z"/></svg>
+            <span>Hover or tab a document</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="legend">
+        <dl>
+          <div class="row"><span class="sw" style="background:#FF5500"></span>Selected document</div>
+          <div class="row"><span class="sw" style="background:#0E6FC2"></span>Related through EVE</div>
+          <div class="row"><span class="sw" style="background:#C9D0D7"></span>Not in this relation</div>
+        </dl>
+        <div class="figref">Fig. 02 &mdash; Document relationship map &middot; NTS</div>
+      </div>
+    </div>
+
+    <div class="plate">
+      <span class="reg tl"></span><span class="reg tr"></span>
+      <span class="reg bl"></span><span class="reg br"></span>
+      <svg class="map" id="map" viewBox="30 60 700 624" role="img"
+           aria-label="Nine construction document types arranged around EVE, the orchestration layer at the centre.">
+        <circle class="guide" cx="380" cy="380" r="288"/>
+<g class="spoke" data-spoke="0">
+  <line class="sp-line" x1="380" y1="262" x2="380" y2="133"/>
+  <path class="sp-arrow sp-arrow-in" d="M380 256.5L377.2 248.2L382.8 248.2Z"/>
+  <path class="sp-arrow sp-arrow-out" d="M380 138.5L382.8 146.8L377.2 146.8Z"/>
+  <rect class="sp-plate" x="338" y="190" width="84" height="15"/>
+  <text class="sp-label" x="380" y="200.7" text-anchor="middle"></text>
+</g>
+<g class="spoke" data-spoke="1">
+  <line class="sp-line" x1="455.8" y1="289.6" x2="532.5" y2="198.3"/>
+  <path class="sp-arrow sp-arrow-in" d="M459.4 285.4L462.6 277.3L466.8 280.8Z"/>
+  <path class="sp-arrow sp-arrow-out" d="M529 202.5L525.8 210.6L521.5 207Z"/>
+  <rect class="sp-plate" x="452.2" y="236.4" width="84" height="15"/>
+  <text class="sp-label" x="494.2" y="247.1" text-anchor="middle"></text>
+</g>
+<g class="spoke" data-spoke="2">
+  <line class="sp-line" x1="496.2" y1="359.5" x2="588.8" y2="343.2"/>
+  <path class="sp-arrow sp-arrow-in" d="M501.6 358.6L509.3 354.4L510.2 359.8Z"/>
+  <path class="sp-arrow sp-arrow-out" d="M583.3 344.1L575.7 348.3L574.7 342.9Z"/>
+  <rect class="sp-plate" x="500.5" y="343.8" width="84" height="15"/>
+  <text class="sp-label" x="542.5" y="354.5" text-anchor="middle"></text>
+</g>
+<g class="spoke" data-spoke="3">
+  <line class="sp-line" x1="482.2" y1="439" x2="566.2" y2="487.5"/>
+  <path class="sp-arrow sp-arrow-in" d="M487 441.8L495.5 443.5L492.7 448.3Z"/>
+  <path class="sp-arrow sp-arrow-out" d="M561.4 484.8L552.9 483L555.7 478.2Z"/>
+  <rect class="sp-plate" x="482.2" y="455.8" width="84" height="15"/>
+  <text class="sp-label" x="524.2" y="466.4" text-anchor="middle"></text>
+</g>
+<g class="spoke" data-spoke="4">
+  <line class="sp-line" x1="420.4" y1="490.9" x2="463.8" y2="610.2"/>
+  <path class="sp-arrow sp-arrow-in" d="M422.2 496.1L427.6 502.9L422.5 504.7Z"/>
+  <path class="sp-arrow sp-arrow-out" d="M461.9 605L456.5 598.2L461.7 596.3Z"/>
+  <rect class="sp-plate" x="400.1" y="543" width="84" height="15"/>
+  <text class="sp-label" x="442.1" y="553.7" text-anchor="middle"></text>
+</g>
+<g class="spoke" data-spoke="5">
+  <line class="sp-line" x1="339.6" y1="490.9" x2="296.2" y2="610.2"/>
+  <path class="sp-arrow sp-arrow-in" d="M337.8 496.1L337.5 504.7L332.4 502.9Z"/>
+  <path class="sp-arrow sp-arrow-out" d="M298.1 605L298.3 596.3L303.5 598.2Z"/>
+  <rect class="sp-plate" x="275.9" y="543" width="84" height="15"/>
+  <text class="sp-label" x="317.9" y="553.7" text-anchor="middle"></text>
+</g>
+<g class="spoke" data-spoke="6">
+  <line class="sp-line" x1="277.8" y1="439" x2="193.8" y2="487.5"/>
+  <path class="sp-arrow sp-arrow-in" d="M273 441.8L267.3 448.3L264.5 443.5Z"/>
+  <path class="sp-arrow sp-arrow-out" d="M198.6 484.8L204.3 478.2L207.1 483Z"/>
+  <rect class="sp-plate" x="193.8" y="455.8" width="84" height="15"/>
+  <text class="sp-label" x="235.8" y="466.4" text-anchor="middle"></text>
+</g>
+<g class="spoke" data-spoke="7">
+  <line class="sp-line" x1="263.8" y1="359.5" x2="171.2" y2="343.2"/>
+  <path class="sp-arrow sp-arrow-in" d="M258.4 358.6L249.8 359.8L250.7 354.4Z"/>
+  <path class="sp-arrow sp-arrow-out" d="M176.7 344.1L185.3 342.9L184.3 348.3Z"/>
+  <rect class="sp-plate" x="175.5" y="343.8" width="84" height="15"/>
+  <text class="sp-label" x="217.5" y="354.5" text-anchor="middle"></text>
+</g>
+<g class="spoke" data-spoke="8">
+  <line class="sp-line" x1="304.2" y1="289.6" x2="227.5" y2="198.3"/>
+  <path class="sp-arrow sp-arrow-in" d="M300.6 285.4L293.2 280.8L297.4 277.3Z"/>
+  <path class="sp-arrow sp-arrow-out" d="M231 202.5L238.5 207L234.2 210.6Z"/>
+  <rect class="sp-plate" x="223.8" y="236.4" width="84" height="15"/>
+  <text class="sp-label" x="265.8" y="247.1" text-anchor="middle"></text>
+</g>
+        <g id="hub">
+          <rect class="hub-box" x="298" y="298" width="164" height="164"/>
+          <text class="hub-cap" x="380" y="328" text-anchor="middle">Orchestration layer</text>
+          <line class="hub-rule" x1="334" y1="336" x2="426" y2="336"/>
+          <text class="hub-name" x="380" y="372" text-anchor="middle">EVE</text>
+          <polyline class="wave" id="wave" points="322,398 325.7,398 329.5,398 333.2,398 337,398 340.7,398 344.5,398 348.2,398 351.9,398 355.7,398 359.4,398 363.2,398 366.9,398 370.6,398 374.4,398 378.1,398 381.9,398 385.6,398 389.4,398 393.1,398 396.8,398 400.6,398 404.3,398 408.1,398 411.8,398 415.5,398 419.3,398 423,398 426.8,398 430.5,398 434.3,398 438,398"/>
+          <text class="hub-state" id="hub-state" x="380" y="436" text-anchor="middle">At rest</text>
+        </g>
+<g class="node" data-node="0" tabindex="0" role="button" aria-label="ARCHITECTURAL DRAWING">
+  <rect class="nd-box" x="314" y="60" width="132" height="64"/>
+  <rect class="nd-mark" x="314" y="60" width="3" height="64"/>
+  <g class="nd-icon" transform="translate(325 69) scale(0.75)"><path d="M5 2.5h9l5 5v14H5z"/><path d="M14 2.5v5h5"/><path d="M8 13h8M8 17h8"/></g>
+  <text class="nd-idx" x="435" y="80" text-anchor="end">01</text>
+  <text class="nd-t1" x="325" y="104">ARCHITECTURAL</text>
+  <text class="nd-t2" x="325" y="115">DRAWING</text>
+</g>
+<g class="node" data-node="1" tabindex="0" role="button" aria-label="STRUCTURAL DRAWING">
+  <rect class="nd-box" x="499.1" y="127.4" width="132" height="64"/>
+  <rect class="nd-mark" x="499.1" y="127.4" width="3" height="64"/>
+  <g class="nd-icon" transform="translate(510.1 136.4) scale(0.75)"><path d="M5 2.5h9l5 5v14H5z"/><path d="M14 2.5v5h5"/><path d="M8 11l8 8M16 11l-8 8"/></g>
+  <text class="nd-idx" x="620.1" y="147.4" text-anchor="end">02</text>
+  <text class="nd-t1" x="510.1" y="171.4">STRUCTURAL</text>
+  <text class="nd-t2" x="510.1" y="182.4">DRAWING</text>
+</g>
+<g class="node" data-node="2" tabindex="0" role="button" aria-label="COST PLAN">
+  <rect class="nd-box" x="597.6" y="298" width="132" height="64"/>
+  <rect class="nd-mark" x="597.6" y="298" width="3" height="64"/>
+  <g class="nd-icon" transform="translate(608.6 307) scale(0.75)"><path d="M5 2.5h9l5 5v14H5z"/><path d="M14 2.5v5h5"/><path d="M8 12h4M8 15h6M8 18h8"/></g>
+  <text class="nd-idx" x="718.6" y="318" text-anchor="end">03</text>
+  <text class="nd-t1" x="608.6" y="342">COST PLAN</text>
+</g>
+<g class="node" data-node="3" tabindex="0" role="button" aria-label="BILL OF QUANTITIES">
+  <rect class="nd-box" x="563.4" y="492" width="132" height="64"/>
+  <rect class="nd-mark" x="563.4" y="492" width="3" height="64"/>
+  <g class="nd-icon" transform="translate(574.4 501) scale(0.75)"><path d="M5 2.5h9l5 5v14H5z"/><path d="M14 2.5v5h5"/><path d="M8 12h8M8 15h8M8 18h8M12 12v6"/></g>
+  <text class="nd-idx" x="684.4" y="512" text-anchor="end">04</text>
+  <text class="nd-t1" x="574.4" y="536">BOQ</text>
+</g>
+<g class="node" data-node="4" tabindex="0" role="button" aria-label="CONTRACT">
+  <rect class="nd-box" x="412.5" y="618.6" width="132" height="64"/>
+  <rect class="nd-mark" x="412.5" y="618.6" width="3" height="64"/>
+  <g class="nd-icon" transform="translate(423.5 627.6) scale(0.75)"><path d="M5 2.5h9l5 5v14H5z"/><path d="M14 2.5v5h5"/><path d="M8 12h8M8 15h8M8 19h4"/></g>
+  <text class="nd-idx" x="533.5" y="638.6" text-anchor="end">05</text>
+  <text class="nd-t1" x="423.5" y="662.6">CONTRACT</text>
+</g>
+<g class="node" data-node="5" tabindex="0" role="button" aria-label="PROGRAMME">
+  <rect class="nd-box" x="215.5" y="618.6" width="132" height="64"/>
+  <rect class="nd-mark" x="215.5" y="618.6" width="3" height="64"/>
+  <g class="nd-icon" transform="translate(226.5 627.6) scale(0.75)"><path d="M5 2.5h9l5 5v14H5z"/><path d="M14 2.5v5h5"/><path d="M8 12h5M10 15h6M8 18h4"/></g>
+  <text class="nd-idx" x="336.5" y="638.6" text-anchor="end">06</text>
+  <text class="nd-t1" x="226.5" y="662.6">PROGRAMME</text>
+</g>
+<g class="node" data-node="6" tabindex="0" role="button" aria-label="PROCUREMENT PACKAGE">
+  <rect class="nd-box" x="64.6" y="492" width="132" height="64"/>
+  <rect class="nd-mark" x="64.6" y="492" width="3" height="64"/>
+  <g class="nd-icon" transform="translate(75.6 501) scale(0.75)"><path d="M5 2.5h9l5 5v14H5z"/><path d="M14 2.5v5h5"/><path d="M8 12h8v6H8z"/></g>
+  <text class="nd-idx" x="185.6" y="512" text-anchor="end">07</text>
+  <text class="nd-t1" x="75.6" y="536">PROCUREMENT</text>
+  <text class="nd-t2" x="75.6" y="547">PACKAGE</text>
+</g>
+<g class="node" data-node="7" tabindex="0" role="button" aria-label="SITE PROGRESS">
+  <rect class="nd-box" x="30.4" y="298" width="132" height="64"/>
+  <rect class="nd-mark" x="30.4" y="298" width="3" height="64"/>
+  <g class="nd-icon" transform="translate(41.4 307) scale(0.75)"><path d="M5 2.5h9l5 5v14H5z"/><path d="M14 2.5v5h5"/><path d="M8 18l3-4 2 2 3-5"/></g>
+  <text class="nd-idx" x="151.4" y="318" text-anchor="end">08</text>
+  <text class="nd-t1" x="41.4" y="342">SITE</text>
+  <text class="nd-t2" x="41.4" y="353">PROGRESS</text>
+</g>
+<g class="node" data-node="8" tabindex="0" role="button" aria-label="COMPLIANCE">
+  <rect class="nd-box" x="128.9" y="127.4" width="132" height="64"/>
+  <rect class="nd-mark" x="128.9" y="127.4" width="3" height="64"/>
+  <g class="nd-icon" transform="translate(139.9 136.4) scale(0.75)"><path d="M5 2.5h9l5 5v14H5z"/><path d="M14 2.5v5h5"/><path d="M8 15l3 3 5-6"/></g>
+  <text class="nd-idx" x="249.9" y="147.4" text-anchor="end">09</text>
+  <text class="nd-t1" x="139.9" y="171.4">COMPLIANCE</text>
+</g>
+
+      </svg>
+    </div>
+  </div>
+
+  <div class="foot">
+    <div>
+      <div class="ctl-cap">How far EVE is allowed to go &mdash; you set it, per agent</div>
+      <div class="slider" id="slider">
+        <span class="track"></span>
+        <button class="detent" type="button" data-stop="0" style="left:0"   aria-label="Copilot"><i></i></button>
+        <button class="detent" type="button" data-stop="1" style="left:280px" aria-label="Supervised"><i></i></button>
+        <button class="detent" type="button" data-stop="2" style="left:560px" aria-label="Autopilot"><i></i></button>
+        <span class="knob" id="knob" style="left:0"></span>
+      </div>
+      <div class="stops" id="stops">
+        <button type="button" data-stop="0" aria-pressed="true">Copilot</button>
+        <button type="button" data-stop="1" aria-pressed="false">Supervised</button>
+        <button type="button" data-stop="2" aria-pressed="false">Autopilot</button>
+      </div>
+      <p class="mode-line" id="mode-line">EVE drafts. A person approves every one, and the
+        draft carries the document it was drawn from.</p>
+    </div>
+    <div>
+      <div class="guarantees">
+        <span>No autonomous approvals by default</span>
+        <span>Every draft carries its source document</span>
+        <span>Every relation is traceable to a record</span>
+      </div>
+      <div class="placeholder">[ Training corpus &mdash; scale and source pending
+        verification. No figure to be published until confirmed. ]</div>
+    </div>
+  </div>
+</section>
+</div>
+
+<script>
+(function(){
+  /* ---- content ---- */
+  var DATA = [{"n": "ARCHITECTURAL DRAWING", "d": "The geometry every other document is measured against.", "r": [{"t": 1, "n": "STRUCTURAL DRAWING", "l": "COORDINATED"}, {"t": 2, "n": "COST PLAN", "l": "TAKEN OFF"}, {"t": 8, "n": "COMPLIANCE", "l": "CERTIFIED"}]}, {"n": "STRUCTURAL DRAWING", "d": "Frame, slab and core — the basis of quantity, and of what actually gets built.", "r": [{"t": 0, "n": "ARCHITECTURAL DRAWING", "l": "COORDINATED"}, {"t": 3, "n": "BILL OF QUANTITIES", "l": "QUANTIFIED"}, {"t": 7, "n": "SITE PROGRESS", "l": "BUILT TO"}]}, {"n": "COST PLAN", "d": "The budget, held against the drawing it was measured from.", "r": [{"t": 0, "n": "ARCHITECTURAL DRAWING", "l": "TAKEN OFF"}, {"t": 3, "n": "BILL OF QUANTITIES", "l": "PRICED INTO"}, {"t": 4, "n": "CONTRACT", "l": "SETS THE SUM"}]}, {"n": "BILL OF QUANTITIES", "d": "Every rate carries the cost-plan line it came from, and the package it was let under.", "r": [{"t": 2, "n": "COST PLAN", "l": "PRICED FROM"}, {"t": 4, "n": "CONTRACT", "l": "SCHEDULED"}, {"t": 6, "n": "PROCUREMENT PACKAGE", "l": "SPLIT INTO"}]}, {"n": "CONTRACT", "d": "The sum, the dates and the scope — bound back to the documents that set them.", "r": [{"t": 3, "n": "BILL OF QUANTITIES", "l": "PRICED BY"}, {"t": 5, "n": "PROGRAMME", "l": "DATED BY"}, {"t": 6, "n": "PROCUREMENT PACKAGE", "l": "AWARDS"}]}, {"n": "PROGRAMME", "d": "The sequence. It tells procurement when, and it tells site what it is behind.", "r": [{"t": 4, "n": "CONTRACT", "l": "DATES"}, {"t": 6, "n": "PROCUREMENT PACKAGE", "l": "SEQUENCES"}, {"t": 7, "n": "SITE PROGRESS", "l": "MEASURED BY"}]}, {"n": "PROCUREMENT PACKAGE", "d": "A slice of the BOQ, let under a contract, placed on the programme.", "r": [{"t": 3, "n": "BILL OF QUANTITIES", "l": "SCOPED FROM"}, {"t": 4, "n": "CONTRACT", "l": "AWARDED ON"}, {"t": 5, "n": "PROGRAMME", "l": "SEQUENCED"}]}, {"n": "SITE PROGRESS", "d": "What is actually built — the claim, and the evidence standing behind it.", "r": [{"t": 1, "n": "STRUCTURAL DRAWING", "l": "BUILT TO"}, {"t": 5, "n": "PROGRAMME", "l": "CLAIMED VS"}, {"t": 8, "n": "COMPLIANCE", "l": "EVIDENCES"}]}, {"n": "COMPLIANCE", "d": "Certification, tied back to the drawing approved and the work done.", "r": [{"t": 0, "n": "ARCHITECTURAL DRAWING", "l": "CERTIFIES"}, {"t": 4, "n": "CONTRACT", "l": "CONDITION OF"}, {"t": 7, "n": "SITE PROGRESS", "l": "EVIDENCED BY"}]}];
+  var MODES = [
+    'EVE drafts. A person approves every one, and the draft carries the document it was drawn from.',
+    'EVE acts inside limits you set. Anything outside them stops and comes back to a person.',
+    'EVE closes the routine loop on its own. Every action it takes still names its source document.'
+  ];
+  var REST = { t:'Nine document types.',
+    d:'A building produces the same records in the same order, every time. Biltflow is built on those records — not on a general model taught to talk about buildings.' };
+
+  /* ---- behaviour ---- */
+  var Q = function(s,r){ return [].slice.call((r||document).querySelectorAll(s)); },
+      $ = function(i){ return document.getElementById(i); },
+      slow = matchMedia('(prefers-reduced-motion: reduce)').matches,
+      map = $('map'), nodes = Q('.node',map), spokes = Q('.spoke',map),
+      active = -1, pinned = -1;
+
+  function render(i){
+    var d = i < 0 ? null : DATA[i], rel = {};
+    if (d) d.r.forEach(function(r){ rel[r.t] = r.l; });
+    nodes.forEach(function(n,k){
+      var s = !d ? '' : k === i ? ' is-source'
+            : rel[k] !== undefined ? ' is-target' : ' is-mute';
+      n.setAttribute('class','node'+s);
+      spokes[k].setAttribute('class','spoke'+s);
+      spokes[k].lastElementChild.textContent = (d && rel[k]) || '';
+    });
+    $('ro-idx').textContent   = d ? '0'+(i+1)+' / 09' : '— / 09';
+    $('ro-title').textContent = d ? d.n : REST.t;
+    $('ro-desc').textContent  = d ? d.d : REST.d;
+    $('ro-cap').textContent   = d ? 'EVE relates this to' : 'Select a document';
+    $('hub-state').textContent = d ? 'Resolving' : 'At rest';
+    $('ro-rels').hidden = !d; $('ro-hint').hidden = !!d;
+    if (d) $('ro-rels').innerHTML = d.r.map(function(r){
+      return '<li><span class="dot"></span><span class="rn">'+r.n+
+             '</span><span class="rl">'+r.l+'</span></li>'; }).join('');
+    pulse(!!d);
+  }
+  function set(i){ if (i !== active){ active = i; render(i); } }
+
+  nodes.forEach(function(n,i){
+    n.addEventListener('mouseenter', function(){ if (pinned < 0) set(i); });
+    n.addEventListener('focus',      function(){ if (pinned < 0) set(i); });
+    n.addEventListener('blur',       function(){ if (pinned < 0) set(-1); });
+    n.addEventListener('click',      function(){ pinned = pinned === i ? -1 : i; set(pinned); });
+    n.addEventListener('keydown',    function(e){
+      if (e.key === 'Enter' || e.key === ' '){ e.preventDefault();
+        n.dispatchEvent(new MouseEvent('click')); } });
+  });
+  map.addEventListener('mouseleave', function(){ if (pinned < 0) set(-1); });
+
+  /* ---- EVE waveform: runs only while a document is selected, then settles flat ---- */
+  var wave = $('wave'), N = 32, X0 = 322, ST = 3.7, YC = 398,
+      FLAT = wave.getAttribute('points'),
+      amp = 0, want = 0, t = 0, raf = null, vis = true;
+
+  function frame(){
+    t += 0.075; amp += (want - amp) * 0.13;
+    if (!want && amp < 0.12){ wave.setAttribute('points', FLAT); raf = null; return; }
+    for (var p='', i=0, u, y; i<N; i++){ u = i/(N-1);
+      y = YC + amp * Math.sin(u*Math.PI) *
+          (Math.sin(t*2.1 + u*9)*0.62 + Math.sin(t*3.4 + u*15)*0.38);
+      p += (i?' ':'') + (X0 + i*ST).toFixed(1) + ',' + y.toFixed(1); }
+    wave.setAttribute('points', p); raf = requestAnimationFrame(frame);
+  }
+  function pulse(on){
+    if (slow) return;
+    want = on ? 9.5 : 0;
+    if (!raf && vis) raf = requestAnimationFrame(frame);
+  }
+  new IntersectionObserver(function(e){
+    vis = e[0].isIntersecting;
+    if (!vis){ if (raf) cancelAnimationFrame(raf); raf = null; wave.setAttribute('points', FLAT); }
+    else if (want && !raf) raf = requestAnimationFrame(frame);
+  }, {threshold:0}).observe(map);
+
+  /* ---- copilot / autopilot ---- */
+  var knob = $('knob'), stops = Q('#stops button');
+  function setStop(s){
+    knob.style.left = s*280 + 'px';
+    $('mode-line').textContent = MODES[s];
+    stops.forEach(function(b,k){ b.setAttribute('aria-pressed', k === s ? 'true' : 'false'); });
+  }
+  Q('#slider .detent').concat(stops).forEach(function(b){
+    b.addEventListener('click', function(){ setStop(+b.dataset.stop); }); });
+})();
+</script>
