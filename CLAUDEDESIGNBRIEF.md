@@ -70,8 +70,19 @@ for the cut-to-black reveal beat the script mandates — a dramatic device, not 
 
 **Non-negotiable:** sharp corners, `border-radius: 0` everywhere. No gradients, no glass, no
 glow, no shadows beyond a 1px hairline. Nothing bounces — no spring easing anywhere. Icons are
-inline stroke SVG on a 24px grid, never emoji. Photography plated in a bordered frame, never
-full-bleed, never the brightest thing on screen.
+inline stroke SVG on a 24px grid, never emoji.
+
+**Photography/video (updated — see annotation 6):** hyperrealistic, real-world construction and
+building content — site photography, aerial/drone shots of finished high-density residential
+builds, and people-at-work moments for the named roles — generated via Higgsfield where no real
+photography exists yet. This category may run large, including full-bleed, where it grounds a
+claim in physical reality: candidates are the hero, "Built on real construction," "The
+compounding advantage," "Who it's for," and the close. Everywhere else, and by default, the
+original discipline still holds: bordered frame, never the brightest thing on screen. This
+license is scoped strictly to real-world photography/video. It does **not** extend to product
+UI — dashboards, screens, and app interfaces stay diagrams only. "If it isn't real, draw it,
+never fake a screen" is unchanged and absolute. Any frame that IS used keeps sharp corners; the
+system's color, type, and line-weight rules are untouched by this change.
 
 **Logo — real vector assets, supplied.** `assets/biltflow-logo-black.svg` (pure black) and
 `assets/biltflow-logo-charcoal.svg` (linear gradient `#555D64` → `#292C2E`). Native size
@@ -182,16 +193,20 @@ The client's most repeated criticism of all six reference sites is **static scre
 the benchmark they named — has zero videos, zero canvas, zero animation on the whole page.
 Move these, and nothing else:
 
-- **Hero ring**: draws itself once, stroke-dash reveal, 1.4s, `cubic-bezier(.4,0,.2,1)`. Then a
-  single illuminated segment travels the circumference continuously, ~10s per revolution,
-  **linear**, mask over a duplicated stroke.
+- **Hero ring**: draws itself once, stroke-dash reveal, 1.4s, `cubic-bezier(.4,0,.2,1)`. Settles
+  and stays static — **no perpetual rotation** (see annotation 7: the continuously-travelling
+  segment is cut).
 - **Noise band**: system windows accumulate and overlap on scroll, accelerating. Once. Never loops.
 - **Ring section**: scroll-pinned; the active marker advances as the reader moves through stages.
-- **The return arc**: the one showy moment — a pulse travelling from DEFECTS back to
-  SITE SOURCING, 7s cycle, offset behind the main revolution. This is the argument, animated.
-- **Static, always**: body copy, cards, quotes, numbers, integration logos. Buttons get a
-  120ms colour change and nothing more.
-- `prefers-reduced-motion` freezes the ring composed and collapses durations to 0.01s.
+  No autonomous motion — it advances only in response to scroll, never on its own.
+- **The return arc**: no longer animated. The loop-back argument (LEARNING returns into SITE
+  SOURCING) is carried by the ring's closed shape itself, plus a static visual distinction on that
+  one arc segment (e.g. a Safety Orange stroke, or a heavier/dashed line, against the rest of the
+  ring's hairline gray) — not by a travelling pulse.
+- **Static, always**: body copy, cards, quotes, numbers, integration logos, and now the ring itself
+  once its one-time reveal completes. Buttons get a 120ms colour change and nothing more.
+- `prefers-reduced-motion` freezes the ring's one-time reveal instantly. With the perpetual
+  rotation and the return-arc pulse both gone, there is no other looping motion left to freeze.
 
 ## Avoid
 
@@ -226,3 +241,14 @@ Move these, and nothing else:
 4. **$5B+** is the script's figure. Raj said $4.5B and $9B on the call. Script wins; verify.
 5. Palette is **light** — Raj's investor storyboard is dark with blue. Deliberate divergence,
    reasoned above. Overrule if he objects.
+6. **Photography rule loosened (this revision):** real-world hyperrealistic photo/video
+   (Higgsfield-generated) may now run full-bleed in the hero, "Built on real construction,"
+   "The compounding advantage," "Who it's for," and the close — previously everything was
+   bordered-frame-only. Product UI stays diagram-only, unchanged. Kevin's call; flagging in
+   case it reads as a bigger departure than intended once built.
+7. **All perpetual ring rotation cut (this revision):** Kevin's direct feedback — no circular
+   animation. The hero ring's continuously-travelling illuminated segment (~10s/revolution) and
+   the return-arc's 7s pulse cycle are both removed. The ring keeps its one-time 1.4s draw-in
+   reveal and its scroll-driven active-stage marker; nothing about it spins or loops afterward.
+   If the one-time draw-in reads as "the circular animation thing" too, cut that as well and
+   render the ring as a plain static diagram from first paint.

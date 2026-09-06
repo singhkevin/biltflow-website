@@ -1,0 +1,6 @@
+{
+  "rewrites": [
+    { "source": "/", "destination": "/Biltflow%20Homepage.dc.html" },
+    { "source": "/v2", "destination": "/Biltflow%20Homepage%20v2.dc.html" }
+  ]
+}

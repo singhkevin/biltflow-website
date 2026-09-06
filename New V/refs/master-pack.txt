@@ -1,0 +1,804 @@
+M A R K E T & W E B S I T E D E S I G N R E F E R E N C E P A C K
+BILTFLOW
+Builders • Developers • Buyer Personas • Global Construction & Property
+Technology
+Prepared for the Biltflow website and product-design team
+Hunt Global Pte Ltd — Biltflow (formerly ArchieTech OS™)
+August 2026 | Master Reference Edition
+
+-- 1 of 22 --
+
+B I L T F L O W Market & Website Design Reference Pack
+Contents
+0 Reading This Pack — Executive Summary................................................................................................3
+1 What Market Is Biltflow Serving?.............................................................................................................4
+1.1 Class 2 and High-Density Residential................................................................................................................4
+1.2 What Is a Fully Integrated Builder-Developer?................................................................................................. 4
+1.3 High-Density Residential Construction.............................................................................................................. 4
+1.4 Hotels................................................................................................................................................................ 4
+1.5 Serviced Apartments......................................................................................................................................... 5
+1.6 Build-to-Rent (BTR)........................................................................................................................................... 5
+2 Target Builders and Developers — NSW, QLD, VIC..................................................................................6
+2.1 New South Wales.............................................................................................................................................. 6
+2.2 Queensland.......................................................................................................................................................8
+2.3 Victoria............................................................................................................................................................ 10
+3 Who Buys Biltflow? Buyer and Influencer Role Map.............................................................................12
+3.1 Highest-Priority Economic Buyers................................................................................................................... 13
+3.2 Strong Internal Champions............................................................................................................................. 14
+4 Global Construction & Property Technology Landscape........................................................................15
+4.1 The Competitive Landscape Biltflow Should Show Visually............................................................................19
+5 What the Biltflow Website Should Communicate................................................................................. 20
+6 Website Reference Shortlist for the Designer........................................................................................ 21
+6.1 Recommended Use.........................................................................................................................................21
+7 Research Notes and Source Anchors......................................................................................................22
+Confidential — prepared for internal use Page 2 of 22
+
+-- 2 of 22 --
+
+B I L T F L O W Market & Website Design Reference Pack
+E X E C U T I V E S U M M A R Y
+0 Reading This Pack
+Biltflow is entering a large, fragmented and rapidly digitising market. This pack
+maps three things a website and go-to-market strategy both depend on: who the
+buyers are (by company and by role), what they are already using or considering,
+and how Biltflow should be positioned against that landscape.
+150+
+Named builders & developers across
+NSW, QLD, VIC
+40
+Distinct buyer / influencer roles
+mapped
+90+
+Global construction & property
+technology products
+13
+Software categories spanning the
+full lifecycle
+Three findings should shape the website brief. First, the target market is broader than the
+strict Class 2 label — high-density residential, mixed-use, hotels, serviced apartments and
+build-to-rent all share the same complex, software-intensive delivery workflow, and the site
+should speak to all of them. Second, purchase decisions are never made by one person:
+executives, commercial teams, construction leadership, digital/IT and site teams all
+evaluate a platform like Biltflow through a different lens, and the site needs a persona
+pathway for each. Third, the competitive landscape is heavily fragmented across enterprise
+suites, ERPs, point solutions and owner platforms — which is precisely the gap an
+integration-first "construction operating system" is positioned to close.
+Live relationship to note
+Coronation Property (Nation BTR brand) is not a cold prospect — it is Biltflow's anchor client, led by
+Managing Director Joe Nahas, Strategic Advisor to Biltflow/Hunt Global. It should be treated as a
+reference case and design input, not just a market-map entry.
+Confidential — prepared for internal use Page 3 of 22
+
+-- 3 of 22 --
+
+B I L T F L O W Market & Website Design Reference Pack
+S E C T I O N 1
+1 What Market Is Biltflow Serving?
+This pack deliberately treats the target market as broader than any single regulatory label.
+Understanding why requires a short walk through the asset classes Biltflow is built for.
+1.1 Class 2 and High-Density Residential
+Under the National Construction Code, Class 2 buildings are buildings containing two or
+more sole-occupancy units — typically apartment buildings. In New South Wales, regulated-
+building obligations under the Design and Building Practitioners (DBP) Act now extend to
+Class 2, Class 3 and Class 9c buildings, requiring registered design and building
+practitioners to lodge regulated designs and compliance declarations on the NSW Planning
+Portal. For Biltflow, the practical market is wider than this legal label: multi-storey
+apartment projects, mixed-use towers, build-to-rent, hotels and serviced apartments all
+share the same complex design, procurement, commercial, programme, quality and
+handover workflows — which is why this pack maps all of them together.
+1.2 What Is a Fully Integrated Builder-Developer?
+A fully integrated builder-developer controls multiple stages of the property lifecycle inside
+the same corporate group, rather than acting only as a developer that appoints an external
+head contractor. The integrated group may acquire land, run feasibility, obtain planning
+approvals, manage design, procure consultants and subcontractors, construct the project,
+sell or lease the product, manage settlements and defects, and sometimes retain or operate
+the completed asset.
+— Why it matters to Biltflow: one customer can have development, construction,
+commercial, finance, design, safety, procurement and operations teams all using
+different systems and duplicating the same data.
+— The opportunity is an integrated data and workflow layer connecting the project from
+feasibility and design through procurement, delivery, commissioning, handover and
+operations.
+— Examples of integrated models include Deicorp in Sydney and Pace Development
+Group in Melbourne, both of which describe end-to-end development and construction
+capability.
+1.3 High-Density Residential Construction
+High-density residential construction generally means multi-storey apartment development
+where many dwellings are delivered within one building or precinct. Projects typically
+involve complex structures, façades, vertical transport, fire and life-safety systems, building
+services, authority approvals, hundreds of subcontract packages, large drawing and model
+sets, staged commissioning, and defects and purchaser or resident handover. This
+complexity is precisely what makes these projects highly software-intensive — and why the
+volume and complexity of the bill of quantities multiplies compared with detached housing.
+1.4 Hotels
+Hotel projects combine complex construction with an operating business. In addition to
+normal building delivery, teams coordinate brand standards, operator requirements, front-
+Confidential — prepared for internal use Page 4 of 22
+
+-- 4 of 22 --
+
+B I L T F L O W Market & Website Design Reference Pack
+of-house and back-of-house layouts, commercial kitchens, guest-room prototypes,
+FF&E/OS&E procurement, technology, acoustics, life safety, commissioning and a tightly
+controlled opening date. The owner, developer, builder, hotel operator and brand may all be
+different organisations, which multiplies the number of stakeholders a single platform
+needs to serve.
+1.5 Serviced Apartments
+Serviced apartments sit between residential apartments and hotels. Individual units are
+designed for short- or extended-stay accommodation and typically include kitchens or
+kitchenettes, while the building may operate with hotel-style reception, housekeeping,
+booking, maintenance and guest services. Meriton Suites is a well-known Australian
+example of the integrated apartment / serviced-apartment model — and illustrates why a
+single tower can require several different fit-out specifications and compliance classes to be
+tracked within one construction programme.
+1.6 Build-to-Rent (BTR)
+Build-to-rent is purpose-built rental housing retained by an institutional owner or
+investment vehicle rather than sold apartment-by-apartment. Because the owner normally
+retains the asset, decisions made during design and construction directly affect long-term
+leasing, maintenance, energy performance, resident experience and operating cost. That
+creates a strong case for maintaining a continuous digital record from development and
+construction through into operations — the exact thread that connects Biltflow's
+development, delivery and operations use cases.
+Confidential — prepared for internal use Page 5 of 22
+
+-- 5 of 22 --
+
+B I L T F L O W Market & Website Design Reference Pack
+S E C T I O N 2
+2 Target Builders and Developers — NSW, QLD, VIC
+There is no single public, authoritative register covering every relevant apartment builder
+and developer across NSW, Queensland and Victoria — and NSW additionally has its own
+regulated-building regime for Class 2, 3 and 9c buildings. The lists below are therefore a
+curated, commercially relevant target universe rather than a statutory register: a living
+market map, not a legal list. They deliberately include developers, head contractors and
+integrated builder-developers, because all three are potential Biltflow buyers or influencers.
+National companies are repeated in each state where they have meaningful activity.
+Scope note
+This document combines and supersedes earlier drafts of the market map. Company names,
+business models, focus areas and websites have been checked against current sources, but should
+be spot-verified before external distribution — particularly for smaller or private developers, and for
+any company used as a named customer example.
+2.1 New South Wales
+Company Business model Relevant focus Website
+Mirvac Integrated developer /
+builder Apartments, mixed-use, BTR, commercial Mirvac
+Lendlease Developer / delivery
+platform Mixed-use, apartments, urban regeneration, BTR Lendlease
+Frasers Property Australia Developer Apartments, mixed-use, communities, BTR Frasers Property Australia
+Sekisui House Australia Developer / builder Apartments, mixed-use, masterplanned
+residential Sekisui House Australia
+Meriton Integrated developer /
+builder / operator
+High-rise apartments, serviced apartments,
+hotels Meriton
+TOGA Group Developer / hotel
+operator Apartments, mixed-use, hotels TOGA Group
+Deicorp Integrated developer /
+builder
+Transport-oriented high-density residential,
+retail Deicorp
+Billbergia Integrated developer /
+builder High-rise apartments, mixed-use, masterplans Billbergia
+ALAND Integrated developer /
+builder High-density apartments, mixed-use ALAND
+Urban Property Group Integrated developer /
+builder Apartments, mixed-use, urban renewal Urban Property Group
+Coronation Property
+Developer — Biltflow
+anchor client (Nation
+BTR brand)
+Apartments, mixed-use, BTR / urban precincts Coronation Property
+Aqualand Developer / investor Luxury apartments, mixed-use, commercial Aqualand
+Central Element Developer Luxury apartments, hotels, mixed-use Central Element
+Hyecorp Integrated developer /
+builder Apartments, mixed-use, funds management Hyecorp
+Confidential — prepared for internal use Page 6 of 22
+
+-- 6 of 22 --
+
+B I L T F L O W Market & Website Design Reference Pack
+Company Business model Relevant focus Website
+GURNER Developer / operator Luxury apartments, BTR, hotels, wellness,
+mixed-use GURNER
+Third.i Developer Apartments, mixed-use, retirement / lifestyle Third.i
+Iris Capital Developer / investor Apartments, mixed-use, hotels / hospitality Iris Capital
+Traders In Purple Developer Apartments, communities, mixed-use Traders In Purple
+Landmark Group Australia Integrated developer /
+builder Apartments, mixed-use Landmark Group Australia
+Level 33 Developer Residential apartments and mixed-use Level 33
+Abadeen Developer Premium apartments, mixed-use Abadeen
+TWT Property Group Developer Design-led apartments and mixed-use TWT Property Group
+Ceerose Integrated developer /
+builder Apartments, mixed-use, commercial Ceerose
+JQZ Developer High-rise apartments and mixed-use JQZ
+Top Spring Australia Developer Apartments and mixed-use Top Spring Australia
+Legacy Property Developer Apartments, communities, mixed-use Legacy Property
+Piety Group Developer Residential and mixed-use Piety Group
+Capital Corporation Developer Residential, mixed-use, commercial Capital Corporation
+Conquest Integrated developer /
+builder Apartments, mixed-use Conquest
+Freecity Developer / builder High-density residential and mixed-use Freecity
+Decode Group Builder / developer High-density residential, mixed-use, commercial Decode Group
+Parkview Constructions Builder High-density residential, mixed-use, hotels Parkview Constructions
+Richard Crookes Constructions Builder Residential, hotels, health, education,
+commercial Richard Crookes Constructions
+Hutchinson Builders Builder Apartments, hotels, BTR, commercial Hutchinson Builders
+Multiplex Builder High-rise residential, hotels, commercial, major
+projects Multiplex
+BESIX Watpac Builder Residential, hotels, commercial, major projects BESIX Watpac
+Built Builder Residential, hotels, commercial, fitout Built
+Roberts Co Builder Residential, health, commercial, education Roberts Co
+Infinity Constructions Builder Residential, hotels, commercial Infinity Constructions
+Taylor Construction Group Builder Residential, mixed-use, commercial Taylor Construction Group
+Growthbuilt Builder Residential, mixed-use, aged care, hotels Growthbuilt
+FDC Construction Builder Commercial, industrial, residential, fitout FDC Construction
+Kane Constructions Builder Residential, hotels, health, commercial Kane Constructions
+Lipman Builder Residential, commercial, education, industrial Lipman
+ADCO Constructions Builder Commercial, residential, hotels, public sector ADCO Constructions
+Confidential — prepared for internal use Page 7 of 22
+
+-- 7 of 22 --
+
+B I L T F L O W Market & Website Design Reference Pack
+Company Business model Relevant focus Website
+Hindmarsh Developer / builder Apartments, hotels, commercial, retirement Hindmarsh
+Dasco Australia Builder / developer Apartments and mixed-use Dasco Australia
+Novati Constructions Builder Residential, commercial, hospitality Novati Constructions
+2.2 Queensland
+Company Business model Relevant focus Website
+Mirvac Integrated developer /
+builder Apartments, mixed-use, BTR, communities Mirvac
+Lendlease Developer / delivery
+platform Mixed-use, apartments, urban regeneration Lendlease
+Frasers Property Australia Developer Apartments, communities, mixed-use Frasers Property Australia
+Stockland Developer Communities, apartments, BTR, mixed-use Stockland
+Meriton Integrated developer /
+builder / operator High-rise apartments and serviced apartments Meriton
+Mosaic Property Group Integrated developer /
+builder Apartments, mixed-use, residential Mosaic Property Group
+ARIA Property Group Developer High-density apartments, mixed-use ARIA Property Group
+Consolidated Properties
+Group Developer Residential, retail, commercial, mixed-use Consolidated Properties Group
+Anthony John Group Developer Apartments, hotels, retail, mixed-use Anthony John Group
+Pradella Integrated developer /
+builder Apartments and mixed-use Pradella
+Pikos Group Developer Luxury apartments and mixed-use Pikos Group
+Kokoda Property Developer Apartments and mixed-use Kokoda Property
+Spyre Group Developer Luxury apartments Spyre Group
+Cavcorp Integrated developer /
+builder High-density residential / lifestyle precincts Cavcorp
+Azure Development Group Developer Residential communities and apartments Azure Development Group
+Aniko Group Developer Apartments and mixed-use Aniko Group
+Niecon Integrated developer /
+builder Gold Coast luxury apartments and mixed-use Niecon
+S&S Projects Developer Gold Coast luxury residential S&S Projects
+Hirsch & Faigen Developer Luxury apartments Hirsch & Faigen
+Devcorp Developer Residential and mixed-use Devcorp
+Keylin Developer Residential and mixed-use Keylin
+KTQ Group Developer / hotel
+operator Luxury residential, hotels, resorts KTQ Group
+Confidential — prepared for internal use Page 8 of 22
+
+-- 8 of 22 --
+
+B I L T F L O W Market & Website Design Reference Pack
+Company Business model Relevant focus Website
+Gardner Vaughan Group Integrated developer /
+builder Apartments, retirement, communities Gardner Vaughan Group
+BHC Community housing
+developer
+Affordable housing, apartments, BTR-style
+housing BHC
+Cedar Pacific BTR / student housing
+developer
+BTR, student accommodation, institutional
+residential Cedar Pacific
+Greystar Australia BTR developer /
+operator Build-to-rent and rental housing Greystar Australia
+Sentinel Real Estate Australia BTR developer /
+operator Build-to-rent Sentinel Real Estate Australia
+GURNER Developer / operator Luxury apartments, BTR, hotels, wellness GURNER
+Arada Australia Developer High-rise residential and mixed-use Arada Australia
+Billbergia Integrated developer /
+builder Apartments and mixed-use Billbergia
+Traders In Purple Developer Apartments, communities, mixed-use Traders In Purple
+Honeycombes Property Group Developer Residential, retail, mixed-use Honeycombes Property Group
+Urbex Developer Communities and urban development Urbex
+Hutchinson Builders Builder Apartments, hotels, BTR, commercial Hutchinson Builders
+Multiplex Builder High-rise residential, hotels, commercial Multiplex
+BESIX Watpac Builder Residential, hotels, commercial, major projects BESIX Watpac
+McNab Builder / developer Apartments, commercial, industrial McNab
+Tomkins Commercial Builder Residential, hotels, commercial Tomkins Commercial
+Hansen Yuncken Builder Residential, commercial, health, education Hansen Yuncken
+Built Builder Residential, hotels, commercial Built
+ADCO Constructions Builder Residential, commercial, public sector ADCO Constructions
+Kane Constructions Builder Residential, hotels, health, commercial Kane Constructions
+Hacer Group Builder Residential, mixed-use, retail Hacer Group
+PBS Building Builder Residential and commercial PBS Building
+2.3 Victoria
+Company Business model Relevant focus Website
+Mirvac Integrated developer /
+builder Apartments, mixed-use, BTR, communities Mirvac
+Lendlease Developer / delivery
+platform Urban regeneration, apartments, mixed-use Lendlease
+Frasers Property Australia Developer Apartments, communities, mixed-use Frasers Property Australia
+Stockland Developer Communities, apartments, BTR / mixed-use Stockland
+Confidential — prepared for internal use Page 9 of 22
+
+-- 9 of 22 --
+
+B I L T F L O W Market & Website Design Reference Pack
+Company Business model Relevant focus Website
+GURNER Developer / operator Luxury apartments, BTR, hotels, wellness GURNER
+Salta Properties Developer Apartments, BTR, commercial, industrial Salta Properties
+Hamton Property Group Developer Apartments, BTR, communities Hamton Property Group
+Pace Development Group Integrated developer /
+builder Apartments, mixed-use, commercial Pace Development Group
+Beulah Developer High-rise residential, mixed-use, hotels Beulah
+Cbus Property Developer Premium apartments, commercial, mixed-use Cbus Property
+PDG Corporation Developer Residential, commercial, mixed-use PDG Corporation
+Little Projects Developer Apartments and mixed-use Little Projects
+Cedar Woods Developer Apartments, communities, mixed-use Cedar Woods
+Neometro Integrated developer /
+builder Design-led apartments and mixed-use Neometro
+Milieu Developer Design-led apartments and mixed-use Milieu
+MAB Corporation Developer Residential, commercial, mixed-use MAB Corporation
+Riverlee Developer Mixed-use, residential, commercial Riverlee
+Golden Age Group Developer Apartments, mixed-use, communities Golden Age Group
+ICD Property Developer High-rise residential, hotels, mixed-use ICD Property
+SP Setia Australia Developer Apartments and mixed-use SP Setia Australia
+OSK Property Australia Developer High-rise apartments and mixed-use OSK Property Australia
+UEM Sunrise Australia Developer High-rise residential and mixed-use UEM Sunrise Australia
+Samma Property Group Developer Apartments, BTR / affordable housing Samma Property Group
+Home (GFM) BTR developer /
+operator Build-to-rent Home (GFM)
+Greystar Australia BTR developer /
+operator Build-to-rent Greystar Australia
+Sentinel Real Estate Australia BTR developer /
+operator Build-to-rent Sentinel Real Estate Australia
+Lowe Living Integrated developer /
+builder Apartments, townhouses, communities Lowe Living
+Glenvill Integrated developer /
+builder Residential and medium-density Glenvill
+Mirrastone / SOHO Living Integrated developer /
+builder Residential, medium-density, BTR delivery Mirrastone / SOHO Living
+Hickory Builder / developer High-rise residential, hotels, commercial,
+modular Hickory
+Icon Builder Residential, hotels, commercial Icon
+Multiplex Builder High-rise residential, hotels, commercial Multiplex
+Hutchinson Builders Builder Apartments, hotels, commercial Hutchinson Builders
+Confidential — prepared for internal use Page 10 of 22
+
+-- 10 of 22 --
+
+B I L T F L O W Market & Website Design Reference Pack
+Company Business model Relevant focus Website
+Hacer Group Builder Apartments, mixed-use, retail Hacer Group
+Hamilton Marino Builder Apartments, BTR, hotels, mixed-use Hamilton Marino
+Crema Constructions Builder / developer Apartments, hotels, commercial Crema Constructions
+Kapitol Group Builder Commercial, residential, hotels Kapitol Group
+Kane Constructions Builder Residential, hotels, health, commercial Kane Constructions
+Built Builder Residential, hotels, commercial Built
+Hansen Yuncken Builder Residential, commercial, health, education Hansen Yuncken
+BESIX Watpac Builder Residential, hotels, commercial, major projects BESIX Watpac
+ADCO Constructions Builder Residential, commercial, public sector ADCO Constructions
+Figurehead Construction Builder Residential, commercial, mixed-use Figurehead Construction
+Cobild Builder Premium residential and commercial Cobild
+ABD Group Builder Apartments, commercial, aged care ABD Group
+Balmain & Co Builder Residential, hotel, mixed-use Balmain & Co
+Valeo Construction Builder Residential and commercial Valeo Construction
+Confidential — prepared for internal use Page 11 of 22
+
+-- 11 of 22 --
+
+B I L T F L O W Market & Website Design Reference Pack
+S E C T I O N 3
+3 Who Buys Biltflow? Buyer and Influencer Role Map
+Construction technology is rarely purchased by one person. Enterprise deals normally
+require an executive sponsor, functional champions, IT/security approval, commercial
+justification and end-user adoption. The most important website implication is that Biltflow
+should speak to several audiences at once: executives want control and margin; project
+teams want less admin; commercial teams want cost certainty; IT wants a secure, integrated
+architecture; and site teams want speed and simplicity.
+Function Role / title Why they care about Biltflow
+Board / C-suite CEO / Managing Director Strategic sponsor; platform standardisation, growth, risk and margin.
+Board / C-suite COO / Chief Operating Officer Operational consistency across projects and business units.
+Board / C-suite CFO / Finance Director ERP, financial controls, cost visibility, forecasting, ROI.
+Board / C-suite CIO / CTO / Chief Digital Officer Architecture, cybersecurity, integrations, data governance, vendor
+strategy.
+Board / C-suite Chief Transformation Officer Enterprise change, process redesign and technology adoption.
+Board / C-suite Chief Risk Officer / General Counsel Contractual, compliance, audit and enterprise risk controls.
+Construction leadership Construction Director / Head of
+Construction Delivery performance, site standards, risk, productivity.
+Construction leadership General Manager – Construction Portfolio-wide construction operations and systems.
+Construction leadership Operations Manager Resource deployment, standard workflows, operational reporting.
+Construction leadership Project Director Large-project sponsor and senior user; cross-functional workflow
+owner.
+Construction leadership Senior Project Manager / Project
+Manager
+Day-to-day adoption across programme, cost, RFIs, procurement,
+delivery.
+Site delivery Senior Site Manager / Site Manager Field workflows, quality, safety, logistics, productivity.
+Site delivery General Foreman / Structures Foreman Daily planning, workforce, sequencing, inspections, site execution.
+Commercial Commercial Director / Group
+Commercial Manager Commercial governance, cost, contracts, claims, procurement.
+Commercial Contracts Manager Contracts, procurement, claims, variations, subcontractor
+management.
+Commercial Senior Contracts Administrator /
+Contracts Administrator High-frequency commercial system user and workflow owner.
+Commercial Procurement Director / Group
+Procurement Manager Procurement standards, tendering, supplier data, buying power.
+Commercial Head of Estimating / Estimating
+Manager Preconstruction, estimating, tender handover and cost libraries.
+Commercial Quantity Surveying / Cost Planning
+Lead Cost planning, forecasting, benchmarking and controls.
+Development Development Director / Head of
+Development Feasibility-to-handover visibility and development governance.
+Confidential — prepared for internal use Page 12 of 22
+
+-- 12 of 22 --
+
+B I L T F L O W Market & Website Design Reference Pack
+Function Role / title Why they care about Biltflow
+Development Development Manager / Senior
+Development Manager Approvals, consultants, programme, cost and stakeholder workflows.
+Development Acquisitions Director / Investment
+Director Feasibility, underwriting, pipeline and investment data.
+Development Head of Design / Design Director Design coordination, approvals, BIM, consultant workflows.
+Development Design Manager Design programme, RFIs, reviews, document/model coordination.
+Development Planning Director / Planning Manager Approvals, statutory milestones, consultant coordination.
+Digital / technology Head of Digital / Digital Construction
+Director Core buyer/champion for construction technology strategy.
+Digital / technology BIM / Digital Engineering Manager Models, CDE, coordination, data standards and handover.
+Digital / technology IT Director / Head of IT Security, identity, systems, support, enterprise integration.
+Digital / technology Enterprise Architect / Integration Lead API strategy, data flows, system-of-record decisions.
+Digital / technology Data / Analytics Director Portfolio data model, BI, AI readiness and reporting.
+Finance / controls Financial Controller / Project Finance
+Director Project accounting, controls, reconciliations and reporting.
+Finance / controls Head of Project Controls Cost, schedule, risk, forecasting and portfolio reporting.
+Finance / controls Planning / Scheduling Manager Programme governance, schedule data and delay analytics.
+Risk / compliance Head of HSEQ / WHS Director Safety, quality, environment, compliance systems.
+Risk / compliance Quality Manager ITPs, inspections, defects, NCRs, completion records.
+Risk / compliance Safety Manager Inductions, permits, incidents, observations, compliance.
+Risk / compliance Risk & Compliance Manager Audit trails, regulatory obligations and governance.
+Post-construction /
+operations
+Head of Customer / Customer
+Experience Director Handover, defects, resident / purchaser experience.
+Post-construction /
+operations Facilities / Asset Manager Digital handover, asset data and maintenance systems.
+Post-construction /
+operations
+Property Operations Director / BTR
+Operations Lead Building operations, residents, leasing and service performance.
+Procurement influencers Project Engineer / Senior Project
+Engineer Technical workflows, RFIs, QA, coordination, field data.
+Procurement influencers Document Controller / Information
+Manager CDE governance, transmittals, registers and compliance.
+Procurement influencers Systems / Applications Manager Configuration, administration, adoption, support and integration.
+3.1 Highest-Priority Economic Buyers
+— CEO / Managing Director — enterprise sponsor where Biltflow is positioned as the
+operating system for the business.
+— COO / Construction Director / GM Construction — owns delivery consistency,
+productivity and project performance.
+Confidential — prepared for internal use Page 13 of 22
+
+-- 13 of 22 --
+
+B I L T F L O W Market & Website Design Reference Pack
+— CFO / Finance Director / Commercial Director — owns cost control, financial
+governance, procurement and measurable ROI.
+— CIO / CTO / Chief Digital Officer / Head of Digital — owns system architecture,
+integrations, data, cyber and platform strategy.
+— Development Director — critical for integrated developer-builders, since the platform
+must connect preconstruction and development to delivery.
+— Group Commercial Manager / Procurement Director — strong buyer where Biltflow
+displaces fragmented procurement, contract and cost workflows.
+3.2 Strong Internal Champions
+Digital Construction, BIM/Digital Engineering, Project Controls, Commercial, Design
+Management, HSEQ, Project Management and Systems/Applications leaders are often the
+people who identify the pain, evaluate products, run pilots and build the internal business
+case. The website should therefore include role-specific proof points rather than only
+generic "project management software" language.
+Confidential — prepared for internal use Page 14 of 22
+
+-- 14 of 22 --
+
+B I L T F L O W Market & Website Design Reference Pack
+S E C T I O N 4
+4 Global Construction & Property Technology Landscape
+This section is intentionally broad. Biltflow is not competing with every product below
+feature-for-feature — many are systems Biltflow may integrate with, coexist alongside,
+replace in selected workflows, or use purely as design and positioning references. The
+market is fragmented across point solutions, suites, ERPs and owner/developer platforms —
+exactly the fragmentation an integration-first construction operating system can address.
+Category Company / product What it does Website
+Core CDE / PM Procore Project execution, cost, documents, field, analytics,
+AI Procore
+Core CDE / PM Oracle Aconex Document control, workflows, correspondence,
+models, field Oracle Aconex
+Core CDE / PM Autodesk Construction
+Cloud Docs, Build, BIM Collaborate, Takeoff, cost Autodesk Construction Cloud
+Core CDE / PM Trimble Viewpoint Construction ERP, project management, field Trimble Viewpoint
+Core CDE / PM Trimble ProjectSight Project management and field collaboration Trimble ProjectSight
+Core CDE / PM InEight Project controls, cost, schedule, documents,
+completions InEight
+Core CDE / PM Thinkproject CDE, document control, asset information Thinkproject
+Core CDE / PM Asite CDE, project controls, digital engineering Asite
+Core CDE / PM Bentley ProjectWise Engineering document / model collaboration Bentley ProjectWise
+Core CDE / PM Dalux BIM, field, documents, handover Dalux
+Core CDE / PM RIB 4.0 / MTWO Enterprise construction platform RIB 4.0 / MTWO
+Core CDE / PM LetsBuild Planning, field management, progress LetsBuild
+Core CDE / PM Fieldwire (Hilti) Field task, plan and issue management Fieldwire (Hilti)
+Core CDE / PM PlanRadar Field documentation, QA, defects, reporting PlanRadar
+ERP / commercial Jobpac Connect Construction ERP, job costing, finance, payroll (ANZ) Jobpac
+ERP / commercial Cheops Construction ERP, finance, job costing, contracts
+(ANZ) Cheops
+ERP / commercial Viewpoint Vista Construction ERP and accounting Viewpoint Vista
+ERP / commercial CMiC Construction ERP and project management CMiC
+ERP / commercial Sage 300 Construction
+and Real Estate Construction accounting / ERP Sage 300 CRE
+ERP / commercial Sage Intacct
+Construction Cloud financial management Sage Intacct
+ERP / commercial Jonas Construction Construction accounting / ERP Jonas Construction
+ERP / commercial COINS Construction ERP COINS
+ERP / commercial IFS Cloud Construction Enterprise project / asset ERP IFS Cloud Construction
+Confidential — prepared for internal use Page 15 of 22
+
+-- 15 of 22 --
+
+B I L T F L O W Market & Website Design Reference Pack
+Category Company / product What it does Website
+ERP / commercial Microsoft Dynamics 365 ERP/CRM often configured for construction and
+property Dynamics 365
+ERP / commercial Oracle NetSuite Cloud ERP used by property / construction groups Oracle NetSuite
+ERP / commercial MYOB Advanced
+Construction Cloud ERP for AU/NZ construction businesses MYOB Advanced Construction
+Procurement / subbie ProcurePro Construction procurement, tendering, scopes,
+approvals ProcurePro
+Procurement / subbie BuildingConnected
+(Autodesk) Bid management and subcontractor network BuildingConnected
+Procurement / subbie ConWize Estimating and bid management ConWize
+Procurement / subbie COMPASS (Bespoke
+Metrics) Subcontractor prequalification / risk COMPASS (Bespoke Metrics)
+Payments / claims Payapps Progress claims and payment applications Payapps
+Payments / claims Oracle Textura Construction payment management Oracle Textura
+Payments / claims PayShepherd Contractor compliance and payment management PayShepherd
+Safety / compliance HammerTech Safety, site operations, inductions, permits HammerTech
+Safety / compliance SignOnSite Site attendance, inductions, safety workflows SignOnSite
+Safety / compliance SafetyCulture Inspections, audits, training, issue management SafetyCulture
+Safety / compliance SiteDocs Digital safety management SiteDocs
+Safety / compliance 1Breadcrumb Construction safety, compliance, site access 1Breadcrumb
+Safety / compliance HazardCo Health & safety management HazardCo
+Quality / defects /
+handover Novade Field, quality, safety, workforce Novade
+Quality / defects /
+handover
+Autodesk Build —
+Quality Quality, safety, RFIs, submittals, cost, field Autodesk Build
+Quality / defects /
+handover Procore Quality & Safety Inspections, observations and compliance Procore Quality & Safety
+Reality capture /
+progress OpenSpace 360° reality capture and site documentation OpenSpace
+Reality capture /
+progress Buildots AI construction progress tracking Buildots
+Reality capture /
+progress Doxel AI progress and production tracking Doxel
+Reality capture /
+progress Avvir Reality analysis / BIM comparison Avvir
+Reality capture /
+progress Cupix 3D digital twin / reality capture Cupix
+Reality capture /
+progress Disperse Construction progress capture and analytics Disperse
+Scheduling / planning Oracle Primavera P6 Enterprise CPM scheduling Primavera P6
+Confidential — prepared for internal use Page 16 of 22
+
+-- 16 of 22 --
+
+B I L T F L O W Market & Website Design Reference Pack
+Category Company / product What it does Website
+Scheduling / planning Microsoft Project Project scheduling MS Project
+Scheduling / planning Asta Powerproject Construction scheduling Asta Powerproject
+Scheduling / planning ALICE Technologies AI construction optioneering / scheduling ALICE Technologies
+Scheduling / planning nPlan AI schedule risk forecasting nPlan
+Scheduling / planning Outbuild Construction planning and lookahead Outbuild
+Scheduling / planning Touchplan Collaborative construction planning / Last Planner Touchplan
+Scheduling / planning SmartPM Schedule analytics and delay intelligence SmartPM
+Estimating / takeoff Buildsoft Cubit Estimating and takeoff Cubit
+Estimating / takeoff RIB CostX 2D/3D/BIM takeoff and estimating CostX
+Estimating / takeoff Bluebeam Revu PDF markup, takeoff and collaboration Bluebeam
+Estimating / takeoff STACK Cloud takeoff and estimating STACK
+Estimating / takeoff Togal.AI AI takeoff Togal.AI
+Estimating / takeoff Beck Technology
+DESTINI Estimator Preconstruction estimating DESTINI Estimator
+Estimating / takeoff Buildxact Cloud estimating, takeoff and job management
+(residential) Buildxact
+Estimating / takeoff PlanSwift Digital takeoff software PlanSwift
+Estimating / takeoff Databuild Estimating, scheduling and CRM for AU residential
+builders Databuild
+BIM / design
+coordination Autodesk Revit BIM authoring Revit
+BIM / design
+coordination Autodesk Navisworks Model coordination and clash detection Navisworks
+BIM / design
+coordination Solibri Model checking and BIM quality assurance Solibri
+BIM / design
+coordination Revizto Integrated BIM coordination and issue tracking Revizto
+BIM / design
+coordination Newforma Project information management for AEC Newforma
+BIM / design
+coordination Speckle Open data platform for AEC models Speckle
+Workforce / resources Assignar Workforce, equipment, compliance and field
+operations Assignar
+Workforce / resources Raken Daily reports, time, production tracking Raken
+Workforce / resources Rhumbix Field workforce / time and production Rhumbix
+Workforce / resources Bridgit Construction workforce planning Bridgit
+Workforce / resources Mastt Capital project portfolio / project controls Mastt
+Developer / owner
+platform Oracle Primavera Unifier Capital planning, cost control, business processes Primavera Unifier
+Confidential — prepared for internal use Page 17 of 22
+
+-- 17 of 22 --
+
+B I L T F L O W Market & Website Design Reference Pack
+Category Company / product What it does Website
+Developer / owner
+platform e-Builder (Trimble) Capital program management for owners e-Builder
+Developer / owner
+platform Kahua Capital program / project management Kahua
+Developer / owner
+platform Aurigo Masterworks Capital planning and project controls Aurigo Masterworks
+Developer / owner
+platform Northspyre Real estate development project / cost management Northspyre
+Developer / owner
+platform Dealpath Real estate investment / development deal
+management Dealpath
+Developer / owner
+platform Procore for Owners Owner/developer project lifecycle management Procore for Owners
+Property / asset
+operations MRI Software Property management, finance, leasing, asset
+management MRI Software
+Property / asset
+operations Yardi Property management, investment, BTR /
+multifamily Yardi
+Property / asset
+operations RealPage Multifamily property operations and revenue
+systems RealPage
+Property / asset
+operations Entrata Multifamily property management platform Entrata
+Property / asset
+operations AppFolio Property management software AppFolio
+Property / asset
+operations PropertyMe Property management platform (AU) PropertyMe
+Property / asset
+operations Property Tree Property management / trust accounting (AU) Property Tree
+Property / asset
+operations Re-Leased Commercial property management Re-Leased
+Facilities / asset mgmt Planon IWMS / facilities and real estate management Planon
+Facilities / asset mgmt IBM Maximo Enterprise asset management IBM Maximo
+Facilities / asset mgmt FM:Systems Workplace / facilities management FM:Systems
+AI / document
+intelligence Document Crunch AI contract review / risk for construction Document Crunch
+AI / document
+intelligence Trunk Tools AI construction knowledge / agents Trunk Tools
+AI / document
+intelligence AirWorks AI-powered civil / site takeoff and mapping AirWorks
+Contracts / e-signature DocuSign Electronic signatures and agreement workflows DocuSign
+Contracts / e-signature Adobe Acrobat Sign Electronic signature workflows Acrobat Sign
+Data / BI / integration Microsoft Power BI Analytics / dashboards Power BI
+Data / BI / integration Snowflake Cloud data platform Snowflake
+Data / BI / integration Databricks Lakehouse / AI data platform Databricks
+Confidential — prepared for internal use Page 18 of 22
+
+-- 18 of 22 --
+
+B I L T F L O W Market & Website Design Reference Pack
+Category Company / product What it does Website
+Data / BI / integration MuleSoft Enterprise integration / APIs MuleSoft
+4.1 The Competitive Landscape Biltflow Should Show Visually
+— Enterprise suites: Procore, Autodesk Construction Cloud, Oracle Aconex / Primavera /
+Unifier, InEight, RIB and Trimble.
+— Construction ERP / commercial systems: Jobpac, Cheops, Viewpoint, CMiC, Sage,
+COINS and NetSuite / Dynamics deployments.
+— Best-of-breed point solutions: ProcurePro (procurement); HammerTech, 1Breadcrumb
+and SignOnSite (safety/site); Payapps and Textura (claims); Buildsoft, CostX and
+Bluebeam (estimating/takeoff); OpenSpace, Buildots and Doxel (progress intelligence).
+— Owner/developer systems: Primavera Unifier, e-Builder, Kahua, Aurigo, Northspyre
+and Dealpath.
+— Property operations: MRI, Yardi, RealPage, Entrata, AppFolio, PropertyMe and
+Property Tree.
+— AI-native layer: Document Crunch, Trunk Tools, Buildots, nPlan, ALICE, Togal.AI and
+other emerging construction-specific AI products.
+Confidential — prepared for internal use Page 19 of 22
+
+-- 19 of 22 --
+
+B I L T F L O W Market & Website Design Reference Pack
+S E C T I O N 5
+5 What the Biltflow Website Should Communicate
+The market map suggests Biltflow should not present itself as another isolated project-
+management application. The stronger position is a construction and development
+operating system that can connect existing tools, standardise workflows, create a shared
+data layer, and use AI across the full project lifecycle.
+— Lead with the business problem: construction companies are running critical
+workflows across disconnected systems, spreadsheets, inboxes, PDFs and project-
+specific tools.
+— Position Biltflow as the connective operating layer — not "rip and replace everything"
+by default. Show integrations prominently.
+— Show lifecycle coverage: Development → Design → Preconstruction → Estimating →
+Procurement → Commercial → Construction → Safety & Quality → Commissioning →
+Handover → Operations.
+— Create persona pathways: For Executives, For Construction, For Commercial, For
+Development, For Site Teams, For Digital/IT.
+— Create asset-class pathways: High-Density Residential, Build-to-Rent, Hotels &
+Serviced Apartments, Mixed-Use.
+— Use portfolio-level language, not just project-level language: enterprise controls,
+standardisation, cross-project intelligence, data governance, benchmarking and
+forecasting.
+— Make AI tangible: summarise project risk, interrogate contracts/drawings, predict
+schedule/cost issues, automate workflows, surface decisions and create executive
+intelligence from live project data.
+— Use competitor websites primarily for information architecture and market education,
+while making Biltflow visually more modern, integrated and AI-native.
+Confidential — prepared for internal use Page 20 of 22
+
+-- 20 of 22 --
+
+B I L T F L O W Market & Website Design Reference Pack
+S E C T I O N 6
+6 Website Reference Shortlist for the Designer
+Reference Why it matters Website
+Procore Best reference for broad construction-
+platform category architecture https://www.procore.com
+Oracle Construction & Engineering Enterprise owner/contractor suite and
+lifecycle breadth
+https://www.oracle.com/construction-
+engineering/
+Autodesk Construction Cloud Strong ecosystem / workflow presentation https://construction.autodesk.com
+ProcurePro Excellent focused construction-tech
+positioning and clear buyer pain https://procurepro.co
+HammerTech Good field/safety-focused construction brand
+and product messaging https://hammertech.com
+OpenSpace Strong AI/reality-capture storytelling and
+visual product proof https://www.openspace.ai
+Buildots Strong AI-native construction messaging https://buildots.com
+Trunk Tools AI-agent / construction knowledge
+positioning https://trunktools.com
+Northspyre Developer/owner-oriented software
+messaging https://www.northspyre.com
+Deicorp Integrated builder-developer customer
+reference https://deicorp.com.au
+Pace Development Group Integrated developer-builder brand/reference https://pacedg.com.au
+GURNER Premium developer/operator brand
+reference https://gurner.com.au
+Mirvac Large integrated property group / portfolio
+storytelling https://www.mirvac.com
+Hickory Builder/developer + innovation-led
+construction brand https://www.hickory.com.au
+6.1 Recommended Use
+Give this pack to the website designer as a market orientation document, then use the
+reference shortlist to create a Biltflow-specific sitemap, homepage narrative, persona
+pages, solution pages, integration architecture and competitor differentiation matrix.
+Confidential — prepared for internal use Page 21 of 22
+
+-- 21 of 22 --
+
+B I L T F L O W Market & Website Design Reference Pack
+S E C T I O N 7
+7 Research Notes and Source Anchors
+The market changes frequently through acquisitions, insolvencies, new entrants and state
+expansion. Before using any company publicly as a customer example or named prospect,
+confirm current status and project activity.
+— NSW Government — regulated building developer obligations
+— NSW Government — building classes under the DBP scheme
+— Australian residential developer directories (e.g. Popurise)
+— Procore, ProcurePro and Oracle Construction & Engineering product/positioning
+pages
+— Pace Development Group and Deicorp — integrated builder-developer references
+— Billbergia — integrated developer-builder reference
+This pack should be treated as a living market map, not a statutory register. Company structures,
+product lines and URLs change — verify before external use.
+Confidential — prepared for internal use Page 22 of 22
+
+-- 22 of 22 --
+

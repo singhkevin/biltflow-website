@@ -1,0 +1,743 @@
+BILTFLOW
+Final Hero Film
+Locked Production Master — Voiceover + Exact Screen Direction
+Runtime 	2:30 – 2:45
+Format 	16:9 master, designed with safe areas for derivative formats
+Audience 	Builders, developers, construction executives, CFOs, COOs and investors
+Status 	Locked — Final Copy
+
+-- 1 of 16 --
+
+BILTFLOW — FINAL HERO FILM
+Locked Production Master — Voiceover + Exact Screen Direction
+Target runtime: 2:30–2:45
+Format: 16:9 master, designed with safe areas for derivative formats
+Audience: Builders, developers, construction executives, CFOs, COOs and investors
+
+-- 2 of 16 --
+
+PART ONE — 90 YEARS OF CONSTRUCTION
+0:00–0:30
+The opening should feel like a film before it feels like a technology advertisement.
+No Biltflow branding should appear until the reveal.
+SCREEN 01 — 0:00–0:03
+1930s — THE BEGINNING
+FULL SCREEN
+Use the iconic Lunch Atop a Skyscraper (1932) image.
+Crop wide enough that we see:
+* workers
+* steel beam
+* extreme height
+* New York below
+Black-and-white.
+Very subtle film movement/parallax if required.
+Do NOT put the image inside a frame.
+SCREEN LAYOUT
+Top-left, very small:
+1932
+No other graphic elements.
+AUDIO
+Wind.
+Distant city.
+Subtle steel/construction sounds.
+No music yet.
+NARRATOR
+"Construction has always built the world."
+SCREEN 02 — 0:03–0:06
+1940s/50s — OLD HOLLYWOOD
+FULL SCREEN
+Priority reference:
+How High Is Up? — The Three Stooges
+Alternative:
+Mr. Blandings Builds His Dream House — Cary Grant
+Find a shot where construction is immediately obvious:
+* structural steel
+* workers
+* physical plans
+* tools
+* manual coordination
+Do not choose a close-up where the construction environment cannot be seen.
+SCREEN
+Small top-left:
+1940s / 50s
+NARRATOR
+"Different era. Same industry."
+TRANSITION
+Hard cinematic cut.
+No dissolves.
+
+-- 3 of 16 --
+
+SCREEN 03 — 0:06–0:09
+1970s/80s — THE JOBSITE
+FULL SCREEN
+Begin with approximately 1 second of old-school construction culture:
+workers talking, waiting, carrying plans, calling instructions.
+Then cut directly to:
+THE MONEY PIT — 1986
+Priority: find a recognisable Tom Hanks/construction sequence where the project is visibly chaotic.
+Trades everywhere.
+Unfinished work.
+Something going wrong.
+SCREEN COPY
+Briefly appear:
+BIGGER PROJECTS.
+Then:
+SAME PROBLEMS.
+NARRATOR
+"Bigger projects. Same problems."
+Do not overplay the comedy.
+The audience should smile in recognition, not feel like they're watching a meme.
+SCREEN 04 — 0:09–0:12
+1990s/2000s — MORE MOVING PARTS
+Three or four extremely fast cuts:
+PHONE
+→
+FAX
+→
+PAPER DRAWINGS
+→
+SITE OFFICE
+Then transition into:
+CASINO ROYALE — 2006
+Use the Madagascar construction sequence.
+Choose a WIDE construction shot rather than simply a close-up of Daniel Craig.
+Ideally we see:
+* Bond
+* workers
+* steel
+* scaffolding
+* crane
+* active construction
+NARRATOR
+"More people. More paperwork. More moving parts."
+AUDIO
+This is where the soundtrack starts building momentum.
+SCREEN 05 — 0:12–0:15
+2010s — LOCKE
+FULL SCREEN
+Locke — 2013
+Tom Hardy on the phone.
+
+-- 4 of 16 --
+
+Use rapid cuts between two or three calls if available.
+The significance of this scene is that his character is coordinating a major concrete pour remotely.
+NARRATOR
+"Technology changed how we communicated."
+AUDIO
+Phone ring.
+Call connection.
+Another ring.
+Music continues building underneath.
+SCREEN 06 — 0:15–0:18
+TODAY — A WORKING MAN
+FULL SCREEN
+A Working Man — 2025
+Jason Statham as construction foreman Levon Cade.
+This should be one of the most recognisable shots in the opening.
+Find a WIDE or MEDIUM-WIDE frame showing:
+Jason Statham + hard hat + workers + real construction environment.
+Ideally he is:
+* walking the site
+* directing work
+* checking progress
+* reviewing plans
+* dealing with a site issue
+SCREEN
+Small top-left:
+TODAY
+NARRATOR
+"But the way construction operates?"
+Short beat.
+"Not enough."
+Do not add unnecessary text.
+Let Statham and the construction environment carry the screen.
+SCREEN 07 — 0:18–0:22
+2026 — TECHNOLOGY OVERLOAD
+This is one of the most important designed sequences.
+We leave Hollywood.
+Start with ONE clean modern construction screen.
+Then progressively introduce:
+Aconex
+Procore
+Jobpac
+ProcurePro
+Payapps
+Buildsoft
+Bluebeam
+CostX
+Excel
+Outlook
+Teams
+WhatsApp
+Then information begins arriving:
+
+-- 5 of 16 --
+
+RFI 127 — OVERDUE
+VARIATION — APPROVAL REQUIRED
+DRAWING REVISION RECEIVED
+PROGRAM UPDATE
+PROCUREMENT DELAY
+COST REPORT
+COMPLIANCE ITEM
+SUBCONTRACTOR QUERY
+EMAIL — 38 UNREAD
+WHATSAPP — 17 MESSAGES
+Everything overlaps.
+Notifications accelerate.
+Windows multiply.
+The screen should become intentionally uncomfortable.
+IMPORTANT
+Do NOT arrange the logos beautifully.
+This is not an integration diagram.
+It is fragmentation.
+NARRATOR
+"More software."
+CUT.
+"More data."
+CUT.
+"More complexity."
+SCREEN COPY
+At peak chaos:
+LESS CLARITY.
+SOUND
+Email.
+Teams.
+Phone.
+WhatsApp.
+Radio.
+Keyboard.
+Site noise.
+Notification.
+Another notification.
+Music reaches maximum tension.
+Then—
+SCREEN 08 — 0:22–0:23
+HARD CUT TO BLACK.
+Every sound stops simultaneously.
+No music.
+No logo.
+No animation.
+No glow.
+Pure black.
+Hold.
+SCREEN 09 — 0:23–0:24.5
+Black.
+Centred:
+THE TOOLS CHANGED.
+
+-- 6 of 16 --
+
+White typography.
+Nothing else.
+SCREEN 10 — 0:24.5–0:26
+Replace with:
+THE WAY CONSTRUCTION
+OPERATES DIDN'T.
+Hold.
+SCREEN 11 — 0:26–0:27
+Black again.
+Silence.
+Then:
+UNTIL NOW.
+SCREEN 12 — 0:27–0:30
+BILTFLOW REVEAL
+Biltflow wordmark emerges cleanly.
+Do not over-animate it.
+No explosion.
+No futuristic particles.
+No unnecessary 3D.
+SCREEN
+BILTFLOW
+Underneath:
+THE AI-NATIVE OPERATING SYSTEM FOR CONSTRUCTION.
+NARRATOR
+"Meet Biltflow."
+Music begins again — but completely different.
+Controlled.
+Modern.
+Confident.
+The audience should FEEL that we've moved from chaos into control.
+
+-- 7 of 16 --
+
+PART TWO — THE BILTFLOW STORY
+SCREEN 13 — 0:30–0:45
+ONE CONTINUOUS FLOW
+The Biltflow logo transitions directly into the REAL platform.
+No generic technology animation.
+Camera enters Biltflow.
+PRODUCT NAVIGATION
+A horizontal lifecycle begins building:
+SITE SOURCING
+→
+FEASIBILITY
+→
+APPROVALS
+→
+DESIGN
+→
+ESTIMATING
+→
+PROCUREMENT
+→
+COMMERCIAL
+→
+CONSTRUCTION
+→
+COMPLIANCE
+→
+HANDOVER
+→
+DEFECTS
+→
+MAINTENANCE
+→
+LEARNING
+A single line connects everything.
+As the camera travels along the lifecycle, briefly reveal the actual Biltflow module underneath each stage.
+NARRATOR
+"Biltflow connects the entire construction lifecycle — projects, people, workflows and data — in one intelligent operating
+system."
+Camera continues.
+"From the first site opportunity, through feasibility, approvals, design, estimating, procurement, commercial and construction,
+to handover, defects, maintenance and operations —"
+Lifecycle completes.
+"one continuous flow of intelligence across the entire development lifecycle."
+SCREEN 14 — 0:45–0:57
+START ANYWHERE
+Pull back.
+Now show the lifecycle modularly.
+Select:
+PROCUREMENT
+It activates independently.
+
+-- 8 of 16 --
+
+Then add:
+COMMERCIAL
+Then:
+CONSTRUCTION
+Then progressively activate the complete lifecycle.
+LEGACY INTEGRATION
+Show one existing platform connecting into Biltflow through an API/connector.
+Then show another.
+Do NOT make competitor logos look inferior or broken.
+Message:
+BILTFLOW WORKS WITH YOUR EXISTING STACK.
+Then demonstrate a legacy module being replaced by a native Biltflow module.
+NARRATOR
+"You don't have to start with everything."
+"Start with one module. Add more when you're ready. Or bring the entire lifecycle together."
+"Keep the systems that work. Connect them through Biltflow. Progressively replace what you no longer need."
+SCREEN COPY
+START ANYWHERE.
+CONNECT EVERYTHING.
+SCREEN 15 — 0:57–1:15
+BUILT ON REAL CONSTRUCTION
+This needs to feel extremely credible.
+No generic AI visuals.
+Use REAL construction information.
+SCREEN SEQUENCE
+Actual architectural drawing.
+↓
+Structural drawing.
+↓
+Cost plan.
+↓
+BOQ.
+↓
+Contract.
+↓
+Programme.
+↓
+Procurement package.
+↓
+Site progress.
+↓
+Compliance documentation.
+Data relationships begin connecting between them.
+Then pull back.
+SCREEN
+Large:
+$5B+
+Underneath:
+REAL HIGH-DENSITY RESIDENTIAL CONSTRUCTION PROJECT DATA
+NARRATOR
+"AI is being added everywhere. But adding a generic AI model to old software doesn't make it construction-intelligent."
+Beat.
+"Biltflow wasn't built that way. It was built AI-native from the ground up —"
+$5B+ appears.
+
+-- 9 of 16 --
+
+"trained on real-world data from more than five billion dollars of high-density residential construction projects."
+Show:
+DRAWINGS
+COSTS
+CONTRACTS
+PROGRAMMES
+DELIVERY
+COMPLIANCE
+connecting.
+"Drawings, costs, contracts, programme, delivery, compliance — connected into one intelligence layer."
+Then:
+"So Biltflow isn't learning construction from theory. It's learning from the reality of delivering complex projects."
+Hold.
+"Not just what happened."
+Beat.
+WHY.
+SCREEN 16 — 1:15–1:32
+MEET EVE
+Do NOT create a humanoid AI character.
+EVE exists INSIDE the Biltflow UI.
+She should feel like intelligence rather than a cartoon assistant.
+Use:
+* subtle waveform
+* EVE indicator
+* voice interface
+* text interaction
+* project intelligence moving around her
+EVE
+"Hi. I'm EVE."
+Dashboard responds.
+"I understand what's happening across your projects, what needs your attention, and what needs to happen next."
+NARRATOR
+"EVE is Biltflow's intelligence and orchestration layer — connecting information, coordinating workflows, directing a workforce
+of specialist AI agents."
+EVE
+"You stay in control. Or, within your approved workflows, I can take action."
+UI CONTROL
+Real product-style slider:
+COPILOT ━━━━━● AUTOPILOT
+The control changes.
+Immediately show a workflow executing.
+This is important.
+Don't simply tell us autopilot exists.
+SHOW IT DOING SOMETHING.
+SCREEN 17 — 1:32–1:48
+THE DIGITAL WORKFORCE
+EVE pulls back.
+Around EVE appear specialist agents.
+Do NOT make this look like Marvel characters.
+Keep them within one consistent enterprise UI.
+Show:
+
+-- 10 of 16 --
+
+PROCUREMENT INTELLIGENCE
+3 PROCUREMENT OPPORTUNITIES
+"I've identified three procurement opportunities that need action."
+Visual connection moves across.
+PROCUREMENT EXECUTION
+Supplier shortlist.
+↓
+RFQ issued.
+↓
+Follow-up.
+↓
+Responses received.
+↓
+Comparison.
+↓
+Recommendation.
+"I've got them. I'll engage the right suppliers, manage the follow-up, and keep everything moving."
+Pull back.
+Reveal more specialist agents.
+Examples:
+Commercial
+Compliance
+Design
+Cost
+Programme
+Safety
+Handover
+Defects
+Maintenance
+NARRATOR
+"From feasibility to procurement, commercial to compliance."
+"Not disconnected AI tools."
+Beat.
+ONE COORDINATED DIGITAL WORKFORCE.
+SCREEN 18 — 1:48–2:04
+THE BUILDING TALKS BACK
+Visual tone becomes warmer.
+Completed residential building.
+Residents.
+Finished lobby.
+Completed apartments.
+Then:
+A maintenance/defect issue enters Biltflow.
+Example:
+WATERPROOFING ISSUE — LEVEL 08
+Sophia activates.
+SOPHIA
+TANGO
+Tango highlights:
+TANGO
+Tango sends the tasks to Cash.
+CASH
+Cash begins:
+CASH
+
+-- 11 of 16 --
+
+"We've seen this issue before."
+The defect begins travelling BACKWARD:
+DEFECT
+←
+INSTALLATION
+←
+SUBCONTRACTOR
+←
+PRODUCT
+←
+SUPPLIER
+←
+PROCUREMENT
+←
+DESIGN
+NARRATOR
+"Sophia is Biltflow's Maintenance and Defects Agent — connecting defects and DLP issues back to the decisions that came
+before."
+SOPHIA
+"I've traced it back to the original design, product and installation."
+NARRATOR
+"From the defect, back through supplier, procurement and design."
+"Connecting what happened to why it happened."
+SCREEN 19 — 2:04–2:12
+THE NEXT PROJECT ALREADY KNOWS
+Now reverse direction.
+Take that knowledge from Project A.
+A single information stream travels into:
+PROJECT B
+New feasibility.
+New design.
+New procurement package.
+The problematic decision is automatically flagged BEFORE it happens again.
+NARRATOR
+"And then that intelligence flows forward — into the next design, the next estimate, the next supplier decision."
+SOPHIA
+Hold for a fraction of a second.
+"The next project already knows."
+THIS LINE SHOULD HAVE SPACE.
+Do not immediately speak over it.
+SCREEN 20 — 2:12–2:25
+THE COMPOUNDING ADVANTAGE
+Show:
+PROJECT 01
+→ PROJECT 02
+→ PROJECT 03
+→ PROJECT 04
+Each project adds intelligence into the Biltflow knowledge layer.
+Avoid a generic exponential graph if possible.
+Better:
+Show the actual organisational knowledge base physically becoming richer.
+
+-- 12 of 16 --
+
+NARRATOR
+"Every building creates knowledge. Biltflow remembers it."
+"Every project creates lessons. Biltflow learns from them."
+"Every development makes the next one smarter, faster, with fewer repeated mistakes."
+Then:
+"That's leverage no single hire — or single system — can give you."
+SCREEN 21 — 2:25–2:37
+THE HUMAN CLOSE
+Return to humans.
+Site Manager.
+Project Manager.
+Contracts Manager.
+Design Manager.
+Developer.
+Construction Director.
+People using Biltflow naturally.
+No staged smiling-at-camera stock footage.
+Real working environments.
+Subtle Biltflow UI in the background.
+NARRATOR
+"This isn't about replacing construction expertise."
+Show experienced construction professional.
+"It's about amplifying it —"
+Show Biltflow supporting the person.
+"giving your people the intelligence, automation and digital workforce to do more, while preserving what your organisation
+learns along the way."
+SCREEN 22 — 2:37–2:40
+EVE
+Return to the interface.
+Minimal.
+EVE
+"Ready for the next project?"
+Small pause.
+SCREEN 23 — 2:40–2:45
+FINAL BRAND
+Logo begins forming.
+NARRATOR
+"Build. Learn. Improve. Repeat."
+Logo completes precisely as narrator says:
+"Biltflow — the AI-native operating system for high-density residential development and construction."
+FINAL FRAME
+Hold longer than the editor instinctively wants to.
+Approximately 3 seconds minimum.
+CENTRE
+BILTFLOW
+BELOW
+THE AI-NATIVE OPERATING SYSTEM FOR
+
+-- 13 of 16 --
+
+HIGH-DENSITY RESIDENTIAL DEVELOPMENT + CONSTRUCTION
+Then:
+BUILD. LEARN. IMPROVE. REPEAT.
+Then:
+BILTFLOW.COM
+Bottom corner, very subtle:
+POWERED BY EVE
+NO App Store badge.
+NO Google Play badge.
+NO extra buttons.
+NO QR code unless there is a specific campaign requirement.
+The URL is the CTA.
+CRITICAL PRODUCTION RECOMMENDATIONS
+1. THE HOLLYWOOD FOOTAGE MUST BE REAL
+Do not AI-generate fake versions of:
+Tom Hanks
+Daniel Craig
+Tom Hardy
+Jason Statham
+The recognisability is precisely what makes the concept work.
+Use properly licensed movie footage or replace individual shots with cleared archival footage if licensing becomes commercially
+unreasonable.
+2. DO NOT PUT LARGE TEXT OVER EVERY HOLLYWOOD SHOT
+The footage should breathe.
+The narrator tells the story.
+Decades can appear subtly in the corner.
+The big typography is reserved primarily for:
+LESS CLARITY.
+THE TOOLS CHANGED.
+THE WAY CONSTRUCTION OPERATES DIDN'T.
+UNTIL NOW.
+BILTFLOW.
+This gives those words much more power.
+3. BILTFLOW MUST FEEL DIFFERENT
+Before Biltflow:
+grain
+noise
+people shouting
+phones
+paper
+movement
+fragmentation
+Hollywood
+chaos
+After Biltflow:
+precision
+space
+clarity
+real UI
+controlled movement
+connected information
+intelligence
+The viewer should understand the product emotionally before understanding it technically.
+
+-- 14 of 16 --
+
+4. NEVER FAKE PRODUCT CAPABILITY
+Every Biltflow interaction shown after 0:30 should either:
+exist today, or
+be clearly designed as a near-term product interaction that the engineering/product team has approved.
+Do not create impossible futuristic UI simply because it looks good.
+5. SHOW ACTION, NOT DASHBOARDS
+The biggest danger after the Hollywood opening is falling into two minutes of dashboards.
+Whenever possible show:
+Biltflow finding something.
+Biltflow connecting something.
+Biltflow flagging something.
+EVE making a decision.
+Sophia tracing an issue.
+A workflow completing.
+A future project avoiding an old mistake.
+The film is about an operating system that acts, not another place to look at information.
+6. $5 BILLION SHOULD BE A HERO MOMENT
+Do not bury this inside a paragraph.
+Visually stop for:
+$5B+
+Then:
+REAL CONSTRUCTION PROJECT DATA
+It is one of Biltflow's strongest credibility signals.
+7. "THE NEXT PROJECT ALREADY KNOWS."
+Treat this as a second hero line.
+The first hero idea is:
+THE TOOLS CHANGED.
+THE WAY CONSTRUCTION OPERATES DIDN'T.
+UNTIL NOW.
+The second is:
+THE NEXT PROJECT ALREADY KNOWS.
+These two ideas should be what people remember after the film.
+8. MUSIC
+Do not use generic inspirational corporate music.
+0:00–0:09: almost entirely environmental sound.
+0:09: rhythmic tension begins.
+0:18: intensity increases significantly.
+0:22: absolute silence.
+0:27: completely new musical identity begins with Biltflow.
+From there, sophisticated electronic/cinematic pulse.
+Not aggressive.
+Not "AI futuristic."
+Reduce dramatically for Sophia.
+Begin emotional build during "The next project already knows."
+Peak emotionally during the human close.
+Resolve cleanly underneath the final logo.
+9. SOUND DESIGN MATTERS AS MUCH AS MUSIC
+Historical construction:
+steel
+Tango identifying an opportunity.
+Cash executing.
+Build gently through EVE/Tango/Cash.
+
+-- 15 of 16 --
+
+hammering
+cranes
+wind
+radios
+phones
+fax machines
+Technology overload:
+email
+Teams
+WhatsApp
+radio
+calls
+keyboard
+notifications
+Then:
+NOTHING.
+That silence before Biltflow should feel almost uncomfortable.
+After Biltflow, sounds become controlled and purposeful:
+one click
+one confirmation
+one workflow completion
+one subtle EVE tone
+The sound design itself tells the story:
+NOISE → SILENCE → SIGNAL.
+THE TEST
+Before approving the film, show it to someone who has never seen Biltflow.
+Then ask them only three questions:
+1. What problem does Biltflow solve?
+They should answer:
+"Construction uses too many disconnected processes, systems and sources of information."
+2. What makes Biltflow different?
+They should answer:
+"It connects the whole construction lifecycle and uses construction-trained AI agents to understand and act across it."
+3. What line do you remember?
+Ideally:
+"The tools changed. The way construction operates didn't."
+or
+"The next project already knows."
+If they cannot answer those three questions after one viewing, simplify the film rather than adding more explanation.
+
+-- 16 of 16 --
+
