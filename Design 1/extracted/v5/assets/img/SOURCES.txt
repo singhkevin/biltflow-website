@@ -1,0 +1,61 @@
+Higgsfield generations used on the homepage — cinematic set v2 (download and re-save locally for permanence):
+
+hero-tower  https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_091214_0d98ae09-10fe-4a07-8166-669e536e6ffa.png
+site-office  https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_091214_d2092725-acaf-4e53-a301-005b1778ed37.png
+persona-director  https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_091214_dbcb4c5d-fa37-4f0e-9deb-0a042c1746d9.png
+persona-site  https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_091214_671329c1-c57a-48c1-bf1b-d87de2074d8d.png
+persona-commercial  https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_091214_46734602-90e5-4e14-ad6e-702fba181cfe.png
+asset-btr  https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_091214_b5244e30-f3e2-49ff-9eb2-c8cc0e28df68.png
+asset-hotel  https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_091214_7e6bcff6-ff08-49e4-90a7-c29053a4daa2.png
+asset-mixed  https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_091214_50fc7bd5-a8db-4271-9034-ee5596326253.png
+drawings  https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_091214_fee1785e-9adf-48a5-8046-54a6adcc044e.png
+foreman-rooftop  https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_091214_a120b673-291f-4937-aed7-3b2bfafeed13.png
+asset-hdr  https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_091214_83fb9d30-31eb-4aff-8f60-1e64803d21e6.png
+persona-executive  https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_091854_373d23ce-3620-434f-84d1-fc7265c01066.png
+persona-development  https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_091854_6374ee2e-963d-47cb-957d-2355f7bde2d5.png
+persona-digital  https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_091854_8dd47f97-9394-4749-936f-d0517718333c.png
+dashboard-poster  https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_085216_849158fe-b41a-4f94-b871-2f95698f6f8d.png
+
+Previous muted set v1:
+hero-tower  https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_083934_d277c38a-78d1-4203-b57e-367c41d6d45a.png
+site-office  https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_083934_9f5cd64f-f663-4ff3-96cb-6dd90a44a84f.png
+persona-director  https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_083934_5c39e925-1dde-4465-b3e1-4c80ce10869e.png
+persona-site  https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_083934_a6d38cc2-3898-4105-90b5-094b2f12a891.png
+persona-commercial  https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_083934_628db2f8-2aed-4d6e-9786-ff88f74118a1.png
+asset-btr  https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_083934_72e2e58c-afda-434a-b8aa-8fa6b5da4f66.png
+asset-hotel  https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_083934_3f4c87ed-e6e6-4167-acee-248f033aeb03.png
+asset-mixed  https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_083934_04b1a62f-0b58-4d5a-876f-965297bcb5d1.png
+drawings  https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_083934_7a54171c-04be-466d-ae78-4d5c461902e4.png
+foreman-rooftop  https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_083934_9a96196e-c677-464e-a2b5-89e7cfd4eefd.png
+asset-hdr  https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_083934_2d86a33e-9834-464c-b62f-65570148591e.png
+
+Video slots:
+  assets/video/dashboard-hero.mp4  — hero platform walkthrough (matches the portfolio plate, ~2.17:1)
+  assets/video/human-close.mp4     — customer film behind the rooftop foreman photo (full-bleed, 16:9 or wider)
+Each poster image is the fallback until the file exists; the play control only disappears once playback actually starts.
+
+Hero plate (16:9): https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_100854_267048ef-84f5-4ac7-9dc8-ef1a8d77bbd4.png
+  Outpainted from uploads/biltflow-platform-portfolio.png (2.17:1) to 16:9 via Higgsfield; shown at scale(1.12) to trim the generated bezel. Deliver the walkthrough video at 16:9 to match.
+
+Opening chapter background (hero + lifecycle): https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_101409_8f8c3c8a-32e3-4d97-bf27-ab18476c02a7.png
+EVE section background (night floor plate): https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_101710_72405a29-f030-4572-aa74-793a9152a997.png
+
+Hero plate (current): assets/img/plate-hero-16x9.png — rendered from Biltflow Platform Plate.dc.html (1920×1080, captured at 2x). Edit that file and re-capture to change the screen.
+
+Lifecycle ring stage images (v2): site aerial https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_113134_1a0f068f-2888-4015-b312-482b0c632c0a.png
+  QS desk https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_113134_f6e233a5-02f4-44a6-8626-64bc79340efa.png
+  steel yard https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_113134_c4b2d966-59af-4e3c-a3a5-8d4527eda3f6.png
+  defects inspection https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_113134_ae6b561d-4f96-4f8f-900c-45556e5d2fd6.png
+  (stages 3/4 drawings, 8 tower, 9 night floor, 10/12 façade, 13 foreman reuse existing plates; mapping in lifecycle-stages.json "img")
+
+Lifecycle ring — dedicated stage images added: 02 feasibility model, 03 approval stamp, 04 architect BIM studio, 07 contract signing, 09 certifier inspection, 12 rope-access maintenance, 13 lessons-learned review (URLs in lifecycle-stages.json). Every one of the 13 stages now has its own picture.
+
+v5 (light & orange) imagery:
+  opening aerial (sunny) https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_120509_e75e2761-43db-4a9c-b3ad-10dd1d510699.png
+  EVE site office https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_120509_a7cafd8c-7eac-4bb0-ba3c-e7effe7681bd.png
+  knows drawings (orange highlighter) https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_120509_6f42607a-29fc-4467-9175-3d279187db8b.png
+  statement band completed building https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_120510_84eeade9-20e3-4766-8a2a-403831f6d9c2.png
+  human close team https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_120509_c7299894-235e-424f-a9af-153e5f2b11c7.png
+  hero plate: assets/img/plate-hero-16x9-orange.png (from Biltflow Platform Plate v5.dc.html)
+
+v5 agent plates: assets/img/plate-cash-rfi-orange.png, assets/img/plate-eve-executing-orange.png — rendered from Biltflow Agent Plates v5.dc.html (#cash 1600×900, #eve 1600×1000 at 2x).
