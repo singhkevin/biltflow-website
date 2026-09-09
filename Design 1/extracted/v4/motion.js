@@ -199,7 +199,9 @@
         current = i;
         items.forEach(function (el, k) { el.style.opacity = (k === i) ? '1' : '0.45'; });
         copies.forEach(function (el, k) { el.style.opacity = (k === i) ? '1' : '0'; });
-        bgs.forEach(function (el, k) { el.style.opacity = (k === i) ? '1' : '0'; });
+        /* class, not inline opacity — the page's own reveal observer writes inline
+           opacity:1 onto these same layers and would win. See [data-classlist-bg] in the CSS. */
+        bgs.forEach(function (el, k) { el.classList.toggle('is-live', k === i); });
         if (counter) counter.textContent = '0' + (i + 1) + ' / 0' + n;
         if (bar) bar.style.width = (((i + 1) / n) * 100) + '%';
       }
