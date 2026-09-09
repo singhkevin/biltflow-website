@@ -66,18 +66,31 @@
       gsap.ticker.lagSmoothing(0);
     }
 
-    /* ---------- Nav: transparent-over-hero -> solid on scroll ---------- */
+    /* ---------- Nav: docked to the viewport floor over the hero -> rises to the top ----------
+       The hero is a 16/9 block, so it is usually SHORTER than the viewport. Anchoring the bar
+       to the hero's own bottom edge left it floating mid-screen. Both states are position:fixed
+       (see .bf-nav in the stylesheet); this only decides when to swap the transform. */
     var nav = document.querySelector('[data-nav="true"]');
     if (nav) {
       var hero = document.getElementById('top');
-      var stickAt = hero ? Math.max(hero.offsetHeight - 76, 40) : 200;
-      ScrollTrigger.create({
-        start: 0,
-        onUpdate: function () {
-          var stuck = (lenis ? lenis.scroll : window.scrollY) > stickAt;
-          nav.classList.toggle('is-stuck', stuck);
-        }
-      });
+      var vh = 0, riseAt = 0;
+      var recalc = function () {
+        vh = window.innerHeight;
+        /* rise once the hero's bottom edge has climbed past 65% of the viewport */
+        riseAt = Math.max(120, (hero ? hero.offsetHeight : 200) - vh * 0.65);
+      };
+      recalc();
+      var applyNav = function () {
+        if (window.innerHeight !== vh) recalc();
+        /* window.scrollY, not lenis.scroll — Lenis drives native scroll, and its own
+           value reads 0 until its first frame, which left the bar docked if the reader
+           scrolled before hydration settled. */
+        nav.classList.toggle('is-stuck', window.scrollY > riseAt);
+      };
+      /* end:'max' matters — a trigger-less ScrollTrigger with only start:0 has a
+         zero-length range, so onUpdate never fires at all. */
+      ScrollTrigger.create({ start: 0, end: 'max', onUpdate: applyNav, onRefresh: applyNav });
+      applyNav();
     }
         /* ---------- data-reveal: fade-up once, on entry ---------- */
     document.querySelectorAll('[data-reveal="true"]').forEach(function (el) {
@@ -98,8 +111,7 @@
     if (joinSection) {
       var left = joinSection.querySelector('[data-join-layer="left"]');
       var right = joinSection.querySelector('[data-join-layer="right"]');
-      var darkScrim = joinSection.querySelector('[data-join-dark-scrim]');
-      var text = joinSection.querySelector('[data-join-text]');
+        var text = joinSection.querySelector('[data-join-text]');
       /* Timing matches the page's own original (never-wired) design exactly: the two
          halves finish joining into one continuous photo at the 70% mark, and only then
          does the scrim/text snap in, quickly, over the following 8% — so nothing dark or
@@ -117,7 +129,6 @@
       });
       if (left) tl.to(left, { clipPath: 'inset(0% 50% 0% 0%)', y: 0, ease: 'none', duration: 0.70 }, 0);
       if (right) tl.to(right, { clipPath: 'inset(0% 0% 0% 50%)', y: 0, ease: 'none', duration: 0.70 }, 0);
-      if (darkScrim) tl.to(darkScrim, { opacity: 1, ease: 'none', duration: 0.08 }, 0.70);
       if (text) tl.to(text, { opacity: 1, y: 0, ease: 'none', duration: 0.08 }, 0.70);
       tl.to({}, { duration: 0.22 }, 0.78); // hold the resolved state through the remaining scroll
     }
@@ -149,7 +160,7 @@
 
       var st = ScrollTrigger.create({
         trigger: sec, start: 'top top', end: 'bottom bottom',
-        scrub: reduce ? false : 0.35, pin: !reduce,
+        scrub: reduce ? false : 0.35, pin: false, // inner [data-hscroll] is position:sticky already
         onUpdate: function (self) {
           var p = self.progress;
           if (!reduce) track.style.transform = 'translateX(-' + (p * distance()) + 'px)';
@@ -196,7 +207,7 @@
 
       ScrollTrigger.create({
         trigger: sec, start: 'top top', end: 'bottom bottom',
-        pin: reduce ? false : sticky, pinSpacing: false,
+        // [data-classlist-sticky] is position:sticky already — no GSAP pin, no spacer
         scrub: reduce ? false : 0.3,
         onUpdate: function (self) {
           var idx = Math.min(n - 1, Math.floor(self.progress * n));
