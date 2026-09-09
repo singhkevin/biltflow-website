@@ -9,10 +9,10 @@
 <x-dc>
 <helmet>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Biltflow — The AI-native operating system for construction</title>
+<title>Biltflow v2 — The AI-native operating system for construction</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="crossorigin" />
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=JetBrains+Mono:wght@300..700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@300..700&display=swap" rel="stylesheet" />
 <style>
   * { box-sizing: border-box; }
   body { margin: 0; background: #F7F9FA; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
@@ -28,84 +28,150 @@
 
 <div style="font-family:Archivo,sans-serif;background:#F7F9FA;color:#3C4247">
 
-<section id="top" data-screen-label="Hero film" style="position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;background:#F7F9FA">
-  <img src="https://i.vimeocdn.com/video/2198815107-a247d58079d19483b4b29c86db7fee88d09de6342b1ebdd2fc6cfc560288eaf6-d_1920" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block" />
-  <iframe src="https://player.vimeo.com/video/1225165666?h=a0a4a8d51d&background=1&autoplay=1&loop=1&muted=1&autopause=0&quality=1080p&dnt=1" title="Biltflow — the lifecycle in 13 stages" allow="autoplay; fullscreen; picture-in-picture" style="position:absolute;inset:0;width:100%;height:100%;border:0;display:block"></iframe>
-  <div style="position:absolute;left:48px;bottom:108px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:#05070A;background:rgba(255,255,255,0.72);backdrop-filter:blur(8px);border-radius:3px;padding:9px 12px">Hero film · The lifecycle in 13 stages</div>
-<header data-screen-label="Nav" style="position:{{ navPos }};top:{{ navTop }};bottom:{{ navBottom }};left:0;right:0;z-index:30;background:{{ navBg }};border-top:1px solid {{ navBorderTop }};border-bottom:1px solid {{ navBorder }};backdrop-filter:blur(12px);transition:background 260ms ease,border-color 260ms ease">
-  <div style="padding:0 48px;height:76px;display:flex;align-items:center;gap:36px;min-width:0">
+<header data-screen-label="Nav" style="position:sticky;top:0;z-index:20;background:rgba(255,255,255,0.92);backdrop-filter:blur(14px);border-bottom:1px solid #DFE4E9">
+  <div style="width:100%;margin:0;padding:0 48px;height:68px;display:flex;align-items:center;gap:28px;min-width:0">
     <a href="#top" style="display:block;flex:none"><img src="assets/biltflow-logo-charcoal.svg" alt="Biltflow" style="height:22px;display:block" /></a>
-    <nav style="display:flex;gap:28px;flex:none;white-space:nowrap;font-size:14px;font-weight:500;margin-left:12px">
-      <a href="#who" style="color:#05070A" style-hover="color:#2E38FF">Who it's for</a>
-      <a href="#eve" style="color:#05070A" style-hover="color:#2E38FF">EVE</a>
-      <a href="#native" style="color:#05070A" style-hover="color:#2E38FF">Platform</a>
-      <a href="#assets" style="color:#05070A" style-hover="color:#2E38FF">Asset classes</a>
+    <nav style="display:flex;gap:18px;flex:none;white-space:nowrap;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;margin-left:4px">
+      <a href="#native" style="color:#555D64" style-hover="color:#05070A">Platform</a>
+      <a href="#lifecycle" style="color:#555D64" style-hover="color:#05070A">Lifecycle</a>
+      <a href="#who" style="color:#555D64" style-hover="color:#05070A">Who it's for</a>
+      <a href="#eve" style="color:#555D64" style-hover="color:#05070A">EVE</a>
+      <a href="#assets" style="color:#555D64" style-hover="color:#05070A">Asset classes</a>
     </nav>
-    <div style="display:flex;gap:28px;align-items:center;margin-left:auto;flex:none;white-space:nowrap;font-size:14px;font-weight:500">
-      <a href="#login" style="color:#05070A" style-hover="color:#2E38FF">Log in</a>
-      <a href="#walkthrough" style="color:#05070A;border-bottom:1px solid #05070A;padding-bottom:3px;transition:color 160ms ease,border-color 160ms ease" style-hover="color:#2E38FF;border-color:#2E38FF">Book a walkthrough</a>
+    <div style="display:flex;gap:10px;align-items:center;margin-left:auto;flex:none;white-space:nowrap">
+      <a href="#login" style="font-size:14px;font-weight:500;color:#05070A;padding:10px 12px">Log in</a>
+      <a href="#walkthrough" style="font-size:14px;font-weight:500;color:#FFFFFF;background:#2E38FF;border:1px solid #2E38FF;border-radius:4px;padding:11px 16px;display:block;white-space:nowrap;transition:background 160ms ease" style-hover="background:#1F27D6;color:#FFFFFF">Book a walkthrough</a>
     </div>
   </div>
 </header>
-</section>
 
-<section data-screen-label="Statement" style="padding:120px 48px 128px;background:#FFFFFF">
-  <div data-reveal="true" style="display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:40px 80px;align-items:end;opacity:0;transform:translateY(18px);transition:opacity 800ms cubic-bezier(0.16,1,0.3,1) 0ms,transform 800ms cubic-bezier(0.16,1,0.3,1) 0ms">
+<div data-screen-label="Opening" style="position:relative;background:#05070A">
+  <div style="position:sticky;top:0;height:100vh;margin-bottom:-100vh;overflow:hidden;z-index:0">
+    <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_101409_8f8c3c8a-32e3-4d97-bf27-ab18476c02a7.png" alt="High-density residential tower under construction at blue hour, Sydney" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block" />
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,7,10,0.78) 0%,rgba(5,7,10,0.5) 45%,rgba(5,7,10,0.72) 100%)"></div>
+  </div>
+<div data-hero-pin="true" style="position:relative;z-index:1">
+  <div data-morph="true" style="position:fixed;left:0;top:0;width:0;height:0;opacity:0;pointer-events:none;z-index:6;overflow:hidden;border:1px solid rgba(107,114,255,0);box-shadow:0 30px 90px rgba(0,0,4,0.6);will-change:transform,width,height,border-radius">
+    <img data-morph-a="true" src="assets/img/plate-hero-16x9.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block" />
+    <img data-morph-b="true" src="https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_113134_1a0f068f-2888-4015-b312-482b0c632c0a.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;opacity:0" />
+    <div style="position:absolute;inset:0;background:rgba(5,7,10,0.22);opacity:0" data-morph-tint="true"></div>
+  </div>
+<section id="top" data-screen-label="Hero" style="position:relative;z-index:1;background:transparent;min-height:calc(100vh - 69px);display:flex;flex-direction:column;overflow:visible;padding-bottom:44px">
+  <div data-hero-text="true" style="width:100%;padding:clamp(32px,4.5vh,56px) 48px clamp(28px,4vh,44px);display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:32px 80px;align-items:start;flex:none;will-change:opacity,transform">
     <div>
-      <div style="display:flex;align-items:center;gap:12px;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.24em;text-transform:uppercase;color:#555D64"><span style="width:10px;height:10px;border-radius:2px;background:#2E38FF;flex:none"></span>AI-native construction operating system</div>
-      <h1 style="font-family:Archivo,sans-serif;font-weight:200;font-stretch:118%;font-size:clamp(40px,5vw,84px);line-height:1.04;letter-spacing:-0.015em;color:#05070A;margin:28px 0 0;text-wrap:balance">The tools changed. The way construction operates didn’t. <span style="color:#2E38FF">Until now.</span></h1>
+      <div style="display:flex;align-items:center;gap:12px;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.24em;text-transform:uppercase;color:#C6CDD4"><span style="width:10px;height:10px;border-radius:2px;background:#2E38FF;flex:none"></span>AI-native construction operating system</div>
+      <h1 style="font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(38px,4.6vw,68px);font-weight:500;line-height:0.98;letter-spacing:-0.035em;color:#FFFFFF;margin:26px 0 0;text-wrap:balance">
+        <span style="display:block;color:#AEB6BF">The tools changed.</span>
+        <span style="display:block;color:#AEB6BF">The way construction operates didn’t.</span>
+        <span style="display:block;font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;font-size:1.16em;letter-spacing:-0.015em;color:#FFFFFF;margin-top:0.06em">Until now<span style="color:#6B72FF">.</span></span>
+      </h1>
     </div>
-    <div style="border-left:1px solid #DFE4E9;padding-left:32px;max-width:460px;justify-self:end;width:100%">
-      <p style="font-size:17px;line-height:1.6;color:#555D64;margin:0;text-wrap:pretty">Biltflow connects the tools you already run and puts a construction-trained AI workforce across the whole lifecycle — grounded in $5B+ of delivered high-density residential work.</p>
+    <div style="border-left:1px solid rgba(255,255,255,0.18);padding-left:32px;margin-top:48px;max-width:460px;justify-self:end;width:100%">
+      <p style="font-size:17px;line-height:1.6;color:#C6CDD4;margin:0;text-wrap:pretty">Biltflow connects the tools you already run and puts a construction-trained AI workforce across the whole lifecycle — grounded in $5B+ of delivered high-density residential work.</p>
       <div style="display:flex;align-items:center;gap:22px;margin-top:28px;flex-wrap:wrap">
-        <a href="#walkthrough" style="font-size:15px;font-weight:500;color:#FFFFFF;background:#2E38FF;border-radius:999px;padding:14px 24px;display:inline-flex;align-items:center;gap:12px;white-space:nowrap;transition:background 160ms ease" style-hover="background:#1F27D6;color:#FFFFFF">Book a walkthrough <span style="font-size:17px;line-height:1">→</span></a>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#555D64;line-height:1.7">NSW · QLD · VIC<br />Hunt Global Pte Ltd</div>
+        <a href="#walkthrough" style="font-size:15px;font-weight:500;color:#05070A;background:#FFFFFF;border:1px solid #FFFFFF;border-radius:4px;padding:14px 22px;display:inline-flex;align-items:center;gap:12px;white-space:nowrap;transition:background 160ms ease,border-color 160ms ease" style-hover="background:#E9EAFF;border-color:#E9EAFF;color:#05070A">Book a walkthrough <span style="font-size:17px;line-height:1">→</span></a>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#767E86;line-height:1.7">NSW · QLD · VIC<br />Hunt Global Pte Ltd</div>
       </div>
     </div>
   </div>
-  <div data-reveal="true" style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:32px;margin-top:96px;padding-top:36px;border-top:1px solid #DFE4E9;opacity:0;transform:translateY(18px);transition:opacity 800ms cubic-bezier(0.16,1,0.3,1) 120ms,transform 800ms cubic-bezier(0.16,1,0.3,1) 120ms">
-    <div>
-      <div style="font-family:Archivo,sans-serif;font-weight:200;font-stretch:112%;font-size:clamp(40px,4.2vw,68px);line-height:1;letter-spacing:-0.015em;color:#05070A;font-variant-numeric:tabular-nums">$5B+</div>
-      <div style="font-size:15px;line-height:1.5;color:#555D64;margin-top:14px;max-width:240px">Of delivered high-density residential project data behind the model</div>
-    </div>
-    <div>
-      <div style="font-family:Archivo,sans-serif;font-weight:200;font-stretch:112%;font-size:clamp(40px,4.2vw,68px);line-height:1;letter-spacing:-0.015em;color:#05070A;font-variant-numeric:tabular-nums">13</div>
-      <div style="font-size:15px;line-height:1.5;color:#555D64;margin-top:14px;max-width:240px">Lifecycle stages, from site sourcing to learning, in one system</div>
-    </div>
-    <div>
-      <div style="font-family:Archivo,sans-serif;font-weight:200;font-stretch:112%;font-size:clamp(40px,4.2vw,68px);line-height:1;letter-spacing:-0.015em;color:#05070A;font-variant-numeric:tabular-nums">20+</div>
-      <div style="font-size:15px;line-height:1.5;color:#555D64;margin-top:14px;max-width:240px">Construction-trained AI agents, orchestrated by EVE</div>
-    </div>
-    <div>
-      <div style="font-family:Archivo,sans-serif;font-weight:200;font-stretch:112%;font-size:clamp(40px,4.2vw,68px);line-height:1;letter-spacing:-0.015em;color:#05070A;font-variant-numeric:tabular-nums">3</div>
-      <div style="font-size:15px;line-height:1.5;color:#555D64;margin-top:14px;max-width:240px">States — NSW, QLD and VIC — Australia’s largest apartment markets</div>
+
+  <div style="position:relative;margin:0 24px;overflow:visible;flex:1;min-height:0">
+    <div data-laptop-band="true" style="position:relative;margin:0 auto;padding:clamp(20px,3.5vh,40px) 24px 0;display:flex;justify-content:center;align-items:flex-start">
+      <div data-laptop="true" style="position:relative;width:min(100%,1480px);max-width:100%">
+        <div style="position:relative;background:#0B0D12;border-radius:22px 22px 0 0;padding:16px 16px 0;border:1px solid rgba(255,255,255,0.14);border-bottom:none;box-shadow:0 30px 90px rgba(0,0,4,0.6),inset 0 1px 0 rgba(255,255,255,0.08)">
+          <div style="position:absolute;top:6px;left:50%;transform:translateX(-50%);width:6px;height:6px;border-radius:999px;background:#1E262E;border:1px solid #3C4247"></div>
+          <div data-laptop-screen="true" style="position:relative;aspect-ratio:16/9;width:100%;border-radius:8px 8px 0 0;overflow:hidden;background:#000004">
+        <img src="assets/img/plate-hero-16x9.png" alt="Biltflow platform — NSW high-density portfolio" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block" />
+        <video ref="{{ videoRef }}" poster="assets/img/plate-hero-16x9.png" preload="none" playsInline="playsInline" muted="muted" loop="loop" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block;background:transparent">
+          <source src="assets/video/dashboard-hero.mp4" type="video/mp4" />
+        </video>
+        <sc-if value="{{ showPlay }}" hint-placeholder-val="{{ true }}">
+          <button onClick="{{ playVideo }}" style="position:absolute;inset:0;width:100%;height:100%;background:linear-gradient(180deg,rgba(0,0,4,0) 62%,rgba(0,0,4,0.62) 100%);border:none;cursor:pointer;display:flex;align-items:flex-end;justify-content:space-between;padding:34px 40px;text-align:left">
+            <span style="display:inline-flex;align-items:center;gap:14px">
+              <span style="width:64px;height:64px;border-radius:999px;background:#2E38FF;display:inline-flex;align-items:center;justify-content:center;flex:none;transition:background 160ms ease"><svg viewBox="0 0 24 24" style="width:22px;height:22px;fill:#FFFFFF;margin-left:2px"><path d="M8 5v14l11-7z"></path></svg></span>
+              <span>
+                <span style="display:block;font-family:'Bricolage Grotesque',sans-serif;font-size:19px;font-weight:600;color:#FFFFFF">See the platform in motion</span>
+                <span style="display:block;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#9AA0FF;margin-top:5px">Product walkthrough · 1:20</span>
+              </span>
+            </span>
+            <span style="display:inline-flex;gap:8px">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#F4F6F8;background:rgba(0,0,4,0.7);border:1px solid #292C2E;border-radius:3px;padding:7px 11px">NSW high-density · 9 active projects</span>
+              <span style="display:inline-flex;align-items:center;gap:7px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#9AA0FF;background:rgba(0,0,4,0.7);border:1px solid #1F27D6;border-radius:3px;padding:7px 11px"><span style="width:5px;height:5px;border-radius:999px;background:#6B72FF"></span>Live · Copilot</span>
+            </span>
+          </button>
+        </sc-if>
+          </div>
+        </div>
+        <div style="position:relative;height:14px;margin:0 -2.4%;background:linear-gradient(180deg,#2A2F38 0%,#161A21 55%,#0B0D12 100%);border-radius:0 0 12px 12px;border:1px solid rgba(255,255,255,0.12);border-top:none">
+          <div style="position:absolute;left:50%;top:0;transform:translateX(-50%);width:11%;height:5px;background:#05070A;border-radius:0 0 6px 6px"></div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
+</div>
+
+<section id="lifecycle" data-screen-label="Lifecycle" data-stage-section="true" style="position:relative;z-index:1;height:calc(100vh + 13 * 30vh);background:transparent">
+  <div style="position:sticky;top:0;height:100vh;overflow:hidden;display:grid;grid-template-columns:minmax(0,6fr) minmax(0,6fr);gap:48px;align-items:center;padding:0 48px">
+    <div style="position:relative">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;color:#9AA0FF">One continuous flow · 13 stages · keep scrolling</div>
+      <div ref="{{ stagePanelRef }}" style="margin-top:36px;transition:opacity 260ms ease,transform 260ms cubic-bezier(0.16,1,0.3,1)">
+        <div style="display:flex;align-items:baseline;gap:28px">
+          <div style="font-family:'Instrument Serif',serif;font-style:italic;font-size:clamp(96px,11vw,176px);line-height:0.85;letter-spacing:-0.04em;color:#6B72FF;font-variant-numeric:tabular-nums">{{ stageNum }}</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:#767E86;line-height:1.8">of 13<br />{{ stageAgent }}</div>
+        </div>
+        <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(40px,4.6vw,68px);font-weight:500;line-height:1;letter-spacing:-0.035em;color:#FFFFFF;margin:28px 0 0;text-wrap:balance">{{ stageTitle }}</h2>
+        <p style="font-size:18px;line-height:1.6;color:#C6CDD4;margin:24px 0 0;max-width:440px;text-wrap:pretty">{{ stageDesc }}</p>
+      </div>
+      <div style="position:absolute;left:0;bottom:-18vh;display:flex;align-items:center;gap:14px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#767E86">
+        <span style="display:block;width:48px;height:1px;background:#3C4247"></span>Every lesson flows forward — learning feeds the next site.
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;justify-content:center;align-items:center">
+      <svg viewBox="0 0 640 640" style="width:min(100%,64vh);height:auto;display:block;overflow:visible">
+        <defs><clipPath id="lc-clip"><circle cx="320" cy="320" r="220"></circle></clipPath></defs>
+        <g ref="{{ stageImgRef }}" data-ring-pic="true" clip-path="url(#lc-clip)" style="transform-origin:320px 320px;transition:transform 220ms cubic-bezier(0.16,1,0.3,1),opacity 220ms ease">
+          <image href="{{ stageImage }}" x="100" y="100" width="440" height="440" preserveAspectRatio="xMidYMid slice"></image>
+          <circle cx="320" cy="320" r="220" fill="rgba(5,7,10,0.22)"></circle>
+        </g>
+        <circle cx="320" cy="320" r="236" fill="none" stroke="rgba(255,255,255,0.14)" stroke-width="1"></circle>
+        <circle ref="{{ arcRef }}" cx="320" cy="320" r="236" fill="none" stroke="#2E38FF" stroke-width="3" stroke-linecap="round" stroke-dasharray="0 1483" transform="rotate(-90 320 320)"></circle>
+        <sc-for list="{{ stageNodes }}" as="n" hint-placeholder-count="13">
+          <g>
+            <circle cx="{{ n.cx }}" cy="{{ n.cy }}" r="{{ n.r }}" fill="{{ n.fill }}" stroke="{{ n.stroke }}" stroke-width="1.5" style="transition:fill 260ms ease,stroke 260ms ease,r 260ms ease"></circle>
+          </g>
+        </sc-for>
+        {{ stageLabels }}
+      </svg>
+      <div style="margin-top:28px;text-align:center;font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(20px,1.8vw,26px);font-weight:500;letter-spacing:-0.01em;color:#FFFFFF">Build. Learn. Improve. <span style="font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:#6B72FF;font-size:1.15em">Repeat.</span></div>
+    </div>
+  </div>
+</section>
+</div>
 
 <section data-screen-label="Statement band" data-join-section="true" style="position:relative;margin-top:0;height:200vh;background:#F3EFE7">
   <div style="position:sticky;top:0;height:100vh;overflow:hidden;background:#F3EFE7">
     <img data-join-layer="left" src="https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_091214_83fb9d30-31eb-4aff-8f60-1e64803d21e6.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;will-change:transform,clip-path;clip-path:inset(14vh 56vw 18vh 8vw);transform:translateY(10vh)" />
     <img data-join-layer="right" src="https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_091214_83fb9d30-31eb-4aff-8f60-1e64803d21e6.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;will-change:transform,clip-path;clip-path:inset(18vh 12vw 14vh 52vw);transform:translateY(-10vh)" />
-    <div data-join-scrim="true" style="position:absolute;inset:0;background:rgba(255,255,255,0.5);opacity:0"></div>
+    <div data-join-scrim="true" style="position:absolute;inset:0;background:rgba(0,0,4,0.5);opacity:0"></div>
     <div data-join-text="true" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 48px;opacity:0;transform:translateY(20px);will-change:opacity,transform">
-<div style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:500;letter-spacing:0.24em;text-transform:uppercase;color:#1F27D6;margin-bottom:32px">More software. More data. Less clarity. — <span style="font-family:Archivo,sans-serif;font-weight:200;font-stretch:118%;text-transform:none;letter-spacing:0;font-size:1.5em;color:#05070A">Until now.</span></div>
-<div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:clamp(44px,7.2vw,124px);font-weight:300;line-height:0.98;letter-spacing:-0.015em;color:#05070A;width:100%;text-wrap:balance;margin:0">One system. All projects. All data. All connected.</div>
+<div style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:500;letter-spacing:0.24em;text-transform:uppercase;color:#9AA0FF;margin-bottom:32px">More software. More data. Less clarity. — <span style="font-family:'Instrument Serif',serif;font-style:italic;text-transform:none;letter-spacing:0;font-size:1.5em;color:#FFFFFF">Until now.</span></div>
+<div style="font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(44px,7.2vw,124px);font-weight:500;line-height:0.98;letter-spacing:-0.04em;color:#FFFFFF;width:100%;text-wrap:balance;margin:0">One system. All projects. All data. All connected.</div>
     </div>
   </div>
 </section>
 
-<section id="who" data-screen-label="Who it's for" data-hscroll-section="true" style="position:relative;height:300vh;background:#FFFFFF;border-top:1px solid #DFE4E9;border-bottom:1px solid #DFE4E9">
+<section id="who" data-screen-label="Who it's for" data-hscroll-section="true" style="position:relative;height:240vh;background:#FFFFFF;border-top:1px solid #DFE4E9;border-bottom:1px solid #DFE4E9">
   <div data-hscroll="true" style="position:sticky;top:0;height:100vh;overflow:hidden;display:flex;flex-direction:column;justify-content:center">
     <div style="width:100%;margin:0;padding:0 48px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:24px">
       <div style="max-width:640px">
         <div style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;color:#1F27D6;margin-bottom:22px">Built for every seat at the table — keep scrolling</div>
-        <h2 style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:clamp(28px,3.2vw,42px);font-weight:300;line-height:1.1;letter-spacing:-0.015em;color:#05070A;margin:0;text-wrap:balance">One system. Six ways in.</h2>
+        <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(28px,3.2vw,42px);font-weight:500;line-height:1.1;letter-spacing:-0.03em;color:#05070A;margin:0;text-wrap:balance">One system. Six ways in.</h2>
       </div>
       <div style="display:flex;align-items:flex-end;gap:32px">
         <p style="font-size:15px;line-height:1.6;color:#555D64;max-width:360px;margin:0">Nobody buys construction software alone. Each pathway shows the same platform through your lens.</p>
         <div style="text-align:right;flex:none">
-          <div data-hscroll-counter="true" style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:44px;font-weight:300;color:#05070A;line-height:1;font-variant-numeric:tabular-nums">01 / 06</div>
+          <div data-hscroll-counter="true" style="font-family:'Bricolage Grotesque',sans-serif;font-size:44px;font-weight:500;color:#05070A;line-height:1;font-variant-numeric:tabular-nums">01 / 06</div>
           <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#555D64;margin-top:10px">Pathways</div>
         </div>
       </div>
@@ -114,52 +180,52 @@
       <div style="position:absolute;left:0;right:0;top:0;height:1px;background:#DFE4E9"></div>
       <div data-hscroll-progress="true" style="position:absolute;left:0;top:-1px;height:3px;width:0;background:#2E38FF;border-radius:2px"></div>
       <div data-hscroll-track="true" style="display:flex;gap:20px;padding:40px 48px 0;padding-right:30vw;will-change:transform">
-<a href="#for-executives" style="display:block;flex:none;width:clamp(360px,34vw,520px);background:#F7F9FA;border:1px solid #DFE4E9;border-radius:6px;overflow:hidden;color:#3C4247;transition:border-color 180ms ease" style-hover="border-color:#2E38FF;color:#3C4247">
-        <div style="aspect-ratio:4/3;background:#DFE4E9;overflow:hidden"><img src="https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_091854_373d23ce-3620-434f-84d1-fc7265c01066.png" alt="Managing director looking over a skyline of cranes" style="width:100%;height:100%;object-fit:cover;display:block" /></div>
-        <div style="padding:26px 28px 30px">
-          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#1F27D6;margin-bottom:12px">For executives</div>
-          <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:26px;font-weight:400;line-height:1.2;letter-spacing:-0.01em;color:#05070A;margin-bottom:12px;text-wrap:balance">Control across the portfolio</div>
-          <p style="font-size:16px;line-height:1.6;color:#555D64;margin:0">Benchmarking, forecasting and enterprise controls from live data.</p>
+<a href="#for-executives" style="display:block;flex:none;width:clamp(240px,24vw,320px);background:#F7F9FA;border:1px solid #DFE4E9;border-radius:6px;overflow:hidden;color:#3C4247;transition:border-color 180ms ease" style-hover="border-color:#2E38FF;color:#3C4247">
+        <div style="aspect-ratio:3/4;background:#DFE4E9;overflow:hidden"><img src="https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_091854_373d23ce-3620-434f-84d1-fc7265c01066.png" alt="Managing director looking over a skyline of cranes" style="width:100%;height:100%;object-fit:cover;display:block" /></div>
+        <div style="padding:20px 20px 24px">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#1F27D6;margin-bottom:8px">For executives</div>
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:19px;font-weight:600;line-height:1.3;color:#05070A;margin-bottom:8px;text-wrap:balance">Control across the portfolio</div>
+          <p style="font-size:14px;line-height:1.6;color:#555D64;margin:0">Benchmarking, forecasting and enterprise controls from live data.</p>
         </div>
       </a>
-      <a href="#for-construction" style="display:block;flex:none;width:clamp(360px,34vw,520px);background:#F7F9FA;border:1px solid #DFE4E9;border-radius:6px;overflow:hidden;color:#3C4247;transition:border-color 180ms ease" style-hover="border-color:#2E38FF;color:#3C4247">
-        <div style="aspect-ratio:4/3;background:#DFE4E9;overflow:hidden"><img src="https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_091214_dbcb4c5d-fa37-4f0e-9deb-0a042c1746d9.png" alt="Construction director reviewing progress on site" style="width:100%;height:100%;object-fit:cover;display:block" /></div>
-        <div style="padding:26px 28px 30px">
-          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#1F27D6;margin-bottom:12px">For construction</div>
-          <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:26px;font-weight:400;line-height:1.2;letter-spacing:-0.01em;color:#05070A;margin-bottom:12px;text-wrap:balance">Delivery you can standardise</div>
-          <p style="font-size:16px;line-height:1.6;color:#555D64;margin:0">Programme, cost, RFIs and site data, consistent on every project.</p>
+      <a href="#for-construction" style="display:block;flex:none;width:clamp(240px,24vw,320px);background:#F7F9FA;border:1px solid #DFE4E9;border-radius:6px;overflow:hidden;color:#3C4247;transition:border-color 180ms ease" style-hover="border-color:#2E38FF;color:#3C4247">
+        <div style="aspect-ratio:3/4;background:#DFE4E9;overflow:hidden"><img src="https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_091214_dbcb4c5d-fa37-4f0e-9deb-0a042c1746d9.png" alt="Construction director reviewing progress on site" style="width:100%;height:100%;object-fit:cover;display:block" /></div>
+        <div style="padding:20px 20px 24px">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#1F27D6;margin-bottom:8px">For construction</div>
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:19px;font-weight:600;line-height:1.3;color:#05070A;margin-bottom:8px;text-wrap:balance">Delivery you can standardise</div>
+          <p style="font-size:14px;line-height:1.6;color:#555D64;margin:0">Programme, cost, RFIs and site data, consistent on every project.</p>
         </div>
       </a>
-      <a href="#for-commercial" style="display:block;flex:none;width:clamp(360px,34vw,520px);background:#F7F9FA;border:1px solid #DFE4E9;border-radius:6px;overflow:hidden;color:#3C4247;transition:border-color 180ms ease" style-hover="border-color:#2E38FF;color:#3C4247">
-        <div style="aspect-ratio:4/3;background:#DFE4E9;overflow:hidden"><img src="https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_091214_46734602-90e5-4e14-ad6e-702fba181cfe.png" alt="Contracts manager reviewing a procurement schedule" style="width:100%;height:100%;object-fit:cover;display:block" /></div>
-        <div style="padding:26px 28px 30px">
-          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#1F27D6;margin-bottom:12px">For commercial</div>
-          <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:26px;font-weight:400;line-height:1.2;letter-spacing:-0.01em;color:#05070A;margin-bottom:12px;text-wrap:balance">Cost certainty, end to end</div>
-          <p style="font-size:16px;line-height:1.6;color:#555D64;margin:0">Procurement, contracts and claims tied to the estimate they came from.</p>
+      <a href="#for-commercial" style="display:block;flex:none;width:clamp(240px,24vw,320px);background:#F7F9FA;border:1px solid #DFE4E9;border-radius:6px;overflow:hidden;color:#3C4247;transition:border-color 180ms ease" style-hover="border-color:#2E38FF;color:#3C4247">
+        <div style="aspect-ratio:3/4;background:#DFE4E9;overflow:hidden"><img src="https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_091214_46734602-90e5-4e14-ad6e-702fba181cfe.png" alt="Contracts manager reviewing a procurement schedule" style="width:100%;height:100%;object-fit:cover;display:block" /></div>
+        <div style="padding:20px 20px 24px">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#1F27D6;margin-bottom:8px">For commercial</div>
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:19px;font-weight:600;line-height:1.3;color:#05070A;margin-bottom:8px;text-wrap:balance">Cost certainty, end to end</div>
+          <p style="font-size:14px;line-height:1.6;color:#555D64;margin:0">Procurement, contracts and claims tied to the estimate they came from.</p>
         </div>
       </a>
-      <a href="#for-development" style="display:block;flex:none;width:clamp(360px,34vw,520px);background:#F7F9FA;border:1px solid #DFE4E9;border-radius:6px;overflow:hidden;color:#3C4247;transition:border-color 180ms ease" style-hover="border-color:#2E38FF;color:#3C4247">
-        <div style="aspect-ratio:4/3;background:#DFE4E9;overflow:hidden"><img src="https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_091854_6374ee2e-963d-47cb-957d-2355f7bde2d5.png" alt="Development director over a masterplan model" style="width:100%;height:100%;object-fit:cover;display:block" /></div>
-        <div style="padding:26px 28px 30px">
-          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#1F27D6;margin-bottom:12px">For development</div>
-          <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:26px;font-weight:400;line-height:1.2;letter-spacing:-0.01em;color:#05070A;margin-bottom:12px;text-wrap:balance">Feasibility to handover, connected</div>
-          <p style="font-size:16px;line-height:1.6;color:#555D64;margin:0">Approvals, consultants and design flowing straight into delivery.</p>
+      <a href="#for-development" style="display:block;flex:none;width:clamp(240px,24vw,320px);background:#F7F9FA;border:1px solid #DFE4E9;border-radius:6px;overflow:hidden;color:#3C4247;transition:border-color 180ms ease" style-hover="border-color:#2E38FF;color:#3C4247">
+        <div style="aspect-ratio:3/4;background:#DFE4E9;overflow:hidden"><img src="https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_091854_6374ee2e-963d-47cb-957d-2355f7bde2d5.png" alt="Development director over a masterplan model" style="width:100%;height:100%;object-fit:cover;display:block" /></div>
+        <div style="padding:20px 20px 24px">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#1F27D6;margin-bottom:8px">For development</div>
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:19px;font-weight:600;line-height:1.3;color:#05070A;margin-bottom:8px;text-wrap:balance">Feasibility to handover, connected</div>
+          <p style="font-size:14px;line-height:1.6;color:#555D64;margin:0">Approvals, consultants and design flowing straight into delivery.</p>
         </div>
       </a>
-      <a href="#for-site" style="display:block;flex:none;width:clamp(360px,34vw,520px);background:#F7F9FA;border:1px solid #DFE4E9;border-radius:6px;overflow:hidden;color:#3C4247;transition:border-color 180ms ease" style-hover="border-color:#2E38FF;color:#3C4247">
-        <div style="aspect-ratio:4/3;background:#DFE4E9;overflow:hidden"><img src="https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_091214_671329c1-c57a-48c1-bf1b-d87de2074d8d.png" alt="Site manager checking a tablet on a formwork deck" style="width:100%;height:100%;object-fit:cover;display:block" /></div>
-        <div style="padding:26px 28px 30px">
-          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#1F27D6;margin-bottom:12px">For site teams</div>
-          <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:26px;font-weight:400;line-height:1.2;letter-spacing:-0.01em;color:#05070A;margin-bottom:12px;text-wrap:balance">Less admin. Faster answers.</div>
-          <p style="font-size:16px;line-height:1.6;color:#555D64;margin:0">ITPs, inspections and defects in the field, paperwork chased for you.</p>
+      <a href="#for-site" style="display:block;flex:none;width:clamp(240px,24vw,320px);background:#F7F9FA;border:1px solid #DFE4E9;border-radius:6px;overflow:hidden;color:#3C4247;transition:border-color 180ms ease" style-hover="border-color:#2E38FF;color:#3C4247">
+        <div style="aspect-ratio:3/4;background:#DFE4E9;overflow:hidden"><img src="https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_091214_671329c1-c57a-48c1-bf1b-d87de2074d8d.png" alt="Site manager checking a tablet on a formwork deck" style="width:100%;height:100%;object-fit:cover;display:block" /></div>
+        <div style="padding:20px 20px 24px">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#1F27D6;margin-bottom:8px">For site teams</div>
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:19px;font-weight:600;line-height:1.3;color:#05070A;margin-bottom:8px;text-wrap:balance">Less admin. Faster answers.</div>
+          <p style="font-size:14px;line-height:1.6;color:#555D64;margin:0">ITPs, inspections and defects in the field, paperwork chased for you.</p>
         </div>
       </a>
-      <a href="#for-digital" style="display:block;flex:none;width:clamp(360px,34vw,520px);background:#F7F9FA;border:1px solid #DFE4E9;border-radius:6px;overflow:hidden;color:#3C4247;transition:border-color 180ms ease" style-hover="border-color:#2E38FF;color:#3C4247">
-        <div style="aspect-ratio:4/3;background:#DFE4E9;overflow:hidden"><img src="https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_091854_8dd47f97-9394-4749-936f-d0517718333c.png" alt="Head of digital construction on site at dawn" style="width:100%;height:100%;object-fit:cover;display:block" /></div>
-        <div style="padding:26px 28px 30px">
-          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#1F27D6;margin-bottom:12px">For digital &amp; IT</div>
-          <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:26px;font-weight:400;line-height:1.2;letter-spacing:-0.01em;color:#05070A;margin-bottom:12px;text-wrap:balance">Architecture your EA will sign</div>
-          <p style="font-size:16px;line-height:1.6;color:#555D64;margin:0">Open APIs, SSO, data governance and a true system of record.</p>
+      <a href="#for-digital" style="display:block;flex:none;width:clamp(240px,24vw,320px);background:#F7F9FA;border:1px solid #DFE4E9;border-radius:6px;overflow:hidden;color:#3C4247;transition:border-color 180ms ease" style-hover="border-color:#2E38FF;color:#3C4247">
+        <div style="aspect-ratio:3/4;background:#DFE4E9;overflow:hidden"><img src="https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_091854_8dd47f97-9394-4749-936f-d0517718333c.png" alt="Head of digital construction on site at dawn" style="width:100%;height:100%;object-fit:cover;display:block" /></div>
+        <div style="padding:20px 20px 24px">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#1F27D6;margin-bottom:8px">For digital &amp; IT</div>
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:19px;font-weight:600;line-height:1.3;color:#05070A;margin-bottom:8px;text-wrap:balance">Architecture your EA will sign</div>
+          <p style="font-size:14px;line-height:1.6;color:#555D64;margin:0">Open APIs, SSO, data governance and a true system of record.</p>
         </div>
       </a>
       </div>
@@ -167,75 +233,75 @@
   </div>
 </section>
 
-<section id="eve" data-screen-label="EVE (dark)" style="position:relative;background:#F7F9FA;color:#3C4247;overflow:hidden">
+<section id="eve" data-screen-label="EVE (dark)" style="position:relative;background:#05070A;color:#C6CDD4;overflow:hidden">
   <img data-parallax="true" src="https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_101710_72405a29-f030-4572-aa74-793a9152a997.png" alt="" style="position:absolute;inset:-6% 0;width:100%;height:112%;object-fit:cover;display:block;opacity:0.55" />
-  <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(247,249,250,0.92) 0%,rgba(247,249,250,0.78) 40%,rgba(247,249,250,0.5) 100%)"></div>
-  <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(247,249,250,0.85) 0%,rgba(247,249,250,0) 30%,rgba(247,249,250,0) 70%,rgba(247,249,250,0.85) 100%)"></div>
+  <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(5,7,10,0.92) 0%,rgba(5,7,10,0.78) 40%,rgba(5,7,10,0.5) 100%)"></div>
+  <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,7,10,0.85) 0%,rgba(5,7,10,0) 30%,rgba(5,7,10,0) 70%,rgba(5,7,10,0.85) 100%)"></div>
   <div style="position:relative;width:100%;margin:0;padding:96px 48px 88px">
     <div style="display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:64px;align-items:center">
       <div>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;color:#2E38FF;margin-bottom:26px">Meet EVE · AI orchestration layer</div>
-        <h2 style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:clamp(40px,4.8vw,72px);font-weight:300;line-height:0.98;letter-spacing:-0.015em;color:#05070A;margin:0;text-wrap:balance">Intelligence that <span style="font-family:Archivo,sans-serif;font-weight:200;font-stretch:118%;color:#1F27D6;letter-spacing:-0.01em">acts.</span><br />Not another place to look.</h2>
-        <div style="display:flex;flex-direction:column;margin-top:40px;border-top:1px solid #DFE4E9">
-          <div style="display:grid;grid-template-columns:56px minmax(0,1fr);gap:18px;align-items:baseline;padding:20px 0;border-bottom:1px solid #DFE4E9">
-            <div style="font-family:Archivo,sans-serif;font-weight:200;font-stretch:118%;font-size:34px;color:#2E38FF;line-height:1">01</div>
-            <div style="font-size:21px;line-height:1.45;color:#05070A"><span style="color:#05070A;font-weight:500">Connects</span> every drawing, cost, contract and site record you already have.</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;color:#6B72FF;margin-bottom:26px">Meet EVE · AI orchestration layer</div>
+        <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(40px,4.8vw,72px);font-weight:500;line-height:0.98;letter-spacing:-0.035em;color:#FFFFFF;margin:0;text-wrap:balance">Intelligence that <span style="font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:#9AA0FF;letter-spacing:-0.01em">acts.</span><br />Not another place to look.</h2>
+        <div style="display:flex;flex-direction:column;margin-top:40px;border-top:1px solid rgba(255,255,255,0.14)">
+          <div style="display:grid;grid-template-columns:56px minmax(0,1fr);gap:18px;align-items:baseline;padding:20px 0;border-bottom:1px solid rgba(255,255,255,0.14)">
+            <div style="font-family:'Instrument Serif',serif;font-style:italic;font-size:34px;color:#6B72FF;line-height:1">01</div>
+            <div style="font-size:21px;line-height:1.45;color:#F4F6F8"><span style="color:#FFFFFF;font-weight:500">Connects</span> every drawing, cost, contract and site record you already have.</div>
           </div>
-          <div style="display:grid;grid-template-columns:56px minmax(0,1fr);gap:18px;align-items:baseline;padding:20px 0;border-bottom:1px solid #DFE4E9">
-            <div style="font-family:Archivo,sans-serif;font-weight:200;font-stretch:118%;font-size:34px;color:#2E38FF;line-height:1">02</div>
-            <div style="font-size:21px;line-height:1.45;color:#05070A"><span style="color:#05070A;font-weight:500">Directs</span> a workforce of 20+ specialist agents — one coordinated team, not scattered tools.</div>
+          <div style="display:grid;grid-template-columns:56px minmax(0,1fr);gap:18px;align-items:baseline;padding:20px 0;border-bottom:1px solid rgba(255,255,255,0.14)">
+            <div style="font-family:'Instrument Serif',serif;font-style:italic;font-size:34px;color:#6B72FF;line-height:1">02</div>
+            <div style="font-size:21px;line-height:1.45;color:#F4F6F8"><span style="color:#FFFFFF;font-weight:500">Directs</span> a workforce of 20+ specialist agents — one coordinated team, not scattered tools.</div>
           </div>
-          <div style="display:grid;grid-template-columns:56px minmax(0,1fr);gap:18px;align-items:baseline;padding:20px 0;border-bottom:1px solid #DFE4E9">
-            <div style="font-family:Archivo,sans-serif;font-weight:200;font-stretch:118%;font-size:34px;color:#2E38FF;line-height:1">03</div>
-            <div style="font-size:21px;line-height:1.45;color:#05070A"><span style="color:#05070A;font-weight:500">Acts</span> only inside the workflows you approve. You stay in control — always.</div>
+          <div style="display:grid;grid-template-columns:56px minmax(0,1fr);gap:18px;align-items:baseline;padding:20px 0;border-bottom:1px solid rgba(255,255,255,0.14)">
+            <div style="font-family:'Instrument Serif',serif;font-style:italic;font-size:34px;color:#6B72FF;line-height:1">03</div>
+            <div style="font-size:21px;line-height:1.45;color:#F4F6F8"><span style="color:#FFFFFF;font-weight:500">Acts</span> only inside the workflows you approve. You stay in control — always.</div>
           </div>
         </div>
         <div style="margin-top:32px">
-          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#555D64;margin-bottom:10px">Autonomy, set by you</div>
-          <div style="display:flex;background:#F0F1F4;border:1px solid #DFE4E9;border-radius:4px;padding:3px;max-width:420px">
-            <div style="flex:1;text-align:center;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#555D64;padding:10px 8px">Manual</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#767E86;margin-bottom:10px">Autonomy, set by you</div>
+          <div style="display:flex;background:#191F26;border:1px solid #292C2E;border-radius:4px;padding:3px;max-width:420px">
+            <div style="flex:1;text-align:center;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#9AA3AB;padding:10px 8px">Manual</div>
             <div style="flex:1;text-align:center;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#05070A;background:#9AA0FF;border-radius:3px;padding:10px 8px">Copilot</div>
-            <div style="flex:1;text-align:center;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#555D64;padding:10px 8px">Autopilot</div>
+            <div style="flex:1;text-align:center;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#9AA3AB;padding:10px 8px">Autopilot</div>
           </div>
         </div>
       </div>
 
-      <div style="background:#FFFFFF;border:1px solid #1F27D6;border-radius:6px;overflow:hidden">
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 22px;border-bottom:1px solid #DFE4E9">
+      <div style="background:#0C141C;border:1px solid #1F27D6;border-radius:6px;overflow:hidden">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 22px;border-bottom:1px solid #1E262E">
           <div style="display:flex;align-items:center;gap:14px">
             {{ eveWave }}
             <div>
-              <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:18px;font-weight:300;letter-spacing:0.14em;color:#05070A;line-height:1">EVE</div>
-              <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:#1F27D6;margin-top:5px">AI orchestration layer</div>
+              <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:500;letter-spacing:0.14em;color:#FFFFFF;line-height:1">EVE</div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:#9AA0FF;margin-top:5px">AI orchestration layer</div>
             </div>
           </div>
-          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#555D64">Riverside · Tower A</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#767E86">Riverside · Tower A</div>
         </div>
         <div style="padding:28px 26px;display:flex;flex-direction:column;gap:22px">
           <div style="display:flex;gap:14px">
-            <div style="width:30px;height:30px;border-radius:999px;background:#F0F1F4;border:1px solid #DFE4E9;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:10px;color:#3C4247;flex:none">DN</div>
-            <div style="font-size:17px;line-height:1.55;color:#05070A;padding-top:4px">Draft an RFI for the clash between S-101 detail 3 and A-205 at the Level 12 façade bracket.</div>
+            <div style="width:30px;height:30px;border-radius:999px;background:#191F26;border:1px solid #292C2E;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:10px;color:#C6CDD4;flex:none">DN</div>
+            <div style="font-size:17px;line-height:1.55;color:#E6EAEE;padding-top:4px">Draft an RFI for the clash between S-101 detail 3 and A-205 at the Level 12 façade bracket.</div>
           </div>
-          <div style="background:#F7F9FA;border:1px solid #DFE4E9;border-radius:4px;padding:16px 18px">
+          <div style="background:#05070A;border:1px solid #1E262E;border-radius:4px;padding:16px 18px">
             <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px">
-              <div style="display:flex;align-items:center;gap:10px;font-size:17px;font-weight:500;color:#05070A">{{ agentPulse }}RFI Creation Agent</div>
-              <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#555D64">3 steps · 41s</div>
+              <div style="display:flex;align-items:center;gap:10px;font-size:17px;font-weight:500;color:#F4F6F8">{{ agentPulse }}RFI Creation Agent</div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#767E86">3 steps · 41s</div>
             </div>
-            <div style="display:flex;flex-direction:column;gap:10px;font-family:'JetBrains Mono',monospace;font-size:13px;color:#555D64">
-              <div style="display:flex;gap:10px;align-items:center"><span style="color:#137A42">✓</span>Pulled S-101 rev C and A-205 rev F from the CDE</div>
-              <div style="display:flex;gap:10px;align-items:center"><span style="color:#137A42">✓</span>Matched clash to coordination issue #212 (Revizto)</div>
-              <div style="display:flex;gap:10px;align-items:center"><span style="color:#2E38FF">→</span>Drafted RFI-128, assigned to structural engineer, due 12 Sep</div>
+            <div style="display:flex;flex-direction:column;gap:10px;font-family:'JetBrains Mono',monospace;font-size:13px;color:#B9C0C8">
+              <div style="display:flex;gap:10px;align-items:center"><span style="color:#4ADE80">✓</span>Pulled S-101 rev C and A-205 rev F from the CDE</div>
+              <div style="display:flex;gap:10px;align-items:center"><span style="color:#4ADE80">✓</span>Matched clash to coordination issue #212 (Revizto)</div>
+              <div style="display:flex;gap:10px;align-items:center"><span style="color:#6B72FF">→</span>Drafted RFI-128, assigned to structural engineer, due 12 Sep</div>
             </div>
           </div>
-          <div style="font-size:17px;line-height:1.55;color:#05070A">I've drafted RFI-128 and attached both revisions. Want me to issue it, or hold for your review?</div>
+          <div style="font-size:17px;line-height:1.55;color:#E6EAEE">I've drafted RFI-128 and attached both revisions. Want me to issue it, or hold for your review?</div>
           <div style="display:flex;gap:8px">
             <span style="font-size:15px;font-weight:500;color:#FFFFFF;background:#2E38FF;border-radius:4px;padding:12px 18px">Issue RFI-128</span>
-            <span style="font-size:15px;font-weight:500;color:#3C4247;background:transparent;border:1px solid #DFE4E9;border-radius:4px;padding:12px 18px">Review first</span>
+            <span style="font-size:15px;font-weight:500;color:#C6CDD4;background:transparent;border:1px solid #3C4247;border-radius:4px;padding:12px 18px">Review first</span>
           </div>
         </div>
-        <div style="padding:14px 22px;border-top:1px solid #DFE4E9;display:flex;align-items:center;gap:12px">
-          <div style="flex:1;font-size:14px;color:#555D64">Ask EVE anything about this project…</div>
-          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#2E38FF">Send</div>
+        <div style="padding:14px 22px;border-top:1px solid #1E262E;display:flex;align-items:center;gap:12px">
+          <div style="flex:1;font-size:14px;color:#767E86">Ask EVE anything about this project…</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#6B72FF">Send</div>
         </div>
       </div>
     </div>
@@ -243,17 +309,17 @@
     <div style="margin-top:104px">
       <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:32px;flex-wrap:wrap">
         <div style="max-width:760px">
-          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;color:#2E38FF;margin-bottom:22px">How EVE works</div>
-          <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:clamp(30px,3.4vw,48px);font-weight:300;line-height:1.04;letter-spacing:-0.015em;color:#05070A;text-wrap:balance">Everything you already have goes in. Finished work comes out.</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;color:#6B72FF;margin-bottom:22px">How EVE works</div>
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(30px,3.4vw,48px);font-weight:500;line-height:1.04;letter-spacing:-0.03em;color:#FFFFFF;text-wrap:balance">Everything you already have goes in. Finished work comes out.</div>
         </div>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#555D64;line-height:1.9;text-align:right">Read · Reason · Act<br />Nothing is sent without approval</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#767E86;line-height:1.9;text-align:right">Read · Reason · Act<br />Nothing is sent without approval</div>
       </div>
-      <div style="margin-top:40px;background:#F7F9FA;border:1px solid #DFE4E9;border-radius:8px;padding:28px 28px 20px">{{ eveFlow }}</div>
+      <div style="margin-top:40px;background:#0A0E14;border:1px solid #1E262E;border-radius:8px;padding:28px 28px 20px">{{ eveFlow }}</div>
         <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px 32px;margin-top:40px">
-          <div style="border-top:1px solid #DFE4E9;padding-top:14px"><div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:22px;font-weight:300;color:#05070A">Tango</div><div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#1F27D6;margin-top:6px">Opportunity · sites &amp; sourcing</div></div>
-          <div style="border-top:1px solid #DFE4E9;padding-top:14px"><div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:22px;font-weight:300;color:#05070A">Cash</div><div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#1F27D6;margin-top:6px">Execution · RFIs, variations, claims</div></div>
-          <div style="border-top:1px solid #DFE4E9;padding-top:14px"><div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:22px;font-weight:300;color:#05070A">Sophia</div><div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#1F27D6;margin-top:6px">Defects &amp; DLP · traceability</div></div>
-          <div style="border-top:1px solid #DFE4E9;padding-top:14px"><div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:22px;font-weight:300;color:#05070A">+ 17 functional agents</div><div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#555D64;margin-top:6px">Cost · QA · Safety · Programme · Design</div></div>
+          <div style="border-top:1px solid rgba(255,255,255,0.14);padding-top:14px"><div style="font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:500;color:#FFFFFF">Tango</div><div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#9AA0FF;margin-top:6px">Opportunity · sites &amp; sourcing</div></div>
+          <div style="border-top:1px solid rgba(255,255,255,0.14);padding-top:14px"><div style="font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:500;color:#FFFFFF">Cash</div><div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#9AA0FF;margin-top:6px">Execution · RFIs, variations, claims</div></div>
+          <div style="border-top:1px solid rgba(255,255,255,0.14);padding-top:14px"><div style="font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:500;color:#FFFFFF">Sophia</div><div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#9AA0FF;margin-top:6px">Defects &amp; DLP · traceability</div></div>
+          <div style="border-top:1px solid rgba(255,255,255,0.14);padding-top:14px"><div style="font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:500;color:#FFFFFF">+ 17 functional agents</div><div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#767E86;margin-top:6px">Cost · QA · Safety · Programme · Design</div></div>
         </div>
     </div>
 
@@ -265,7 +331,7 @@
     <div style="width:100%;margin:0;padding:0 48px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:24px">
       <div style="max-width:640px">
         <div style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;color:#1F27D6;margin-bottom:22px">The platform — keep scrolling</div>
-        <h2 style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:clamp(28px,3.2vw,42px);font-weight:300;line-height:1.1;letter-spacing:-0.015em;color:#05070A;margin:0;text-wrap:balance">Construction-native. Transparent. Built to act.</h2>
+        <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(28px,3.2vw,42px);font-weight:500;line-height:1.1;letter-spacing:-0.03em;color:#05070A;margin:0;text-wrap:balance">Construction-native. Transparent. Built to act.</h2>
       </div>
     </div>
     <div style="position:relative;margin-top:32px;width:100%">
@@ -274,19 +340,19 @@
         <div style="flex:none;width:calc(100vw - 96px);min-height:min(68vh,660px);background:#FFFFFF;border:1px solid #DFE4E9;border-radius:8px;overflow:hidden;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr)">
           <div style="padding:40px 44px 36px;display:flex;flex-direction:column">
             <div style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:#1F27D6;margin-bottom:18px">Construction-native</div>
-            <h3 style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:clamp(24px,2.6vw,36px);font-weight:300;line-height:1.1;letter-spacing:-0.015em;color:#05070A;margin:0;text-wrap:balance">Intelligence built from real buildings, not theory.</h3>
+            <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(24px,2.6vw,36px);font-weight:500;line-height:1.1;letter-spacing:-0.03em;color:#05070A;margin:0;text-wrap:balance">Intelligence built from real buildings, not theory.</h3>
             <p style="font-size:14.5px;line-height:1.6;color:#3C4247;margin:16px 0 0;text-wrap:pretty">EVE reads drawings, costs, contracts, programmes, site diaries and compliance records across every system you run — and understands how they relate. That understanding came from more than $5 billion of delivered high-density residential work.</p>
             <div style="margin-top:auto;padding-top:24px">
               <div style="border-top:1px solid #DFE4E9;padding:14px 0">
-                <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:15px;font-weight:400;color:#05070A;line-height:1.35">Grounded in $5B+ of delivered projects</div>
+                <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:600;color:#05070A;line-height:1.35">Grounded in $5B+ of delivered projects</div>
                 <div style="font-size:13.5px;line-height:1.55;color:#555D64;margin-top:4px">Benchmarked against real cost plans, programmes and defects from completed towers.</div>
               </div>
               <div style="border-top:1px solid #DFE4E9;padding:14px 0">
-                <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:15px;font-weight:400;color:#05070A;line-height:1.35">Reasons across drawing, cost, contract and programme</div>
+                <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:600;color:#05070A;line-height:1.35">Reasons across drawing, cost, contract and programme</div>
                 <div style="font-size:13.5px;line-height:1.55;color:#555D64;margin-top:4px">A clash in S-101 is connected to the RFI, the variation and the slab it will delay.</div>
               </div>
               <div style="border-top:1px solid #DFE4E9;padding:14px 0">
-                <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:15px;font-weight:400;color:#05070A;line-height:1.35">Reads 41 sources across your systems</div>
+                <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:600;color:#05070A;line-height:1.35">Reads 41 sources across your systems</div>
                 <div style="font-size:13.5px;line-height:1.55;color:#555D64;margin-top:4px">Site diaries, BOM feeds, photos and models in the same working memory as the register.</div>
               </div>
             </div>
@@ -298,49 +364,49 @@
         <div style="flex:none;width:calc(100vw - 96px);min-height:min(68vh,660px);background:#FFFFFF;border:1px solid #DFE4E9;border-radius:8px;overflow:hidden;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr)">
           <div style="padding:40px 44px 36px;display:flex;flex-direction:column">
             <div style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:#1F27D6;margin-bottom:18px">Trust and transparency</div>
-            <h3 style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:clamp(24px,2.6vw,36px);font-weight:300;line-height:1.1;letter-spacing:-0.015em;color:#05070A;margin:0;text-wrap:balance">Deploy AI you stay in control of.</h3>
+            <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(24px,2.6vw,36px);font-weight:500;line-height:1.1;letter-spacing:-0.03em;color:#05070A;margin:0;text-wrap:balance">Deploy AI you stay in control of.</h3>
             <p style="font-size:14.5px;line-height:1.6;color:#3C4247;margin:16px 0 0;text-wrap:pretty">Every agent works inside the permissions your organisation already has. Every answer traces back to the source file. And no write action reaches Procore, Aconex or Jobpac until a person says so.</p>
             <div style="margin-top:auto;padding-top:24px">
               <div style="border-top:1px solid #DFE4E9;padding:14px 0">
-                <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:15px;font-weight:400;color:#05070A;line-height:1.35">Human sign-off on every write action</div>
+                <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:600;color:#05070A;line-height:1.35">Human sign-off on every write action</div>
                 <div style="font-size:13.5px;line-height:1.55;color:#555D64;margin-top:4px">Cash drafts, assigns and attaches. Submitting to Procore waits for your approval, every time.</div>
               </div>
               <div style="border-top:1px solid #DFE4E9;padding:14px 0">
-                <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:15px;font-weight:400;color:#05070A;line-height:1.35">Every answer traced to source</div>
+                <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:600;color:#05070A;line-height:1.35">Every answer traced to source</div>
                 <div style="font-size:13.5px;line-height:1.55;color:#555D64;margin-top:4px">Drawing references, programme lines and cost codes are cited inline and open the real record.</div>
               </div>
               <div style="border-top:1px solid #DFE4E9;padding:14px 0">
-                <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:15px;font-weight:400;color:#05070A;line-height:1.35">Your project permissions, enforced</div>
+                <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:600;color:#05070A;line-height:1.35">Your project permissions, enforced</div>
                 <div style="font-size:13.5px;line-height:1.55;color:#555D64;margin-top:4px">Agents see exactly what the person asking can see. Roles carry straight through.</div>
               </div>
             </div>
           </div>
-          <div style="position:relative;background:#F7F9FA;border-left:1px solid #DFE4E9;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:28px">
-            <img src="assets/img/plate-cash-rfi-light.png" alt="Cash holding an RFI for review before submitting to Procore" style="width:100%;height:auto;max-height:100%;object-fit:contain;display:block" />
+          <div style="position:relative;background:#03050A;border-left:1px solid #1E262E;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:28px">
+            <img src="assets/img/plate-cash-rfi.png" alt="Cash holding an RFI for review before submitting to Procore" style="width:100%;height:auto;max-height:100%;object-fit:contain;display:block" />
           </div>
         </div>
         <div style="flex:none;width:calc(100vw - 96px);min-height:min(68vh,660px);background:#FFFFFF;border:1px solid #DFE4E9;border-radius:8px;overflow:hidden;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr)">
           <div style="padding:40px 44px 36px;display:flex;flex-direction:column">
             <div style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:#1F27D6;margin-bottom:18px">Built-in agents</div>
-            <h3 style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:clamp(24px,2.6vw,36px);font-weight:300;line-height:1.1;letter-spacing:-0.015em;color:#05070A;margin:0;text-wrap:balance">Agents that act inside the systems you already run.</h3>
+            <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(24px,2.6vw,36px);font-weight:500;line-height:1.1;letter-spacing:-0.03em;color:#05070A;margin:0;text-wrap:balance">Agents that act inside the systems you already run.</h3>
             <p style="font-size:14.5px;line-height:1.6;color:#3C4247;margin:16px 0 0;text-wrap:pretty">No new logins, no re-keying. EVE orchestrates the workforce; connectors carry the work into Procore, Aconex, Jobpac, Xero and the rest. Copilot by default. Autopilot only where you’ve approved it.</p>
             <div style="margin-top:auto;padding-top:24px">
               <div style="border-top:1px solid #DFE4E9;padding:14px 0">
-                <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:15px;font-weight:400;color:#05070A;line-height:1.35">Connectors to Procore, Aconex, Jobpac and more</div>
+                <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:600;color:#05070A;line-height:1.35">Connectors to Procore, Aconex, Jobpac and more</div>
                 <div style="font-size:13.5px;line-height:1.55;color:#555D64;margin-top:4px">Governed read and write. Keep the systems that work; Biltflow makes them behave as one.</div>
               </div>
               <div style="border-top:1px solid #DFE4E9;padding:14px 0">
-                <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:15px;font-weight:400;color:#05070A;line-height:1.35">Workflows triggered by project events</div>
+                <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:600;color:#05070A;line-height:1.35">Workflows triggered by project events</div>
                 <div style="font-size:13.5px;line-height:1.55;color:#555D64;margin-top:4px">A storm stops a pour; EVE logs the lost hours, tests the critical path, drafts the notice — then asks you.</div>
               </div>
               <div style="border-top:1px solid #DFE4E9;padding:14px 0">
-                <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:15px;font-weight:400;color:#05070A;line-height:1.35">Copilot by default, Autopilot when approved</div>
+                <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:600;color:#05070A;line-height:1.35">Copilot by default, Autopilot when approved</div>
                 <div style="font-size:13.5px;line-height:1.55;color:#555D64;margin-top:4px">Autonomy is a setting per workflow. Move the control and the same agent executes without waiting.</div>
               </div>
             </div>
           </div>
-          <div style="position:relative;background:#FFFFFF;border-left:1px solid #DFE4E9;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:28px">
-            <img src="assets/img/plate-eve-executing-light.png" alt="EVE executing a site-diary workflow and holding it for approval" style="width:100%;height:auto;max-height:100%;object-fit:contain;display:block" />
+          <div style="position:relative;background:#000004;border-left:1px solid #1E262E;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:28px">
+            <img src="assets/img/plate-eve-executing.png" alt="EVE executing a site-diary workflow and holding it for approval" style="width:100%;height:auto;max-height:100%;object-fit:contain;display:block" />
           </div>
         </div>
       </div>
@@ -353,69 +419,69 @@
     <div style="width:100%;margin:0;padding:0 48px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:24px">
       <div style="max-width:640px">
         <div style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;color:#1F27D6;margin-bottom:22px">Asset classes — keep scrolling</div>
-        <h2 style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:clamp(28px,3.2vw,42px);font-weight:300;line-height:1.1;letter-spacing:-0.015em;color:#05070A;margin:0;text-wrap:balance">Built for the buildings that are hardest to deliver.</h2>
+        <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(28px,3.2vw,42px);font-weight:500;line-height:1.1;letter-spacing:-0.03em;color:#05070A;margin:0;text-wrap:balance">Built for the buildings that are hardest to deliver.</h2>
       </div>
       <div style="text-align:right;flex:none">
-        <div data-hscroll-counter="true" style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:44px;font-weight:300;color:#05070A;line-height:1;font-variant-numeric:tabular-nums">01 / 04</div>
+        <div data-hscroll-counter="true" style="font-family:'Bricolage Grotesque',sans-serif;font-size:44px;font-weight:500;color:#05070A;line-height:1;font-variant-numeric:tabular-nums">01 / 04</div>
         <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#555D64;margin-top:10px">Asset classes</div>
       </div>
     </div>
     <div style="position:relative;margin-top:36px;width:100%">
       <div data-hscroll-progress="true" style="position:absolute;left:48px;top:0;height:3px;width:0;max-width:calc(100vw - 96px);background:#2E38FF;border-radius:2px;z-index:1"></div>
       <div data-hscroll-track="true" style="display:flex;gap:24px;padding:20px 48px 0;will-change:transform">
-        <a href="#hdr" style="display:block;position:relative;flex:none;width:calc(100vw - 96px);height:min(64vh,640px);border-radius:8px;overflow:hidden;background:#F7F9FA;color:#FFFFFF" style-hover="color:#FFFFFF">
+        <a href="#hdr" style="display:block;position:relative;flex:none;width:calc(100vw - 96px);height:min(64vh,640px);border-radius:8px;overflow:hidden;background:#05070A;color:#FFFFFF" style-hover="color:#FFFFFF">
           <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_091214_83fb9d30-31eb-4aff-8f60-1e64803d21e6.png" alt="Completed apartment façade beside a tower under construction" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block" />
-          <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,7,10,0) 38%,rgba(5,7,10,0.76) 100%)"></div>
+          <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,4,0) 40%,rgba(0,0,4,0.78) 100%)"></div>
           <div style="position:absolute;left:0;right:0;bottom:0;padding:40px 44px;display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:32px;align-items:end">
             <div>
               <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#9AA0FF;margin-bottom:14px">Asset class 01</div>
-              <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:clamp(28px,3.4vw,46px);font-weight:300;line-height:1.05;letter-spacing:-0.015em;color:#FFFFFF">High-density residential</div>
+              <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(28px,3.4vw,46px);font-weight:500;line-height:1.05;letter-spacing:-0.03em;color:#FFFFFF">High-density residential</div>
             </div>
             <div>
               <p style="font-size:15px;line-height:1.6;color:#C6CDD4;margin:0 0 16px">Class 2 towers, structures, façades and services at scale — hundreds of subcontract packages and staged commissioning in one live record.</p>
-              <span style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:14px;font-weight:400;color:#9AA0FF">Explore →</span>
+              <span style="font-family:'Bricolage Grotesque',sans-serif;font-size:14px;font-weight:600;color:#9AA0FF">Explore →</span>
             </div>
           </div>
         </a>
-        <a href="#btr" style="display:block;position:relative;flex:none;width:calc(100vw - 96px);height:min(64vh,640px);border-radius:8px;overflow:hidden;background:#F7F9FA;color:#FFFFFF" style-hover="color:#FFFFFF">
+        <a href="#btr" style="display:block;position:relative;flex:none;width:calc(100vw - 96px);height:min(64vh,640px);border-radius:8px;overflow:hidden;background:#05070A;color:#FFFFFF" style-hover="color:#FFFFFF">
           <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_091214_b5244e30-f3e2-49ff-9eb2-c8cc0e28df68.png" alt="Build-to-rent apartment lobby at dusk" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block" />
-          <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,7,10,0) 38%,rgba(5,7,10,0.76) 100%)"></div>
+          <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,4,0) 40%,rgba(0,0,4,0.78) 100%)"></div>
           <div style="position:absolute;left:0;right:0;bottom:0;padding:40px 44px;display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:32px;align-items:end">
             <div>
               <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#9AA0FF;margin-bottom:14px">Asset class 02</div>
-              <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:clamp(28px,3.4vw,46px);font-weight:300;line-height:1.05;letter-spacing:-0.015em;color:#FFFFFF">Build-to-rent</div>
+              <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(28px,3.4vw,46px);font-weight:500;line-height:1.05;letter-spacing:-0.03em;color:#FFFFFF">Build-to-rent</div>
             </div>
             <div>
               <p style="font-size:15px;line-height:1.6;color:#C6CDD4;margin:0 0 16px">One continuous record from feasibility into decades of operation — because the owner keeps the asset, and every design decision becomes an operating cost.</p>
-              <span style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:14px;font-weight:400;color:#9AA0FF">Explore →</span>
+              <span style="font-family:'Bricolage Grotesque',sans-serif;font-size:14px;font-weight:600;color:#9AA0FF">Explore →</span>
             </div>
           </div>
         </a>
-        <a href="#hotels" style="display:block;position:relative;flex:none;width:calc(100vw - 96px);height:min(64vh,640px);border-radius:8px;overflow:hidden;background:#F7F9FA;color:#FFFFFF" style-hover="color:#FFFFFF">
+        <a href="#hotels" style="display:block;position:relative;flex:none;width:calc(100vw - 96px);height:min(64vh,640px);border-radius:8px;overflow:hidden;background:#05070A;color:#FFFFFF" style-hover="color:#FFFFFF">
           <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_091214_7e6bcff6-ff08-49e4-90a7-c29053a4daa2.png" alt="Serviced apartment suite at blue hour" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block" />
-          <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,7,10,0) 38%,rgba(5,7,10,0.76) 100%)"></div>
+          <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,4,0) 40%,rgba(0,0,4,0.78) 100%)"></div>
           <div style="position:absolute;left:0;right:0;bottom:0;padding:40px 44px;display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:32px;align-items:end">
             <div>
               <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#9AA0FF;margin-bottom:14px">Asset class 03</div>
-              <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:clamp(28px,3.4vw,46px);font-weight:300;line-height:1.05;letter-spacing:-0.015em;color:#FFFFFF">Hotels &amp; serviced apartments</div>
+              <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(28px,3.4vw,46px);font-weight:500;line-height:1.05;letter-spacing:-0.03em;color:#FFFFFF">Hotels &amp; serviced apartments</div>
             </div>
             <div>
               <p style="font-size:15px;line-height:1.6;color:#C6CDD4;margin:0 0 16px">Brand standards, operator requirements, FF&amp;E and a fixed opening date — several fit-out specifications and compliance classes coordinated inside one tower.</p>
-              <span style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:14px;font-weight:400;color:#9AA0FF">Explore →</span>
+              <span style="font-family:'Bricolage Grotesque',sans-serif;font-size:14px;font-weight:600;color:#9AA0FF">Explore →</span>
             </div>
           </div>
         </a>
-        <a href="#mixed" style="display:block;position:relative;flex:none;width:calc(100vw - 96px);height:min(64vh,640px);border-radius:8px;overflow:hidden;background:#F7F9FA;color:#FFFFFF" style-hover="color:#FFFFFF">
+        <a href="#mixed" style="display:block;position:relative;flex:none;width:calc(100vw - 96px);height:min(64vh,640px);border-radius:8px;overflow:hidden;background:#05070A;color:#FFFFFF" style-hover="color:#FFFFFF">
           <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_091214_50fc7bd5-a8db-4271-9034-ee5596326253.png" alt="Mixed-use residential precinct at golden hour" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block" />
-          <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,7,10,0) 38%,rgba(5,7,10,0.76) 100%)"></div>
+          <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,4,0) 40%,rgba(0,0,4,0.78) 100%)"></div>
           <div style="position:absolute;left:0;right:0;bottom:0;padding:40px 44px;display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:32px;align-items:end">
             <div>
               <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#9AA0FF;margin-bottom:14px">Asset class 04</div>
-              <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:clamp(28px,3.4vw,46px);font-weight:300;line-height:1.05;letter-spacing:-0.015em;color:#FFFFFF">Mixed-use</div>
+              <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(28px,3.4vw,46px);font-weight:500;line-height:1.05;letter-spacing:-0.03em;color:#FFFFFF">Mixed-use</div>
             </div>
             <div>
               <p style="font-size:15px;line-height:1.6;color:#C6CDD4;margin:0 0 16px">Retail, residential and commercial stakeholders sharing one programme, one procurement pipeline and one handover.</p>
-              <span style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:14px;font-weight:400;color:#9AA0FF">Explore →</span>
+              <span style="font-family:'Bricolage Grotesque',sans-serif;font-size:14px;font-weight:600;color:#9AA0FF">Explore →</span>
             </div>
           </div>
         </a>
@@ -424,105 +490,105 @@
   </div>
 </section>
 
-<section id="knows" data-screen-label="The next project already knows" data-trace-section="true" style="position:relative;background:#F7F9FA;margin-top:0;overflow:hidden;color:#3C4247">
+<section id="knows" data-screen-label="The next project already knows" data-trace-section="true" style="position:relative;background:#05070A;margin-top:0;overflow:hidden;color:#C6CDD4">
   <img data-parallax="true" src="https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_091214_fee1785e-9adf-48a5-8046-54a6adcc044e.png" alt="" style="position:absolute;inset:-6% 0;width:100%;height:112%;object-fit:cover;display:block;opacity:0.22" />
-  <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(247,249,250,0.96) 0%,rgba(247,249,250,0.86) 55%,rgba(247,249,250,0.72) 100%)"></div>
+  <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(5,7,10,0.96) 0%,rgba(5,7,10,0.86) 55%,rgba(5,7,10,0.72) 100%)"></div>
   <div style="position:relative;max-width:none;margin:0 auto;padding:104px 48px 96px;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:80px;align-items:start">
     <div style="position:sticky;top:120px">
-      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;color:#2E38FF;margin-bottom:26px">Connecting what happened to why</div>
-      <h2 style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:clamp(40px,4.8vw,68px);font-weight:300;line-height:1.02;letter-spacing:-0.015em;color:#05070A;margin:0;text-wrap:balance">The next project already knows.</h2>
-      <p style="font-size:16px;line-height:1.65;color:#555D64;margin:32px 0 0;max-width:440px;text-wrap:pretty">A defect on Level 08 is never just a defect. Sophia traces it back through installation, subcontractor, product, supplier and procurement to the design decision that started it — then carries the lesson forward into the next feasibility, estimate and supplier call.</p>
-      <div style="display:flex;gap:16px;align-items:flex-start;margin-top:40px;padding-top:28px;border-top:1px solid #DFE4E9">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;color:#6B72FF;margin-bottom:26px">Connecting what happened to why</div>
+      <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(40px,4.8vw,68px);font-weight:500;line-height:1.02;letter-spacing:-0.03em;color:#FFFFFF;margin:0;text-wrap:balance">The next project already knows.</h2>
+      <p style="font-size:16px;line-height:1.65;color:#9AA3AB;margin:32px 0 0;max-width:440px;text-wrap:pretty">A defect on Level 08 is never just a defect. Sophia traces it back through installation, subcontractor, product, supplier and procurement to the design decision that started it — then carries the lesson forward into the next feasibility, estimate and supplier call.</p>
+      <div style="display:flex;gap:16px;align-items:flex-start;margin-top:40px;padding-top:28px;border-top:1px solid #1E262E">
         <div style="display:flex;align-items:center;gap:3px;height:22px;flex:none;margin-top:2px"><span style="width:2px;height:8px;background:#6B72FF;border-radius:1px"></span><span style="width:2px;height:16px;background:#6B72FF;border-radius:1px"></span><span style="width:2px;height:22px;background:#9AA0FF;border-radius:1px"></span><span style="width:2px;height:12px;background:#6B72FF;border-radius:1px"></span><span style="width:2px;height:18px;background:#6B72FF;border-radius:1px"></span></div>
         <div>
-          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#1F27D6;margin-bottom:8px">Sophia · Defects &amp; DLP agent</div>
-          <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:19px;font-weight:300;line-height:1.4;color:#05070A">“I’ve traced it back to the original design, product and installation. The next project already knows.”</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#9AA0FF;margin-bottom:8px">Sophia · Defects &amp; DLP agent</div>
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:19px;font-weight:500;line-height:1.4;color:#F4F6F8">“I’ve traced it back to the original design, product and installation. The next project already knows.”</div>
         </div>
       </div>
     </div>
 
     <div data-trace-timeline="true" style="position:relative;padding-top:6px">
-      <div style="position:absolute;left:11px;top:12px;bottom:0;width:1px;background:#F0F1F4"></div>
+      <div style="position:absolute;left:11px;top:12px;bottom:0;width:1px;background:#292C2E"></div>
       <div data-trace-spine="true" style="position:absolute;left:10px;top:12px;width:3px;height:0;background:linear-gradient(180deg,#FF3B30 0%,#6B72FF 60%,#19C26B 100%);border-radius:2px"></div>
           <div data-trace-step="0" style="position:relative;display:grid;grid-template-columns:24px minmax(0,1fr);gap:22px;align-items:start;padding:0 0 40px;opacity:0.32;transition:opacity 420ms ease">
-            <div data-trace-node="0" style="width:13px;height:13px;border-radius:999px;background:#F7F9FA;border:1px solid #DFE4E9;margin:6px 0 0 5px;transition:background 300ms ease,border-color 300ms ease"></div>
+            <div data-trace-node="0" style="width:13px;height:13px;border-radius:999px;background:#05070A;border:1px solid #3C4247;margin:6px 0 0 5px;transition:background 300ms ease,border-color 300ms ease"></div>
             <div>
               <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap">
-                <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:24px;font-weight:300;color:#B3261E;line-height:1.1">Defect</div>
-                <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#555D64">Where it surfaced</div>
+                <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:24px;font-weight:500;color:#FF7A70;line-height:1.1">Defect</div>
+                <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#767E86">Where it surfaced</div>
               </div>
-              <div style="font-size:15px;line-height:1.55;color:#3C4247;margin-top:8px">Waterproofing failure · Level 08, Apt 8.04</div>
+              <div style="font-size:15px;line-height:1.55;color:#C6CDD4;margin-top:8px">Waterproofing failure · Level 08, Apt 8.04</div>
             </div>
           </div>
           <div data-trace-step="1" style="position:relative;display:grid;grid-template-columns:24px minmax(0,1fr);gap:22px;align-items:start;padding:0 0 40px;opacity:0.32;transition:opacity 420ms ease">
-            <div data-trace-node="1" style="width:13px;height:13px;border-radius:999px;background:#F7F9FA;border:1px solid #DFE4E9;margin:6px 0 0 5px;transition:background 300ms ease,border-color 300ms ease"></div>
+            <div data-trace-node="1" style="width:13px;height:13px;border-radius:999px;background:#05070A;border:1px solid #3C4247;margin:6px 0 0 5px;transition:background 300ms ease,border-color 300ms ease"></div>
             <div>
               <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap">
-                <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:24px;font-weight:300;color:#05070A;line-height:1.1">Installation</div>
-                <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#555D64">← traced</div>
+                <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:24px;font-weight:500;color:#FFFFFF;line-height:1.1">Installation</div>
+                <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#767E86">← traced</div>
               </div>
-              <div style="font-size:15px;line-height:1.55;color:#3C4247;margin-top:8px">Membrane lapped against the fall · 14 Mar 2025</div>
+              <div style="font-size:15px;line-height:1.55;color:#C6CDD4;margin-top:8px">Membrane lapped against the fall · 14 Mar 2025</div>
             </div>
           </div>
           <div data-trace-step="2" style="position:relative;display:grid;grid-template-columns:24px minmax(0,1fr);gap:22px;align-items:start;padding:0 0 40px;opacity:0.32;transition:opacity 420ms ease">
-            <div data-trace-node="2" style="width:13px;height:13px;border-radius:999px;background:#F7F9FA;border:1px solid #DFE4E9;margin:6px 0 0 5px;transition:background 300ms ease,border-color 300ms ease"></div>
+            <div data-trace-node="2" style="width:13px;height:13px;border-radius:999px;background:#05070A;border:1px solid #3C4247;margin:6px 0 0 5px;transition:background 300ms ease,border-color 300ms ease"></div>
             <div>
               <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap">
-                <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:24px;font-weight:300;color:#05070A;line-height:1.1">Subcontractor</div>
-                <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#555D64">← traced</div>
+                <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:24px;font-weight:500;color:#FFFFFF;line-height:1.1">Subcontractor</div>
+                <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#767E86">← traced</div>
               </div>
-              <div style="font-size:15px;line-height:1.55;color:#3C4247;margin-top:8px">Package WP-02 · third repeat of the same pattern</div>
+              <div style="font-size:15px;line-height:1.55;color:#C6CDD4;margin-top:8px">Package WP-02 · third repeat of the same pattern</div>
             </div>
           </div>
           <div data-trace-step="3" style="position:relative;display:grid;grid-template-columns:24px minmax(0,1fr);gap:22px;align-items:start;padding:0 0 40px;opacity:0.32;transition:opacity 420ms ease">
-            <div data-trace-node="3" style="width:13px;height:13px;border-radius:999px;background:#F7F9FA;border:1px solid #DFE4E9;margin:6px 0 0 5px;transition:background 300ms ease,border-color 300ms ease"></div>
+            <div data-trace-node="3" style="width:13px;height:13px;border-radius:999px;background:#05070A;border:1px solid #3C4247;margin:6px 0 0 5px;transition:background 300ms ease,border-color 300ms ease"></div>
             <div>
               <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap">
-                <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:24px;font-weight:300;color:#05070A;line-height:1.1">Product</div>
-                <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#555D64">← traced</div>
+                <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:24px;font-weight:500;color:#FFFFFF;line-height:1.1">Product</div>
+                <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#767E86">← traced</div>
               </div>
-              <div style="font-size:15px;line-height:1.55;color:#3C4247;margin-top:8px">Sheet membrane substituted for liquid-applied</div>
+              <div style="font-size:15px;line-height:1.55;color:#C6CDD4;margin-top:8px">Sheet membrane substituted for liquid-applied</div>
             </div>
           </div>
           <div data-trace-step="4" style="position:relative;display:grid;grid-template-columns:24px minmax(0,1fr);gap:22px;align-items:start;padding:0 0 40px;opacity:0.32;transition:opacity 420ms ease">
-            <div data-trace-node="4" style="width:13px;height:13px;border-radius:999px;background:#F7F9FA;border:1px solid #DFE4E9;margin:6px 0 0 5px;transition:background 300ms ease,border-color 300ms ease"></div>
+            <div data-trace-node="4" style="width:13px;height:13px;border-radius:999px;background:#05070A;border:1px solid #3C4247;margin:6px 0 0 5px;transition:background 300ms ease,border-color 300ms ease"></div>
             <div>
               <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap">
-                <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:24px;font-weight:300;color:#05070A;line-height:1.1">Supplier</div>
-                <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#555D64">← traced</div>
+                <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:24px;font-weight:500;color:#FFFFFF;line-height:1.1">Supplier</div>
+                <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#767E86">← traced</div>
               </div>
-              <div style="font-size:15px;line-height:1.55;color:#3C4247;margin-top:8px">Substitution approved via RFI-088</div>
+              <div style="font-size:15px;line-height:1.55;color:#C6CDD4;margin-top:8px">Substitution approved via RFI-088</div>
             </div>
           </div>
           <div data-trace-step="5" style="position:relative;display:grid;grid-template-columns:24px minmax(0,1fr);gap:22px;align-items:start;padding:0 0 40px;opacity:0.32;transition:opacity 420ms ease">
-            <div data-trace-node="5" style="width:13px;height:13px;border-radius:999px;background:#F7F9FA;border:1px solid #DFE4E9;margin:6px 0 0 5px;transition:background 300ms ease,border-color 300ms ease"></div>
+            <div data-trace-node="5" style="width:13px;height:13px;border-radius:999px;background:#05070A;border:1px solid #3C4247;margin:6px 0 0 5px;transition:background 300ms ease,border-color 300ms ease"></div>
             <div>
               <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap">
-                <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:24px;font-weight:300;color:#05070A;line-height:1.1">Procurement</div>
-                <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#555D64">← traced</div>
+                <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:24px;font-weight:500;color:#FFFFFF;line-height:1.1">Procurement</div>
+                <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#767E86">← traced</div>
               </div>
-              <div style="font-size:15px;line-height:1.55;color:#3C4247;margin-top:8px">Award saved $41k against the estimate</div>
+              <div style="font-size:15px;line-height:1.55;color:#C6CDD4;margin-top:8px">Award saved $41k against the estimate</div>
             </div>
           </div>
           <div data-trace-step="6" style="position:relative;display:grid;grid-template-columns:24px minmax(0,1fr);gap:22px;align-items:start;padding:0 0 40px;opacity:0.32;transition:opacity 420ms ease">
-            <div data-trace-node="6" style="width:13px;height:13px;border-radius:999px;background:#F7F9FA;border:1px solid #DFE4E9;margin:6px 0 0 5px;transition:background 300ms ease,border-color 300ms ease"></div>
+            <div data-trace-node="6" style="width:13px;height:13px;border-radius:999px;background:#05070A;border:1px solid #3C4247;margin:6px 0 0 5px;transition:background 300ms ease,border-color 300ms ease"></div>
             <div>
               <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap">
-                <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:24px;font-weight:300;color:#1F27D6;line-height:1.1">Design</div>
-                <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#555D64">Where it started</div>
+                <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:24px;font-weight:500;color:#9AA0FF;line-height:1.1">Design</div>
+                <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#767E86">Where it started</div>
               </div>
-              <div style="font-size:15px;line-height:1.55;color:#3C4247;margin-top:8px">Detail D-317 · balcony threshold</div>
+              <div style="font-size:15px;line-height:1.55;color:#C6CDD4;margin-top:8px">Detail D-317 · balcony threshold</div>
             </div>
           </div>
       <div data-trace-step="7" style="position:relative;display:grid;grid-template-columns:24px minmax(0,1fr);gap:22px;align-items:start;opacity:0.32;transition:opacity 420ms ease">
-        <div data-trace-node="7" style="width:13px;height:13px;border-radius:999px;background:#F7F9FA;border:1px solid #DFE4E9;margin:6px 0 0 5px;transition:background 300ms ease,border-color 300ms ease"></div>
-        <div style="background:#FFFFFF;border:1px solid #155E38;border-radius:6px;padding:26px 28px">
+        <div data-trace-node="7" style="width:13px;height:13px;border-radius:999px;background:#05070A;border:1px solid #3C4247;margin:6px 0 0 5px;transition:background 300ms ease,border-color 300ms ease"></div>
+        <div style="background:#0C141C;border:1px solid #155E38;border-radius:6px;padding:26px 28px">
           <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:14px">
-            <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#1F27D6">→ Flows forward · Project 02 · Feasibility</div>
-            <span style="display:inline-flex;align-items:center;gap:7px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#137A42;background:#E3F6EA;border:1px solid #155E38;border-radius:3px;padding:6px 10px"><span style="width:5px;height:5px;border-radius:999px;background:#19C26B"></span>Flagged before it happens</span>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#9AA0FF">→ Flows forward · Project 02 · Feasibility</div>
+            <span style="display:inline-flex;align-items:center;gap:7px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#4ADE80;background:#0B2E1C;border:1px solid #155E38;border-radius:3px;padding:6px 10px"><span style="width:5px;height:5px;border-radius:999px;background:#19C26B"></span>Flagged before it happens</span>
           </div>
-          <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:22px;font-weight:300;color:#05070A;line-height:1.3;margin-bottom:12px">Detail D-317 flagged at design review. Liquid-applied membrane specified. Supplier substitution blocked.</div>
-          <div style="font-size:14px;line-height:1.6;color:#555D64">Every building creates knowledge. Biltflow remembers it — and every development makes the next one smarter, faster, with fewer repeated mistakes.</div>
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:500;color:#FFFFFF;line-height:1.3;margin-bottom:12px">Detail D-317 flagged at design review. Liquid-applied membrane specified. Supplier substitution blocked.</div>
+          <div style="font-size:14px;line-height:1.6;color:#9AA3AB">Every building creates knowledge. Biltflow remembers it — and every development makes the next one smarter, faster, with fewer repeated mistakes.</div>
         </div>
       </div>
     </div>
@@ -533,69 +599,70 @@
   <div style="width:100%;margin:0;padding:0 48px 44px">
   <div style="max-width:760px">
     <div style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;color:#1F27D6;margin-bottom:22px">Built for people who build</div>
-    <h2 style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:clamp(28px,3.2vw,42px);font-weight:300;line-height:1.1;letter-spacing:-0.015em;color:#05070A;margin:0;text-wrap:balance">This isn't about replacing construction expertise. It's about amplifying it.</h2>
+    <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(28px,3.2vw,42px);font-weight:500;line-height:1.1;letter-spacing:-0.03em;color:#05070A;margin:0;text-wrap:balance">This isn't about replacing construction expertise. It's about amplifying it.</h2>
     <p style="font-size:16px;line-height:1.65;color:#3C4247;margin:24px 0 0;max-width:600px;text-wrap:pretty">Your people get the intelligence, automation and digital workforce to do more — while everything your organisation learns along the way stays with the organisation.</p>
   </div>
   </div>
-  <div style="position:relative;overflow:hidden;background:#F7F9FA;height:70vh;min-height:480px">
+  <div style="position:relative;overflow:hidden;background:#05070A;height:70vh;min-height:480px">
     <img data-parallax="true" src="https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_091214_a120b673-291f-4937-aed7-3b2bfafeed13.png" alt="Experienced construction foreman on a completed rooftop at sunrise" style="position:absolute;inset:-6% 0;width:100%;height:112%;object-fit:cover;display:block" />
     <video ref="{{ videoRef2 }}" poster="https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_091214_a120b673-291f-4937-aed7-3b2bfafeed13.png" preload="none" playsInline="playsInline" loop="loop" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;background:transparent;opacity:0;transition:opacity 600ms ease" data-fade-video="true">
       <source src="assets/video/human-close.mp4" type="video/mp4" />
     </video>
     <sc-if value="{{ showPlay2 }}" hint-placeholder-val="{{ true }}">
-      <button onClick="{{ playVideo2 }}" style="position:absolute;inset:0;width:100%;height:100%;background:linear-gradient(180deg,rgba(5,7,10,0) 50%,rgba(5,7,10,0.62) 100%);border:none;cursor:pointer;display:flex;align-items:flex-end;justify-content:center;padding:0 48px 56px;text-align:center">
+      <button onClick="{{ playVideo2 }}" style="position:absolute;inset:0;width:100%;height:100%;background:linear-gradient(180deg,rgba(0,0,4,0) 50%,rgba(0,0,4,0.55) 100%);border:none;cursor:pointer;display:flex;align-items:flex-end;justify-content:center;padding:0 48px 56px;text-align:center">
         <span style="display:inline-flex;flex-direction:column;align-items:center;gap:18px">
           <span style="width:72px;height:72px;border-radius:999px;background:rgba(46,56,255,0.92);border:1px solid #9AA0FF;display:inline-flex;align-items:center;justify-content:center;transition:background 160ms ease"><svg viewBox="0 0 24 24" style="width:24px;height:24px;fill:#FFFFFF;margin-left:3px"><path d="M8 5v14l11-7z"></path></svg></span>
-          <span style="display:block;font-family:Archivo,sans-serif;font-stretch:112%;font-size:18px;font-weight:400;color:#FFFFFF">Hear from the people who build with it</span>
+          <span style="display:block;font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:600;color:#FFFFFF">Hear from the people who build with it</span>
           <span style="display:block;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#9AA0FF">Customer film · 2:10</span>
         </span>
       </button>
     </sc-if>
   </div>
-  <div style="background:#FFFFFF;border-top:1px solid #DFE4E9">
+  <div style="background:#000004;border-top:1px solid #1E262E">
     <div style="width:100%;box-sizing:border-box;padding:72px 48px 64px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0">
-      <div style="padding:8px 32px;border-left:1px solid #DFE4E9">
-        <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:clamp(40px,4vw,60px);font-weight:300;color:#05070A;line-height:1;font-variant-numeric:tabular-nums">13</div>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#555D64;margin-top:16px;line-height:1.7">Lifecycle stages,<br />one record</div>
+      <div style="padding:8px 32px;border-left:1px solid #1E262E">
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(40px,4vw,60px);font-weight:500;color:#FFFFFF;line-height:1;font-variant-numeric:tabular-nums">13</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#767E86;margin-top:16px;line-height:1.7">Lifecycle stages,<br />one record</div>
       </div>
-      <div style="padding:8px 32px;border-left:1px solid #DFE4E9">
-        <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:clamp(40px,4vw,60px);font-weight:300;color:#05070A;line-height:1;font-variant-numeric:tabular-nums">20+</div>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#555D64;margin-top:16px;line-height:1.7">Specialist agents,<br />one workforce</div>
+      <div style="padding:8px 32px;border-left:1px solid #1E262E">
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(40px,4vw,60px);font-weight:500;color:#FFFFFF;line-height:1;font-variant-numeric:tabular-nums">20+</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#767E86;margin-top:16px;line-height:1.7">Specialist agents,<br />one workforce</div>
       </div>
-      <div style="padding:8px 32px;border-left:1px solid #DFE4E9">
-        <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:clamp(40px,4vw,60px);font-weight:300;color:#05070A;line-height:1;font-variant-numeric:tabular-nums">90+</div>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#555D64;margin-top:16px;line-height:1.7">Systems it can<br />connect to</div>
+      <div style="padding:8px 32px;border-left:1px solid #1E262E">
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(40px,4vw,60px);font-weight:500;color:#FFFFFF;line-height:1;font-variant-numeric:tabular-nums">90+</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#767E86;margin-top:16px;line-height:1.7">Systems it can<br />connect to</div>
       </div>
-      <div style="padding:8px 32px;border-left:1px solid #DFE4E9">
-        <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:clamp(40px,4vw,60px);font-weight:300;color:#2E38FF;line-height:1;font-variant-numeric:tabular-nums">1</div>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#555D64;margin-top:16px;line-height:1.7">Operating system<br />for construction</div>
+      <div style="padding:8px 32px;border-left:1px solid #1E262E">
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(40px,4vw,60px);font-weight:500;color:#6B72FF;line-height:1;font-variant-numeric:tabular-nums">1</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#767E86;margin-top:16px;line-height:1.7">Operating system<br />for construction</div>
       </div>
     </div>
   </div>
 </section>
 
-<section id="walkthrough" data-screen-label="Closing CTA (dark)" data-close-section="true" style="position:relative;background:#FFFFFF;margin-top:0;overflow:hidden;border-top:1px solid #DFE4E9">
+<section id="walkthrough" data-screen-label="Closing CTA (dark)" data-close-section="true" style="position:relative;background:#000004;margin-top:0;overflow:hidden;border-top:1px solid #12181F">
   <div style="position:relative;max-width:none;margin:0 auto;padding:128px 48px 112px;text-align:center">
     <div style="position:relative;display:inline-block;margin:0 auto 34px">
-      <img src="assets/biltflow-logo-charcoal.svg" alt="Biltflow" style="height:52px;display:block" />
+      <img src="assets/biltflow-logo-white.svg" alt="Biltflow" style="height:52px;display:block" />
     </div>
-    <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.24em;text-transform:uppercase;color:#555D64;line-height:2">The AI-native operating system for<br />high-density residential development + construction</div>
-    <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:clamp(22px,2.8vw,32px);font-weight:300;color:#05070A;margin-top:44px;letter-spacing:0.02em">Build. Learn. Improve. Repeat.</div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.24em;text-transform:uppercase;color:#9AA3AB;line-height:2">The AI-native operating system for<br />high-density residential development + construction</div>
+    <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(22px,2.8vw,32px);font-weight:500;color:#FFFFFF;margin-top:44px;letter-spacing:0.02em">Build. Learn. Improve. Repeat.</div>
     <div style="display:flex;justify-content:center;flex-wrap:wrap;gap:12px;margin-top:40px">
-      <a href="#book" style="font-size:15px;font-weight:500;color:#FFFFFF;background:#2E38FF;border:1px solid #2E38FF;border-radius:4px;padding:14px 26px;display:block;transition:background 160ms ease" style-hover="background:#6B72FF;color:#05070A">Book a walkthrough</a>
-      <a href="#film" style="font-size:15px;font-weight:500;color:#05070A;background:transparent;border:1px solid #DFE4E9;border-radius:4px;padding:14px 26px;display:block;transition:border-color 160ms ease" style-hover="border-color:#1F27D6;color:#05070A">Watch the film</a>
+      <a href="#book" style="font-size:15px;font-weight:500;color:#FFFFFF;background:#2E38FF;border:1px solid #2E38FF;border-radius:4px;padding:14px 26px;display:block;transition:background 160ms ease" style-hover="background:#6B72FF;color:#FFFFFF">Book a walkthrough</a>
+      <a href="#film" style="font-size:15px;font-weight:500;color:#F4F6F8;background:transparent;border:1px solid #3C4247;border-radius:4px;padding:14px 26px;display:block;transition:border-color 160ms ease" style-hover="border-color:#9AA0FF;color:#F4F6F8">Watch the film</a>
     </div>
-    <div style="font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:0.2em;text-transform:uppercase;color:#2E38FF;margin-top:56px">biltflow.com</div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:0.2em;text-transform:uppercase;color:#6B72FF;margin-top:56px">biltflow.com</div>
   </div>
-  <footer style="position:relative;border-top:1px solid #DFE4E9;background:#FFFFFF">
+  <footer style="position:relative;border-top:1px solid #161C23;background:#000004">
     <div style="max-width:none;margin:0 auto;padding:30px 48px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:20px 40px">
       <div style="display:flex;flex-wrap:wrap;gap:24px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase">
-        <a href="#native" style="color:#555D64;position:relative;padding-bottom:4px;transition:color 160ms ease" style-hover="color:#05070A">Platform</a>
-        <a href="#who" style="color:#555D64;position:relative;padding-bottom:4px;transition:color 160ms ease" style-hover="color:#05070A">Who it's for</a>
-        <a href="#eve" style="color:#555D64;position:relative;padding-bottom:4px;transition:color 160ms ease" style-hover="color:#05070A">EVE</a>
-        <a href="#security" style="color:#555D64;position:relative;padding-bottom:4px;transition:color 160ms ease" style-hover="color:#05070A">Security</a>
-        <a href="#company" style="color:#555D64;position:relative;padding-bottom:4px;transition:color 160ms ease" style-hover="color:#05070A">Company</a>
-        <a href="#privacy" style="color:#555D64;position:relative;padding-bottom:4px;transition:color 160ms ease" style-hover="color:#05070A">Privacy</a>
+        <a href="#native" style="color:#767E86;position:relative;padding-bottom:4px;transition:color 160ms ease" style-hover="color:#FFFFFF">Platform</a>
+        <a href="#lifecycle" style="color:#767E86;position:relative;padding-bottom:4px;transition:color 160ms ease" style-hover="color:#FFFFFF">Lifecycle</a>
+        <a href="#who" style="color:#767E86;position:relative;padding-bottom:4px;transition:color 160ms ease" style-hover="color:#FFFFFF">Who it's for</a>
+        <a href="#eve" style="color:#767E86;position:relative;padding-bottom:4px;transition:color 160ms ease" style-hover="color:#FFFFFF">EVE</a>
+        <a href="#security" style="color:#767E86;position:relative;padding-bottom:4px;transition:color 160ms ease" style-hover="color:#FFFFFF">Security</a>
+        <a href="#company" style="color:#767E86;position:relative;padding-bottom:4px;transition:color 160ms ease" style-hover="color:#FFFFFF">Company</a>
+        <a href="#privacy" style="color:#767E86;position:relative;padding-bottom:4px;transition:color 160ms ease" style-hover="color:#FFFFFF">Privacy</a>
       </div>
       <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#3C4247">© 2026 Hunt Global Pte Ltd · Sydney · Powered by EVE</div>
     </div>
@@ -605,7 +672,7 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script>
 class Component extends DCLogic {
-  state = { showPlay: true, showPlay2: true, acc: { A: 0, B: 0, C: 0 }, stage: 0, scrolled: false };
+  state = { showPlay: true, showPlay2: true, acc: { A: 0, B: 0, C: 0 }, stage: 0 };
   stagePanelRef = React.createRef();
   stageImgRef = React.createRef();
   arcRef = React.createRef();
@@ -620,7 +687,7 @@ class Component extends DCLogic {
       const x = cx + r * Math.cos(a), y = cy + r * Math.sin(a);
       const lx = cx + (r + 22) * Math.cos(a), ly = cy + (r + 22) * Math.sin(a);
       return E('g', { key: n },
-        E('line', { x1: cx, y1: cy, x2: x, y2: y, stroke: 'rgba(5,7,10,0.08)', strokeWidth: 1 }),
+        E('line', { x1: cx, y1: cy, x2: x, y2: y, stroke: 'rgba(255,255,255,0.10)', strokeWidth: 1 }),
         E('circle', { cx: x, cy: y, r: size, fill: '#05070A', stroke: color, strokeWidth: 1.5 }),
         E('text', { x: lx, y: ly, fill: labelColor, textAnchor: lx > cx + 8 ? 'start' : (lx < cx - 8 ? 'end' : 'middle'), dominantBaseline: 'middle',
           style: { fontFamily: "'JetBrains Mono', monospace", fontSize: '11px', letterSpacing: '0.12em', textTransform: 'uppercase' } }, n),
@@ -631,18 +698,18 @@ class Component extends DCLogic {
     const pulse = (d, b) => E('circle', { cx, cy, r: 40, fill: 'none', stroke: '#2E38FF', strokeWidth: 1 },
       E('animate', { attributeName: 'r', from: 40, to: 250, dur: d, begin: b, repeatCount: 'indefinite' }),
       E('animate', { attributeName: 'opacity', from: 0.5, to: 0, dur: d, begin: b, repeatCount: 'indefinite' }));
-    const bars = [10, 20, 30, 18, 26, 14].map((hh, i) => E('rect', { key: i, x: cx - 22 + i * 8, y: cy - hh / 2, width: 3, height: hh, rx: 1, fill: i === 2 ? '#6B72FF' : '#2E38FF' },
+    const bars = [10, 20, 30, 18, 26, 14].map((hh, i) => E('rect', { key: i, x: cx - 22 + i * 8, y: cy - hh / 2, width: 3, height: hh, rx: 1, fill: i === 2 ? '#9AA0FF' : '#6B72FF' },
       E('animate', { attributeName: 'height', values: hh + ';' + (hh * 0.45) + ';' + hh, dur: (1.1 + i * 0.17) + 's', repeatCount: 'indefinite' }),
       E('animate', { attributeName: 'y', values: (cy - hh / 2) + ';' + (cy - hh * 0.225) + ';' + (cy - hh / 2), dur: (1.1 + i * 0.17) + 's', repeatCount: 'indefinite' })));
     return E('svg', { viewBox: '0 0 600 600', style: { width: 'min(100%, 560px)', height: 'auto', display: 'block', overflow: 'visible' } },
-      E('circle', { cx, cy, r: 150, fill: 'none', stroke: 'rgba(5,7,10,0.10)', strokeWidth: 1, strokeDasharray: '2 6' }),
-      E('circle', { cx, cy, r: 240, fill: 'none', stroke: 'rgba(5,7,10,0.08)', strokeWidth: 1, strokeDasharray: '2 6' }),
+      E('circle', { cx, cy, r: 150, fill: 'none', stroke: 'rgba(255,255,255,0.14)', strokeWidth: 1, strokeDasharray: '2 6' }),
+      E('circle', { cx, cy, r: 240, fill: 'none', stroke: 'rgba(255,255,255,0.10)', strokeWidth: 1, strokeDasharray: '2 6' }),
       pulse('4.2s', '0s'), pulse('4.2s', '2.1s'),
       E('g', null, E('animateTransform', { attributeName: 'transform', type: 'rotate', from: '0 ' + cx + ' ' + cy, to: '360 ' + cx + ' ' + cy, dur: '140s', repeatCount: 'indefinite' }), ...ring(func, 240, 5, '#555D64', '#9AA3AB', 0.22)),
-      ...ring(named, 150, 7, '#2E38FF', '#05070A', 0),
-      E('circle', { cx, cy, r: 46, fill: '#FFFFFF', stroke: '#2E38FF', strokeWidth: 1.5 }),
+      ...ring(named, 150, 7, '#6B72FF', '#FFFFFF', 0),
+      E('circle', { cx, cy, r: 46, fill: '#05070A', stroke: '#2E38FF', strokeWidth: 1.5 }),
       ...bars,
-      E('text', { x: cx, y: cy + 68, fill: '#05070A', textAnchor: 'middle', style: { fontFamily: "Archivo, sans-serif", fontSize: '16px', fontWeight: 500, letterSpacing: '0.16em' } }, 'EVE'));
+      E('text', { x: cx, y: cy + 68, fill: '#FFFFFF', textAnchor: 'middle', style: { fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: '16px', fontWeight: 500, letterSpacing: '0.16em' } }, 'EVE'));
   }
   // EVE flow: inputs → EVE (agents / reasoning / intelligence / governance) → outputs, with flow travelling along the connectors
   buildFlow() {
@@ -653,14 +720,14 @@ class Component extends DCLogic {
     const ys = [96, 200, 304, 408, 512], midY = 304;
     const mono = { fontFamily: "'JetBrains Mono', monospace", fontSize: '13px', letterSpacing: '0.06em' };
     const box = (x, y, w, label, key, arrow) => E('g', { key },
-      E('rect', { x: x - 6, y: y - 38, width: w + 12, height: 76, rx: 8, fill: '#E6E9ED' }),
-      E('rect', { x, y: y - 32, width: w, height: 64, rx: 5, fill: '#FFFFFF' }),
+      E('rect', { x: x - 6, y: y - 38, width: w + 12, height: 76, rx: 8, fill: '#161B22' }),
+      E('rect', { x, y: y - 32, width: w, height: 64, rx: 5, fill: '#F4F6F8' }),
       E('text', { x: x + (arrow ? 24 : w / 2), y: y + 1, fill: '#05070A', textAnchor: arrow ? 'start' : 'middle', dominantBaseline: 'middle', style: { fontFamily: "'Archivo', sans-serif", fontSize: '17px', fontWeight: 500 } }, (arrow ? '→  ' : '') + label));
     const wire = (d, i, dir) => E('g', { key: 'w' + dir + i },
-      E('path', { d, fill: 'none', stroke: '#C6CDD4', strokeWidth: 1.25, strokeLinejoin: 'round' }),
-      E('path', { d, fill: 'none', stroke: '#2E38FF', strokeWidth: 1.5, strokeDasharray: '5 9', strokeLinejoin: 'round', opacity: 0.9 },
+      E('path', { d, fill: 'none', stroke: '#3C4247', strokeWidth: 1.25, strokeLinejoin: 'round' }),
+      E('path', { d, fill: 'none', stroke: '#6B72FF', strokeWidth: 1.5, strokeDasharray: '5 9', strokeLinejoin: 'round', opacity: 0.9 },
         E('animate', { attributeName: 'stroke-dashoffset', from: 0, to: -28, dur: '1.4s', repeatCount: 'indefinite' })),
-      E('circle', { r: 3.5, fill: '#05070A' },
+      E('circle', { r: 3.5, fill: '#FFFFFF' },
         E('animateMotion', { path: d, dur: (2.6 + i * 0.35) + 's', begin: (i * 0.5) + 's', repeatCount: 'indefinite' }),
         E('animate', { attributeName: 'opacity', values: '0;1;1;0', keyTimes: '0;0.1;0.9;1', dur: (2.6 + i * 0.35) + 's', begin: (i * 0.5) + 's', repeatCount: 'indefinite' })));
     const leftWires = ys.map((y, i) => wire('M340 ' + y + ' L400 ' + y + ' L400 ' + midY + ' L460 ' + midY, i, 'l'));
@@ -670,20 +737,20 @@ class Component extends DCLogic {
       E('rect', { x: 484, y, width: 232, height: 80, rx: 5, fill: '#6B72FF', opacity: 0 },
         E('animate', { attributeName: 'opacity', values: '0;0.55;0', dur: '4.4s', begin: (i * 1.1) + 's', repeatCount: 'indefinite' })),
       E('text', { x: 600, y: y + 41, fill: '#FFFFFF', textAnchor: 'middle', dominantBaseline: 'middle', style: { fontFamily: "'Archivo', sans-serif", fontSize: '18px', fontWeight: 500 } }, s)); });
-    const bars = [8, 16, 24, 14, 20].map((hh, i) => E('rect', { key: 'b' + i, x: 528 + i * 7, y: 30 - hh / 2, width: 3, height: hh, rx: 1, fill: i === 2 ? '#6B72FF' : '#2E38FF' },
+    const bars = [8, 16, 24, 14, 20].map((hh, i) => E('rect', { key: 'b' + i, x: 528 + i * 7, y: 30 - hh / 2, width: 3, height: hh, rx: 1, fill: i === 2 ? '#9AA0FF' : '#6B72FF' },
       E('animate', { attributeName: 'height', values: hh + ';' + (hh * 0.4) + ';' + hh, dur: (1 + i * 0.16) + 's', repeatCount: 'indefinite' }),
       E('animate', { attributeName: 'y', values: (30 - hh / 2) + ';' + (30 - hh * 0.2) + ';' + (30 - hh / 2), dur: (1 + i * 0.16) + 's', repeatCount: 'indefinite' })));
     return E('svg', { viewBox: '0 0 1200 600', style: { width: '100%', height: 'auto', display: 'block', overflow: 'visible' } },
       ...leftWires, ...rightWires,
       ...inputs.map((t, i) => box(40, ys[i], 300, t, 'in' + i, false)),
       ...outputs.map((t, i) => box(860, ys[i], 300, t, 'out' + i, true)),
-      E('rect', { x: 460, y: 68, width: 280, height: 476, rx: 8, fill: '#FFFFFF', stroke: '#2E38FF', strokeWidth: 1 }),
+      E('rect', { x: 460, y: 68, width: 280, height: 476, rx: 8, fill: '#0C141C', stroke: '#2E38FF', strokeWidth: 1 }),
       ...rows,
       ...bars,
-      E('text', { x: 576, y: 31, fill: '#05070A', dominantBaseline: 'middle', style: { fontFamily: "Archivo, sans-serif", fontSize: '22px', fontWeight: 500, letterSpacing: '0.14em' } }, 'EVE'),
-      E('text', { x: 190, y: 570, fill: '#555D64', textAnchor: 'middle', style: mono }, 'WHAT YOU ALREADY HAVE'),
-      E('text', { x: 1010, y: 570, fill: '#555D64', textAnchor: 'middle', style: mono }, 'WHAT COMES BACK'),
-      E('text', { x: 600, y: 570, fill: '#555D64', textAnchor: 'middle', style: mono }, 'COPILOT · YOU APPROVE'));
+      E('text', { x: 576, y: 31, fill: '#FFFFFF', dominantBaseline: 'middle', style: { fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: '22px', fontWeight: 500, letterSpacing: '0.14em' } }, 'EVE'),
+      E('text', { x: 190, y: 570, fill: '#767E86', textAnchor: 'middle', style: mono }, 'WHAT YOU ALREADY HAVE'),
+      E('text', { x: 1010, y: 570, fill: '#767E86', textAnchor: 'middle', style: mono }, 'WHAT COMES BACK'),
+      E('text', { x: 600, y: 570, fill: '#767E86', textAnchor: 'middle', style: mono }, 'COPILOT · YOU APPROVE'));
   }
   // Noise → signal field: line icons drifting in slow circles around a live EVE bar (waveform, glow, sparkles)
   buildSignalField() {
@@ -746,7 +813,7 @@ class Component extends DCLogic {
         E('animate', { attributeName: 'ry', values: '260;320;260', dur: '9s', repeatCount: 'indefinite' })),
       E('ellipse', { cx: 800, cy: 200, rx: 420, ry: 200, fill: 'url(#fg-b)' },
         E('animate', { attributeName: 'cx', values: '900;700;900', dur: '17s', repeatCount: 'indefinite' })),
-      E('g', { stroke: 'rgba(5,7,10,0.05)', strokeWidth: 1 }, ...[0, 1, 2, 3, 4, 5, 6, 7].map(i => E('line', { key: i, x1: 200 * i, y1: 0, x2: 200 * i, y2: 900 }))));
+      E('g', { stroke: 'rgba(255,255,255,0.06)', strokeWidth: 1 }, ...[0, 1, 2, 3, 4, 5, 6, 7].map(i => E('line', { key: i, x1: 200 * i, y1: 0, x2: 200 * i, y2: 900 }))));
   }
   stageVals() {
     const st = this.stages[this.state.stage] || { n: '01', title: 'Site sourcing', desc: '', agent: 'Tango' };
@@ -757,9 +824,9 @@ class Component extends DCLogic {
       const on = i <= this.state.stage, active = i === this.state.stage;
       const x = cx + R * Math.cos(a), y = cy + R * Math.sin(a);
       const lx = cx + (R + 30) * Math.cos(a), ly = cy + (R + 30) * Math.sin(a);
-      return { cx: x, cy: y, r: active ? 9 : 5, fill: on ? '#2E38FF' : '#FFFFFF', stroke: on ? '#2E38FF' : '#9AA3AB',
+      return { cx: x, cy: y, r: active ? 9 : 5, fill: on ? '#2E38FF' : '#05070A', stroke: on ? '#6B72FF' : '#555D64',
         lx, ly, anchor: lx > cx + 12 ? 'start' : (lx < cx - 12 ? 'end' : 'middle'),
-        color: on ? '#05070A' : '#9AA3AB', label: (sg.title || '').replace('Site sourcing', 'Sourcing') };
+        color: on ? '#FFFFFF' : '#555D64', label: (sg.title || '').replace('Site sourcing', 'Sourcing') };
     });
     // SVG <text> can't take template holes — build the 13 ring labels directly
     const stageLabels = React.createElement('g', { key: 'labels' }, stageNodes.map((n, i) => React.createElement('text', {
@@ -791,14 +858,6 @@ class Component extends DCLogic {
   playVideo2 = () => this.startVideo(this.videoRef2, 'showPlay2');
   componentDidMount() {
     if (typeof window === 'undefined') return;
-    const navFrame = () => { const hero = document.getElementById('top'); const sc = hero ? hero.getBoundingClientRect().bottom <= 76 : document.body.getBoundingClientRect().top < -80; if (sc !== this.state.scrolled) this.setState({ scrolled: sc }); this._navRaf = requestAnimationFrame(navFrame); };
-    this._navRaf = requestAnimationFrame(navFrame);
-    const show = (el) => { el.style.opacity = '1'; el.style.transform = 'none'; };
-    if ('IntersectionObserver' in window) {
-      this._rio = new IntersectionObserver((entries) => entries.forEach(en => { if (en.isIntersecting) { show(en.target); this._rio.unobserve(en.target); } }), { threshold: 0.1 });
-      const scan = () => document.querySelectorAll('[data-reveal]:not([data-revealed])').forEach(el => { el.setAttribute('data-revealed', '1'); this._rio.observe(el); });
-      scan(); this._rscan = setInterval(scan, 600); setTimeout(() => clearInterval(this._rscan), 20000);
-    } else document.querySelectorAll('[data-reveal]').forEach(show);
     const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduce) return;
     this._onScroll = () => { if (this._update) { try { this._update(); } catch (err) { console.warn('scroll update', err); } } };
@@ -997,7 +1056,7 @@ class Component extends DCLogic {
           j.lastIdx = idx;
           j.nodes.forEach((n, i) => {
             const on = i <= idx;
-            const dark = false;
+            const dark = j.sec.id === 'lifecycle';
             n.style.background = on ? '#2E38FF' : (dark ? '#05070A' : '#FFFFFF');
             n.style.borderColor = on ? (dark ? '#6B72FF' : '#1F27D6') : (dark ? '#767E86' : '#9AA3AB');
             if (j.nodeTitles[i]) j.nodeTitles[i].style.color = dark ? (i === idx ? '#FFFFFF' : (on ? '#C6CDD4' : '#767E86')) : (i === idx ? '#05070A' : (on ? '#3C4247' : '#9AA3AB'));
@@ -1037,9 +1096,6 @@ class Component extends DCLogic {
     kick();
   }
   componentWillUnmount() {
-    if (this._navRaf) cancelAnimationFrame(this._navRaf);
-    if (this._rscan) clearInterval(this._rscan);
-    if (this._rio) this._rio.disconnect();
     if (this._onScroll) { window.removeEventListener('scroll', this._onScroll); window.removeEventListener('resize', this._onScroll); document.removeEventListener('scroll', this._onScroll, { capture: true }); }
     if (this._raf) cancelAnimationFrame(this._raf);
   }
@@ -1061,8 +1117,7 @@ class Component extends DCLogic {
     if (!this._flow) this._flow = this.buildFlow();
     if (!this._signal) this._signal = this.buildSignalField();
     if (!this._fglow) this._fglow = this.buildFooterGlow();
-    const stuck = this.state.scrolled;
-    const vals = { navPos: stuck ? 'fixed' : 'absolute', navTop: stuck ? '0' : 'auto', navBottom: stuck ? 'auto' : '0', navBg: stuck ? 'rgba(255,255,255,0.94)' : 'rgba(255,255,255,0.74)', navBorder: stuck ? '#DFE4E9' : 'rgba(223,228,233,0)', navBorderTop: stuck ? 'rgba(223,228,233,0)' : 'rgba(255,255,255,0.6)', eveWave, agentPulse, eveFlow: this._flow, signalField: this._signal, footerGlow: this._fglow, videoRef: this.videoRef, playVideo: this.playVideo, showPlay: this.state.showPlay, ...this.stageVals(),
+    const vals = { eveWave, agentPulse, eveFlow: this._flow, signalField: this._signal, footerGlow: this._fglow, videoRef: this.videoRef, playVideo: this.playVideo, showPlay: this.state.showPlay, ...this.stageVals(),
       videoRef2: this.videoRef2, playVideo2: this.playVideo2, showPlay2: this.state.showPlay2 };
     ['A', 'B', 'C'].forEach(k => [0, 1, 2].forEach(i => {
       const open = this.state.acc[k] === i;
