@@ -53,18 +53,24 @@
     });
 
         /* ---------- data-join-section: two half-clipped copies of one photo
-       converge into the whole image as the scrim/text cross-fade in ---------- */
+       converge into the whole image as a dark radial scrim + text cross-fade in.
+       NOTE: the old [data-join-scrim] (white wash) is force-hidden via display:none in the
+       HTML — the dead-but-hydrated component's own paintJoin() still writes to its opacity
+       on every scroll tick (a second, independent scroll handler this page ships with), so
+       don't reuse that element for anything visible. [data-join-dark-scrim] is a fresh node
+       that script never touches. ---------- */
     var joinSection = document.querySelector('[data-join-section]');
     if (joinSection) {
       var left = joinSection.querySelector('[data-join-layer="left"]');
       var right = joinSection.querySelector('[data-join-layer="right"]');
-      var scrim = joinSection.querySelector('[data-join-scrim]');
+      var darkScrim = joinSection.querySelector('[data-join-dark-scrim]');
       var text = joinSection.querySelector('[data-join-text]');
       var tl = gsap.timeline({
         scrollTrigger: { trigger: joinSection, start: 'top top', end: 'bottom bottom', scrub: reduce ? false : 0.4 }
       });
       if (left) tl.to(left, { clipPath: 'inset(0% 50% 0% 0%)', y: 0, ease: 'none' }, 0);
       if (right) tl.to(right, { clipPath: 'inset(0% 0% 0% 50%)', y: 0, ease: 'none' }, 0);
+      if (darkScrim) tl.to(darkScrim, { opacity: 1, ease: 'none' }, 0.15);
       if (text) tl.to(text, { opacity: 1, y: 0, ease: 'none' }, 0.22);
     }
 
