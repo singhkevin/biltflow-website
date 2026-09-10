@@ -41,15 +41,91 @@
      React tree, so unlike an inline style this cannot be reverted by a re-render. */
   html.bf-gl-on #top { background: transparent !important; }
 
-  /* v6: the bar is docked over the dark scene for its whole docked life, so it inverts. */
-  .bf-nav:not(.is-stuck) { background: rgba(5,7,10,0.62); border-top-color: rgba(154,160,255,0.20); border-bottom-color: transparent; }
-  .bf-nav:not(.is-stuck) a { color: #F7F9FA !important; }
-  .bf-nav:not(.is-stuck) a[href="#walkthrough"] { border-bottom-color: #F7F9FA; }
-  /* !important on all three: the light logo carries display:block in its own inline style
+  /* v6: the whole page sits on the scene now, so the bar is dark in BOTH states. */
+  .bf-nav { background: rgba(5,7,10,0.62) !important; border-top-color: rgba(154,160,255,0.20) !important; border-bottom-color: transparent !important; }
+  .bf-nav.is-stuck { background: rgba(5,7,10,0.88) !important; border-bottom-color: rgba(154,160,255,0.18) !important; }
+  .bf-nav a { color: #F7F9FA !important; }
+  .bf-nav a[href="#walkthrough"] { border-bottom-color: #F7F9FA !important; }
+  /* !important throughout: the light logo carries display:block in its own inline style
      (and React re-applies that style object on every render), which beats a plain rule. */
-  .bf-nav .bf-logo-dark { display: none !important; }
-  .bf-nav:not(.is-stuck) .bf-logo-dark { display: block !important; }
-  .bf-nav:not(.is-stuck) .bf-logo-light { display: none !important; }
+  .bf-nav .bf-logo-light { display: none !important; }
+  .bf-nav .bf-logo-dark { display: block !important; }
+
+  /* ══════════ v6 DARK THEME ══════════════════════════════════════════════════
+     The whole page sits on the live scene, so every light surface has to go dark.
+     These are ATTRIBUTE selectors on the inline style text rather than edits to the
+     markup, because support.js re-renders the tree and re-applies each node's style
+     object — an edited inline style gets reverted, but a selector keeps matching.
+
+     EVERY TOKEN IS LISTED TWICE, and that is the load-bearing detail. The served HTML
+     says `background:#FFFFFF`, but once React writes that style object back the browser
+     re-serialises the attribute through the CSSOM as `background: rgb(255, 255, 255)` —
+     different notation, and a space after the colon. Match only the hex and the theme
+     silently reverts to a white page the moment hydration lands. */
+
+  /* Sections and the footer go fully transparent so the canvas is the ground. */
+  section[style*="background:#FFFFFF"],
+  section[style*="background: rgb(255, 255, 255)"],
+  section[style*="background:#F7F9FA"],
+  section[style*="background: rgb(247, 249, 250)"],
+  footer[style*="background:#FFFFFF"],
+  footer[style*="background: rgb(255, 255, 255)"] { background: transparent !important; }
+
+  /* Panels and cards keep their affordance as a translucent dark plate — going
+     transparent here would dissolve every card into the animation. */
+  div[style*="background:#FFFFFF"],
+  div[style*="background: rgb(255, 255, 255)"],
+  div[style*="background:#F7F9FA"],
+  div[style*="background: rgb(247, 249, 250)"],
+  div[style*="background:#F0F1F4"],
+  div[style*="background: rgb(240, 241, 244)"],
+  div[style*="background:#F0F1FA"],
+  div[style*="background: rgb(240, 241, 250)"] {
+    background: rgba(8,11,30,0.58) !important;
+    border-color: rgba(154,160,255,0.16) !important;
+  }
+  /* …except the page wrapper, which carries background:#F7F9FA and would otherwise drop
+     a full-page plate over the scene. Matched by its font-family declaration. */
+  div[style*="font-family:Archivo,sans-serif"][style*="background:#F7F9FA"],
+  div[style*="font-family: Archivo, sans-serif"][style*="background: rgb(247, 249, 250)"] { background: transparent !important; }
+
+  /* Type. #2E38FF measures 2.35:1 on this ground and fails even 3:1, so accent text
+     steps to #9AA0FF — which already ships here. Body steps to #C6CDD4, likewise. */
+  [style*="color:#05070A"],
+  [style*="color: rgb(5, 7, 10)"] { color: #F7F9FA !important; }
+  [style*="color:#3C4247"],
+  [style*="color: rgb(60, 66, 71)"],
+  [style*="color:#555D64"],
+  [style*="color: rgb(85, 93, 100)"] { color: #C6CDD4 !important; }
+  [style*="color:#2E38FF"],
+  [style*="color: rgb(46, 56, 255)"],
+  [style*="color:#1F27D6"],
+  [style*="color: rgb(31, 39, 214)"] { color: #9AA0FF !important; }
+
+  /* Hairlines and dividers: the drafting rules that carry this layout. */
+  [style*="#DFE4E9"], [style*="rgb(223, 228, 233)"] { border-color: rgba(154,160,255,0.18) !important; }
+  div[style*="background:#DFE4E9"],
+  div[style*="background: rgb(223, 228, 233)"] { background: rgba(154,160,255,0.22) !important; }
+
+  /* The three photo scrims are authored as rgba(247,249,250,…) — they exist to LIGHTEN a
+     photograph so dark type reads on it. Now that the type is light they do precisely the
+     wrong thing, so each is inverted to the same shape in #05070A. A gradient cannot be
+     recoloured by an override, so the whole background-image is replaced. */
+  [style*="rgba(247,249,250,0.92)"], [style*="rgba(247, 249, 250, 0.92)"] {
+    background-image: linear-gradient(90deg, rgba(5,7,10,0.92) 0%, rgba(5,7,10,0.78) 40%, rgba(5,7,10,0.46) 100%) !important;
+  }
+  [style*="rgba(247,249,250,0.96)"], [style*="rgba(247, 249, 250, 0.96)"] {
+    background-image: linear-gradient(90deg, rgba(5,7,10,0.94) 0%, rgba(5,7,10,0.84) 55%, rgba(5,7,10,0.66) 100%) !important;
+  }
+  [style*="rgba(247,249,250,0.85)"], [style*="rgba(247, 249, 250, 0.85)"] {
+    background-image: linear-gradient(180deg, rgba(5,7,10,0.85) 0%, rgba(5,7,10,0) 30%, rgba(5,7,10,0) 70%, rgba(5,7,10,0.85) 100%) !important;
+  }
+
+  /* Filled accent buttons keep their fill and their white label. */
+  [style*="background:#2E38FF"],
+  [style*="background: rgb(46, 56, 255)"],
+  [style*="background:#1F27D6"],
+  [style*="background: rgb(31, 39, 214)"] { color: #FFFFFF !important; }
 
   /* ---- Asset-classes crossfade ----
      The page's own reveal IntersectionObserver (see the x-dc script below) matches

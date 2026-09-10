@@ -508,7 +508,9 @@ function start() {
   document.body.insertBefore(host, document.body.firstChild);
 
   let renderer, composer, camera, scene, built = null, compositePass, bloomPass;
-  const state = { visible: !document.hidden, onScreen: true, alive: true, paused: false, running: false };
+  let scrollP = 0;
+  const TRAVEL = 58;          // world units the camera covers over one full page scroll
+  const state = { visible: !document.hidden, alive: true, paused: false, running: false };
   let reduced = reduceMQ.matches;
   let t = 0, last = performance.now(), mode = null;
   const ptr = { x: 0, y: 0, tx: 0, ty: 0 };
@@ -520,6 +522,11 @@ function start() {
   const canvas = renderer.domElement;
   canvas.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;display:block;opacity:0;transition:opacity 600ms ease-out';
   host.appendChild(canvas);
+  // Readability scrim over the canvas, under the content. Ramps in past the hero so body
+  // copy never sits directly on a moving crest.
+  const scrim = document.createElement('div');
+  scrim.style.cssText = 'position:absolute;inset:0;pointer-events:none;background:#05070A;opacity:0';
+  host.appendChild(scrim);
 
   const dprCap = () => {
     const raw = Math.min(window.devicePixelRatio || 1, lowPower ? 1.25 : 1.5);
@@ -593,16 +600,34 @@ function start() {
       ptr.x += (ptr.tx - ptr.x) * 0.045;             // translate, NEVER rotate
       ptr.y += (ptr.ty - ptr.y) * 0.045;
     }
-    const dolly = 0.45 * Math.sin(t * Math.PI * 2 / 22);
+    // SCROLL DRIVE. The scene is the ground for the whole page now, so the camera travels
+    // up the core as you scroll: scroll progress 0..1 maps to a dolly along -Z. Because the
+    // vanishing point is set by principal-point offset rather than by aiming the camera,
+    // translating along the view axis cannot move it — the composition holds all the way
+    // down the page while the structure streams past.
+    const doc = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+    scrollP += (Math.min(1, Math.max(0, window.scrollY / doc)) - scrollP) * 0.08;  // damped
+    const dolly = -scrollP * TRAVEL + 0.28 * Math.sin(t * Math.PI * 2 / 26);
     camera.position.set(mode.eye[0] + ptr.x, mode.eye[1] + ptr.y, mode.eye[2] + dolly);
+
+    // Past the hero the page is dense with type, so the scene steps back rather than
+    // competing with it. Ramp over the first viewport-height of scroll.
+    if (built) {
+      const past = Math.min(1, window.scrollY / Math.max(1, window.innerHeight * 0.9));
+      built.material.uniforms.uGlobalAlpha.value = 1 - 0.62 * past;
+      scrim.style.opacity = (0.42 * past).toFixed(3);
+    }
     composer.render();
   }
 
   function updateRunState() {
-    const shouldRun = state.visible && state.onScreen && state.alive && !state.paused && !reduced && !!built;
+    // state.onScreen is deliberately NOT in this expression any more. The scene is the
+    // ground for every section, not a hero decoration, so it stays visible for the whole
+    // document; the tab-hidden and pause gates are what stop it.
+    const shouldRun = state.visible && state.alive && !state.paused && !reduced && !!built;
     if (shouldRun && !state.running) { last = performance.now(); renderer.setAnimationLoop(tick); state.running = true; }
     else if (!shouldRun && state.running) { renderer.setAnimationLoop(null); state.running = false; }
-    host.style.visibility = (state.onScreen && built) ? 'visible' : 'hidden';
+    host.style.visibility = built ? 'visible' : 'hidden';
   }
 
   /* Build off the critical path: ~2600 curve samples + shader links + render targets
@@ -660,50 +685,11 @@ function start() {
     }, 200);
   }, { passive: true });
 
-  // Gate on the hero. #assets and #people have no background of their own, so a
-  // permanently visible fixed canvas shows straight through them. This is also the
-  // single biggest perf win — the hero is on screen for ~15s of a 90s session.
-  //
-  // support.js replaces the whole <x-dc> subtree ~150ms in, so an observer bound to the
-  // first #top ends up watching a DETACHED node, which reports isIntersecting:false
-  // forever and pins the canvas to visibility:hidden. Observing once is not enough — we
-  // have to notice the swap and rebind. Re-observing is idempotent, so rebinding on any
-  // identity change is safe; it just has to be watched for longer than the swap window.
-  let observed = null;
-  // Entries queued before an unobserve() are still delivered, so an entry for the node
-  // that was just swapped out arrives AFTER the rebind and reports isIntersecting:false —
-  // which pinned the canvas hidden even with a perfectly good #top on screen. Only honour
-  // entries for the node we are currently watching.
-  const io = new IntersectionObserver(entries => {
-    for (const e of entries) {
-      if (e.target !== observed) continue;
-      state.onScreen = e.isIntersecting;
-      updateRunState();
-    }
-  }, { threshold: 0, rootMargin: '200px 0px' });
-
-  const seedFromRect = el => {
-    const r = el.getBoundingClientRect();
-    state.onScreen = r.bottom > -200 && r.top < window.innerHeight + 200;
-    updateRunState();
-  };
-  const rebind = () => {
-    const top = document.getElementById('top');
-    if (!top) {
-      // Mid-swap: the old node is gone and the new one has not landed. Do not sit on a
-      // stale false — the hero is the top of the page.
-      if (observed && !observed.isConnected) { state.onScreen = true; updateRunState(); }
-      return;
-    }
-    if (top === observed) return;
-    if (observed) io.unobserve(observed);
-    observed = top;
-    io.observe(top);
-    seedFromRect(top);          // don't wait a frame for the first callback
-  };
-  rebind();
-  const rebindTimer = setInterval(rebind, 250);
-  setTimeout(() => clearInterval(rebindTimer), 20000);
+  // NOTE: an IntersectionObserver on #top used to gate visibility here. It is gone on
+  // purpose — the scene is now the ground for the whole document, so there is nothing to
+  // gate on. (For the record, that observer needed rebinding: support.js swaps the <x-dc>
+  // subtree ~150ms in, and an observer left on the detached first #top reports
+  // isIntersecting:false forever, which pinned the canvas hidden.)
 
   window.__heroPause = v => { state.paused = v; updateRunState(); };
 }
