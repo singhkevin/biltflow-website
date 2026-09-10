@@ -418,10 +418,14 @@ function buildScene(mode, aspect) {
   for (let i = 0; i < mode.nStream; i++) {
     items.push({ cls: 'stream', pts: sampleStream(makeStream(i, Ra)), i });
   }
-  buildLevels(Rb).forEach(p => items.push({ cls: 'level', pts: p }));
+  // Thin the static drafting on phones — it was building all 847 curves there. The filter
+  // runs AFTER generation on purpose: the PRNG stream stays identical, so the phone shows a
+  // sparser cut of the SAME composition rather than a different one.
+  const keep = a => lowPower ? a.filter((_, i) => i % 2 === 0) : a;
+  keep(buildLevels(Rb)).forEach(p => items.push({ cls: 'level', pts: p }));
   buildCoreEdges().forEach(p => items.push({ cls: 'edge', pts: p }));
-  buildPartitions(Rb).forEach((p, i) => items.push({ cls: 'part', pts: p, i }));
-  buildTicks(Rb).forEach(p => items.push({ cls: 'tick', pts: p }));
+  keep(buildPartitions(Rb)).forEach((p, i) => items.push({ cls: 'part', pts: p, i }));
+  keep(buildTicks(Rb)).forEach(p => items.push({ cls: 'tick', pts: p }));
 
   const geos = [];
   const radial = lowPower ? 3 : 5;

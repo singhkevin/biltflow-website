@@ -159,6 +159,70 @@
   /* ---- v4 motion layer: trace timeline step ---- */
   [data-trace-step].is-in { opacity: 1 !important; }
 
+  /* ══════════ v6 RESPONSIVE ═════════════════════════════════════════════════
+     This export shipped with NO layout media queries at all — 16 hardcoded 48px
+     gutters and several 2- and 4-column grids. On a 381px viewport that put 159
+     elements outside the frame, including the whole nav: its links ran to x=503
+     and "Log in / Book a walkthrough" sat at 539-730, entirely off-screen.
+
+     Same technique as the dark theme, and the same rule about it: every token is
+     matched in BOTH notations, because the served HTML says
+     `grid-template-columns:minmax(0,7fr) minmax(0,5fr)` while the CSSOM re-writes
+     it after hydration as `grid-template-columns: minmax(0, 7fr) minmax(0, 5fr)`
+     — extra spaces AND `0` rewritten to `0px` INSIDE the functions. Match one form and
+     the layout silently reverts the moment hydration lands. */
+
+  @media (max-width: 767px) {
+    /* Gutters. Every horizontal padding on this page is the 2nd value of a
+       shorthand, so "px 48px" catches them all once 0 normalises to 0px. */
+    [style*="px 48px"], [style*=":0 48px"] { padding-left: 20px !important; padding-right: 20px !important; }
+
+    /* Two-column editorial grids stack. */
+    [style*="minmax(0,7fr) minmax(0,5fr)"], [style*="minmax(0px, 7fr) minmax(0px, 5fr)"],
+    [style*="minmax(0,5fr) minmax(0,7fr)"], [style*="minmax(0px, 5fr) minmax(0px, 7fr)"],
+    [style*="minmax(0,5fr) minmax(0,6fr)"], [style*="minmax(0px, 5fr) minmax(0px, 6fr)"]
+      { grid-template-columns: minmax(0,1fr) !important; gap: 28px !important; }
+
+    /* The stat row goes 4-up -> 2-up rather than four 90px columns. */
+    [style*="repeat(4,minmax(0,1fr))"], [style*="repeat(4, minmax(0px, 1fr))"]
+      { grid-template-columns: repeat(2, minmax(0,1fr)) !important; gap: 28px 20px !important; }
+
+    /* Numbered lists: the 56px number gutter is a third of a phone's width. */
+    [style*="56px minmax(0,1fr)"], [style*="56px minmax(0px, 1fr)"]
+      { grid-template-columns: 34px minmax(0,1fr) !important; }
+
+    /* A left rule and 32px indent make no sense once the column is stacked. */
+    [style*="justify-self:end"], [style*="justify-self: end"]
+      { justify-self: stretch !important; max-width: none !important;
+        border-left: 0 !important; padding-left: 0 !important;
+        border-top: 1px solid rgba(154,160,255,0.18) !important; padding-top: 24px !important; }
+
+    /* Nav: keep identity and the CTA, drop the section links (the page scrolls
+       to all of them anyway) and the secondary Log in. */
+    .bf-nav nav, .bf-nav a[href="#login"] { display: none !important; }
+    .bf-nav > div { padding: 0 16px !important; height: 58px !important; gap: 14px !important; }
+
+    /* The two diagrams are viewBox-scaled to their container, so at 375px their 17px
+       labels render at 3.9px effective — illegible, and invisible to an overflow audit
+       because the SVG itself fits. Give each a width floor that keeps type >=11px and
+       let its card scroll horizontally instead of shrinking the drawing to nothing.
+       1200-wide board @ 17px needs 780px to reach 11px; the 800-wide one is 1:1. */
+    #dc-root svg[viewBox="0 0 1200 600"] { min-width: 780px !important; }
+    #dc-root svg[viewBox="0 0 800 800"] { min-width: 800px !important; }
+    #dc-root div:has(> svg[viewBox]) { overflow-x: auto !important; overscroll-behavior-x: contain; }
+
+    /* Hero copy sits closer to the floor; 132px is a third of a phone hero. */
+    #top > div[style*="bottom:132px"], #top > div[style*="bottom: 132px"]
+      { bottom: 84px !important; }
+  }
+
+  @media (min-width: 768px) and (max-width: 1024px) {
+    [style*="px 48px"], [style*=":0 48px"] { padding-left: 32px !important; padding-right: 32px !important; }
+    [style*="repeat(4,minmax(0,1fr))"], [style*="repeat(4, minmax(0px, 1fr))"]
+      { grid-template-columns: repeat(2, minmax(0,1fr)) !important; gap: 32px !important; }
+    .bf-nav > div { padding: 0 28px !important; gap: 22px !important; }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .bf-nav, [data-reveal], [data-trace-step] { transition: none !important; }
   }
