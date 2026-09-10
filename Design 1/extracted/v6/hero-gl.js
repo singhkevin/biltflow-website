@@ -531,7 +531,11 @@ function start() {
   document.body.insertBefore(host, document.body.firstChild);
 
   let renderer, composer, camera, scene, built = null, compositePass, bloomPass;
-  let scrollP = 0;
+  let scrollP = 0, scrimOpacity = -1;
+  // Cached so the render loop never reads layout. Content height changes as sections
+  // reveal, so refresh on resize and on a slow interval rather than every frame.
+  let docScroll = 1;
+  const measureDoc = () => { docScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight); };
   // 10x the journey. The tower is now ~900 units tall and fog hides everything past 104,
   // so structure emerges continuously out of the dark for the whole scroll instead of the
   // camera running out of building partway down the page.
@@ -631,28 +635,44 @@ function start() {
     // vanishing point is set by principal-point offset rather than by aiming the camera,
     // translating along the view axis cannot move it — the composition holds all the way
     // down the page while the structure streams past.
-    const doc = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-    scrollP += (Math.min(1, Math.max(0, window.scrollY / doc)) - scrollP) * 0.08;  // damped
+    // scrollHeight is CACHED, never read here. Reading it forces a synchronous layout, and
+    // doing that every frame — right after writing scrim.style.opacity the frame before —
+    // is textbook layout thrash. With Lenis stepped from the same tick and lagSmoothing(0),
+    // that thrash lands directly on the smooth scroll as stutter.
+    const y = window.scrollY;
+    scrollP += (Math.min(1, Math.max(0, y / docScroll)) - scrollP) * 0.08;  // damped
     const dolly = -scrollP * TRAVEL + 0.28 * Math.sin(t * Math.PI * 2 / 26);
     camera.position.set(mode.eye[0] + ptr.x, mode.eye[1] + ptr.y, mode.eye[2] + dolly);
 
     // Past the hero the page is dense with type, so the scene steps back rather than
     // competing with it. Ramp over the first viewport-height of scroll.
     if (built) {
-      const past = Math.min(1, window.scrollY / Math.max(1, window.innerHeight * 0.9));
+      const past = Math.min(1, y / Math.max(1, window.innerHeight * 0.9));
       built.material.uniforms.uGlobalAlpha.value = 1 - 0.62 * past;
-      scrim.style.opacity = (0.42 * past).toFixed(3);
+      // Only touch the DOM when the value actually moves — a style write every frame
+      // invalidates layout for everything that reads after it.
+      const sv = Math.round(past * 420) / 1000;
+      if (sv !== scrimOpacity) { scrimOpacity = sv; scrim.style.opacity = String(sv); }
     }
     composer.render();
   }
+
+  // Lenis is stepped from the GSAP ticker with lagSmoothing(0), so a second, independent
+  // rAF (which is what renderer.setAnimationLoop gives you) lands in an arbitrary order
+  // relative to Lenis every frame and shows up as scroll jitter. Share the tick when GSAP
+  // is present; fall back to setAnimationLoop when it is not.
+  const gsapTick = () => tick(performance.now());
+  const useGsap = () => typeof window.gsap !== 'undefined' && window.gsap.ticker;
+  function startLoop() { if (useGsap()) window.gsap.ticker.add(gsapTick); else renderer.setAnimationLoop(tick); }
+  function stopLoop() { if (useGsap()) window.gsap.ticker.remove(gsapTick); else renderer.setAnimationLoop(null); }
 
   function updateRunState() {
     // state.onScreen is deliberately NOT in this expression any more. The scene is the
     // ground for every section, not a hero decoration, so it stays visible for the whole
     // document; the tab-hidden and pause gates are what stop it.
     const shouldRun = state.visible && state.alive && !state.paused && !reduced && !!built;
-    if (shouldRun && !state.running) { last = performance.now(); renderer.setAnimationLoop(tick); state.running = true; }
-    else if (!shouldRun && state.running) { renderer.setAnimationLoop(null); state.running = false; }
+    if (shouldRun && !state.running) { last = performance.now(); measureDoc(); startLoop(); state.running = true; }
+    else if (!shouldRun && state.running) { stopLoop(); state.running = false; }
     host.style.visibility = built ? 'visible' : 'hidden';
   }
 
@@ -695,7 +715,7 @@ function start() {
 
   canvas.addEventListener('webglcontextlost', e => {
     e.preventDefault();                       // omit this and contextrestored never fires
-    renderer.setAnimationLoop(null); state.running = false;
+    stopLoop(); state.running = false;
     host.style.visibility = 'hidden';
     window.__heroGl = 'lost';
   });
@@ -708,6 +728,7 @@ function start() {
       renderer.setSize(window.innerWidth, window.innerHeight);
       composer.setSize(window.innerWidth, window.innerHeight);   // BOTH. The source ships only the first.
       applyCamera();
+      measureDoc();
     }, 200);
   }, { passive: true });
 
@@ -716,6 +737,9 @@ function start() {
   // gate on. (For the record, that observer needed rebinding: support.js swaps the <x-dc>
   // subtree ~150ms in, and an observer left on the detached first #top reports
   // isIntersecting:false forever, which pinned the canvas hidden.)
+
+  measureDoc();
+  setInterval(measureDoc, 1500);   // cheap, and off the render path
 
   window.__heroPause = v => { state.paused = v; updateRunState(); };
 }
