@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Biltflow — The AI-native operating system for construction</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="crossorigin" />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=JetBrains+Mono:wght@300..700&display=swap" rel="stylesheet" />
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #F7F9FA; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+  a { color: #1F27D6; text-decoration: none; }
+  a:hover { color: #2E38FF; }
+  ::selection { background: #2E38FF; color: #FFFFFF; }
+  img { max-width: 100%; }
+  @keyframes bfWave { 0%, 100% { transform: scaleY(0.35); } 50% { transform: scaleY(1); } }
+  @keyframes bfPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+  @media (prefers-reduced-motion: reduce) { [data-eve-wave] span, [data-eve-pulse] { animation: none !important; } }
+
+  /* ---- v4 motion layer: nav scroll-state ---- */
+  /* Docked to the bottom of the viewport over the hero film, then rises to the top.
+     Always position:fixed so the two states differ only by transform — that's what makes
+     the rise animatable (bottom -> top can't be tweened across a position change). */
+  /* svh, NOT vh. vh is the LARGE viewport height, so on mobile the docked bar is pushed
+     below the visible area whenever the URL bar is showing — it gets restyled while off
+     screen. With #top at min-height:100svh and the transform on svh, the bar lands exactly
+     on the hero's own bottom edge on every device instead of straddling onto the next
+     section, which is what it did while #top was aspect-ratio:16/9. */
+  .bf-nav { position: fixed; top: 0; bottom: auto; transform: translateY(calc(100svh - 100%)); background: rgba(255,255,255,0.74); border-top: 1px solid rgba(255,255,255,0.6); border-bottom: 1px solid rgba(223,228,233,0); }
+  .bf-nav.is-stuck { transform: translateY(0); background: rgba(255,255,255,0.94); border-top-color: rgba(223,228,233,0); border-bottom-color: #DFE4E9; }
+  /* #top's fallback gradient is OPAQUE and #top is positioned AFTER the canvas host in
+     DOM order, so it paints straight over the canvas. hero-gl.js adds .bf-gl-on to <html>
+     once a frame has actually presented; only then do we clear it. <html> is outside the
+     React tree, so unlike an inline style this cannot be reverted by a re-render. */
+  html.bf-gl-on #top { background: transparent !important; }
+
+  /* v6: the bar is docked over the dark scene for its whole docked life, so it inverts. */
+  .bf-nav:not(.is-stuck) { background: rgba(5,7,10,0.62); border-top-color: rgba(154,160,255,0.20); border-bottom-color: transparent; }
+  .bf-nav:not(.is-stuck) a { color: #F7F9FA !important; }
+  .bf-nav:not(.is-stuck) a[href="#walkthrough"] { border-bottom-color: #F7F9FA; }
+  /* !important on all three: the light logo carries display:block in its own inline style
+     (and React re-applies that style object on every render), which beats a plain rule. */
+  .bf-nav .bf-logo-dark { display: none !important; }
+  .bf-nav:not(.is-stuck) .bf-logo-dark { display: block !important; }
+  .bf-nav:not(.is-stuck) .bf-logo-light { display: none !important; }
+
+  /* ---- Asset-classes crossfade ----
+     The page's own reveal IntersectionObserver (see the x-dc script below) matches
+     '[data-screen-label] > div > *', which is exactly this stack, and force-writes inline
+     opacity:1 on every layer — so all four sat visible at once and the image never changed.
+     Its staggered 'transform 0.9s' transition also rubber-banded the per-tick parallax.
+     Drive the active layer by class with !important so an inline write can't win. */
+  [data-classlist-bg] { opacity: 0 !important; transition: opacity 620ms cubic-bezier(0.16,1,0.3,1) !important; transition-delay: 0ms !important; }
+  [data-classlist-bg].is-live { opacity: 1 !important; }
+
+  /* ---- v4 motion layer: reveal-on-scroll (data-reveal already ships its own transition; this just flips the end state) ---- */
+  [data-reveal="true"].is-in { opacity: 1 !important; transform: translateY(0) !important; }
+
+  /* ---- v4 motion layer: trace timeline step ---- */
+  [data-trace-step].is-in { opacity: 1 !important; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bf-nav, [data-reveal], [data-trace-step] { transition: none !important; }
+  }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+</helmet>
+
+<div style="font-family:Archivo,sans-serif;background:#F7F9FA;color:#3C4247">
+
+<!-- The WebGL scene is NOT mounted in here. hero-gl.js parents a fixed, body-level host
+     outside #dc-root, because anything reachable by the hydration swap or by the reveal
+     IntersectionObserver gets its style rewritten (a <canvas> child would match that
+     observer's '[data-screen-label] > div > *' and be force-written to opacity:1).
+     min-height uses svh, not vh/dvh — vh animates on mobile URL-bar toggle. -->
+<!-- The gradient is the FALLBACK GROUND, not decoration: it is what shows when the scene
+     refuses to start (no WebGL, saveData, <520px tall, JS off). It approximates the field
+     the composite pass builds, so those paths get a coherent dark hero instead of white
+     type and a dark scrim floating on #F7F9FA. The canvas paints over it when present. -->
+<section id="top" data-screen-label="Hero" style="position:relative;width:100%;min-height:100svh;overflow:hidden;background:radial-gradient(125% 95% at 60% 62%, #16205C 0%, #0A0E36 42%, #05070A 100%)">
+  <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(5,7,10,0) 44%,rgba(5,7,10,0.52) 62%,rgba(5,7,10,0.80) 78%)"></div>
+  <div style="position:absolute;left:0;right:0;bottom:132px;z-index:1;padding:0 48px">
+    <div style="display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:40px 80px;align-items:end">
+      <div>
+        <div style="display:flex;align-items:center;gap:12px;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.24em;text-transform:uppercase;color:#9AA0FF"><span style="width:10px;height:10px;border-radius:2px;background:#2E38FF;flex:none"></span>AI-native construction operating system</div>
+        <h1 style="font-family:Archivo,sans-serif;font-weight:200;font-stretch:118%;font-size:clamp(40px,5vw,84px);line-height:1.04;letter-spacing:-0.015em;color:#F7F9FA;margin:28px 0 0;text-wrap:balance">The tools changed. The way construction operates didn’t. <span style="color:#6B72FF">Until now.</span></h1>
+      </div>
+      <div style="border-left:1px solid rgba(154,160,255,0.24);padding-left:32px;max-width:460px;justify-self:end;width:100%">
+        <p style="font-size:17px;line-height:1.6;color:#9AA0FF;margin:0;text-wrap:pretty">Biltflow connects the tools you already run and puts a construction-trained AI workforce across the whole lifecycle — grounded in $5B+ of delivered high-density residential work.</p>
+        <div style="display:flex;align-items:center;gap:22px;margin-top:28px;flex-wrap:wrap">
+          <a href="#walkthrough" style="font-size:15px;font-weight:500;color:#FFFFFF;background:#2E38FF;border-radius:999px;padding:14px 24px;display:inline-flex;align-items:center;gap:12px;white-space:nowrap;transition:background 160ms ease" style-hover="background:#1F27D6;color:#FFFFFF">Book a walkthrough <span style="font-size:17px;line-height:1">→</span></a>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#9AA0FF;line-height:1.7">NSW · QLD · VIC<br />Hunt Global Pte Ltd</div>
+        </div>
+      </div>
+    </div>
+  </div>
+<header data-screen-label="Nav" data-nav="true" class="bf-nav" style="left:0;right:0;z-index:30;backdrop-filter:blur(12px);transition:transform 620ms cubic-bezier(0.16,1,0.3,1),background 260ms ease,border-color 260ms ease">
+  <div style="padding:0 48px;height:76px;display:flex;align-items:center;gap:36px;min-width:0">
+    <a href="#top" style="display:block;flex:none"><img class="bf-logo-light" src="assets/biltflow-logo-charcoal.svg" alt="Biltflow" style="height:22px;display:block" /><img class="bf-logo-dark" src="assets/biltflow-logo-white.svg" alt="Biltflow" style="height:22px" /></a>
+    <nav style="display:flex;gap:28px;flex:none;white-space:nowrap;font-size:14px;font-weight:500;margin-left:12px">
+      <a href="#who" style="color:#05070A" style-hover="color:#2E38FF">Who it's for</a>
+      <a href="#eve" style="color:#05070A" style-hover="color:#2E38FF">EVE</a>
+      <a href="#native" style="color:#05070A" style-hover="color:#2E38FF">Platform</a>
+      <a href="#assets" style="color:#05070A" style-hover="color:#2E38FF">Asset classes</a>
+    </nav>
+    <div style="display:flex;gap:28px;align-items:center;margin-left:auto;flex:none;white-space:nowrap;font-size:14px;font-weight:500">
+      <a href="#login" style="color:#05070A" style-hover="color:#2E38FF">Log in</a>
+      <a href="#walkthrough" style="color:#05070A;border-bottom:1px solid #05070A;padding-bottom:3px;transition:color 160ms ease,border-color 160ms ease" style-hover="color:#2E38FF;border-color:#2E38FF">Book a walkthrough</a>
+    </div>
+  </div>
+</header>
+</section>
+
+<section data-screen-label="Statement" style="padding:120px 48px 128px;background:#FFFFFF">
+  <div data-reveal="true" style="display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:40px 80px;align-items:end;opacity:0;transform:translateY(18px);transition:opacity 800ms cubic-bezier(0.16,1,0.3,1) 0ms,transform 800ms cubic-bezier(0.16,1,0.3,1) 0ms">
+    <div>
+      <div style="display:flex;align-items:center;gap:12px;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.24em;text-transform:uppercase;color:#555D64"><span style="width:10px;height:10px;border-radius:2px;background:#2E38FF;flex:none"></span>AI-native construction operating system</div>
+      <h1 style="font-family:Archivo,sans-serif;font-weight:200;font-stretch:118%;font-size:clamp(40px,5vw,84px);line-height:1.04;letter-spacing:-0.015em;color:#05070A;margin:28px 0 0;text-wrap:balance">The tools changed. The way construction operates didn’t. <span style="color:#2E38FF">Until now.</span></h1>
+    </div>
+    <div style="border-left:1px solid #DFE4E9;padding-left:32px;max-width:460px;justify-self:end;width:100%">
+      <p style="font-size:17px;line-height:1.6;color:#555D64;margin:0;text-wrap:pretty">Biltflow connects the tools you already run and puts a construction-trained AI workforce across the whole lifecycle — grounded in $5B+ of delivered high-density residential work.</p>
+      <div style="display:flex;align-items:center;gap:22px;margin-top:28px;flex-wrap:wrap">
+        <a href="#walkthrough" style="font-size:15px;font-weight:500;color:#FFFFFF;background:#2E38FF;border-radius:999px;padding:14px 24px;display:inline-flex;align-items:center;gap:12px;white-space:nowrap;transition:background 160ms ease" style-hover="background:#1F27D6;color:#FFFFFF">Book a walkthrough <span style="font-size:17px;line-height:1">→</span></a>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#555D64;line-height:1.7">NSW · QLD · VIC<br />Hunt Global Pte Ltd</div>
+      </div>
+    </div>
+  </div>
+  <div data-reveal="true" style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:32px;margin-top:96px;padding-top:36px;border-top:1px solid #DFE4E9;opacity:0;transform:translateY(18px);transition:opacity 800ms cubic-bezier(0.16,1,0.3,1) 120ms,transform 800ms cubic-bezier(0.16,1,0.3,1) 120ms">
+    <div>
+      <div style="font-family:Archivo,sans-serif;font-weight:200;font-stretch:112%;font-size:clamp(40px,4.2vw,68px);line-height:1;letter-spacing:-0.015em;color:#05070A;font-variant-numeric:tabular-nums">$5B+</div>
+      <div style="font-size:15px;line-height:1.5;color:#555D64;margin-top:14px;max-width:240px">Of delivered high-density residential project data behind the model</div>
+    </div>
+    <div>
+      <div style="font-family:Archivo,sans-serif;font-weight:200;font-stretch:112%;font-size:clamp(40px,4.2vw,68px);line-height:1;letter-spacing:-0.015em;color:#05070A;font-variant-numeric:tabular-nums">13</div>
+      <div style="font-size:15px;line-height:1.5;color:#555D64;margin-top:14px;max-width:240px">Lifecycle stages, from site sourcing to learning, in one system</div>
+    </div>
+    <div>
+      <div style="font-family:Archivo,sans-serif;font-weight:200;font-stretch:112%;font-size:clamp(40px,4.2vw,68px);line-height:1;letter-spacing:-0.015em;color:#05070A;font-variant-numeric:tabular-nums">20+</div>
+      <div style="font-size:15px;line-height:1.5;color:#555D64;margin-top:14px;max-width:240px">Construction-trained AI agents, orchestrated by EVE</div>
+    </div>
+    <div>
+      <div style="font-family:Archivo,sans-serif;font-weight:200;font-stretch:112%;font-size:clamp(40px,4.2vw,68px);line-height:1;letter-spacing:-0.015em;color:#05070A;font-variant-numeric:tabular-nums">3</div>
+      <div style="font-size:15px;line-height:1.5;color:#555D64;margin-top:14px;max-width:240px">States — NSW, QLD and VIC — Australia’s largest apartment markets</div>
+    </div>
+  </div>
+</section>
+
+<section data-screen-label="Statement band" data-join-section="true" style="position:relative;margin-top:0;height:200vh;background:#FFFFFF">
+  <div style="position:sticky;top:0;height:100vh;overflow:hidden;background:#FFFFFF">
+    <img data-join-layer="left" src="https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_091214_83fb9d30-31eb-4aff-8f60-1e64803d21e6.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;will-change:transform,clip-path;clip-path:inset(14vh 56vw 18vh 8vw);transform:translateY(10vh)" />
+    <img data-join-layer="right" src="https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_091214_83fb9d30-31eb-4aff-8f60-1e64803d21e6.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;will-change:transform,clip-path;clip-path:inset(18vh 12vw 14vh 52vw);transform:translateY(-10vh)" />
+    <div data-join-scrim="true" style="display:none"></div>
+    <div data-join-text="true" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 48px;opacity:0;transform:translateY(20px);will-change:opacity,transform">
+<div style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:500;letter-spacing:0.24em;text-transform:uppercase;color:#9AA0FF;margin-bottom:32px;text-shadow:0 1px 18px rgba(5,7,10,0.75),0 1px 3px rgba(5,7,10,0.6)">More software. More data. Less clarity. — <span style="font-family:Archivo,sans-serif;font-weight:200;font-stretch:118%;text-transform:none;letter-spacing:0;font-size:1.5em;color:#FFFFFF;text-shadow:0 2px 24px rgba(5,7,10,0.7),0 1px 4px rgba(5,7,10,0.5)">Until now.</span></div>
+<div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:clamp(44px,7.2vw,124px);font-weight:300;line-height:0.98;letter-spacing:-0.015em;color:#FFFFFF;width:100%;text-wrap:balance;margin:0;text-shadow:0 2px 30px rgba(5,7,10,0.7),0 1px 5px rgba(5,7,10,0.5)">One system. All projects. All data. All connected.</div>
+    </div>
+  </div>
+</section>
+
+<section id="who" data-screen-label="Who it's for" data-hscroll-section="true" style="position:relative;height:300vh;background:#FFFFFF;border-top:1px solid #DFE4E9;border-bottom:1px solid #DFE4E9">
+  <div data-hscroll="true" style="position:sticky;top:0;height:100vh;overflow:hidden;display:flex;flex-direction:column;justify-content:center">
+    <div style="width:100%;margin:0;padding:0 48px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:24px">
+      <div style="max-width:640px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;color:#1F27D6;margin-bottom:22px">Built for every seat at the table — keep scrolling</div>
+        <h2 style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:clamp(28px,3.2vw,42px);font-weight:300;line-height:1.1;letter-spacing:-0.015em;color:#05070A;margin:0;text-wrap:balance">One system. Six ways in.</h2>
+      </div>
+      <div style="display:flex;align-items:flex-end;gap:32px">
+        <p style="font-size:15px;line-height:1.6;color:#555D64;max-width:360px;margin:0">Nobody buys construction software alone. Each pathway shows the same platform through your lens.</p>
+        <div style="text-align:right;flex:none">
+          <div data-hscroll-counter="true" style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:44px;font-weight:300;color:#05070A;line-height:1;font-variant-numeric:tabular-nums">01 / 06</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#555D64;margin-top:10px">Pathways</div>
+        </div>
+      </div>
+    </div>
+    <div style="position:relative;margin-top:48px;width:100%">
+      <div style="position:absolute;left:0;right:0;top:0;height:1px;background:#DFE4E9"></div>
+      <div data-hscroll-progress="true" style="position:absolute;left:0;top:-1px;height:3px;width:0;background:#2E38FF;border-radius:2px"></div>
+      <div data-hscroll-track="true" style="display:flex;gap:20px;padding:40px 48px 0;padding-right:30vw;will-change:transform">
+<a href="#for-executives" style="display:block;flex:none;width:clamp(360px,34vw,520px);color:#3C4247">
+        <div style="aspect-ratio:4/3;background:#DFE4E9;overflow:hidden"><img src="https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_091854_373d23ce-3620-434f-84d1-fc7265c01066.png" alt="Managing director looking over a skyline of cranes" style="width:100%;height:100%;object-fit:cover;display:block" /></div>
+        <div style="padding:20px 0 0;border-top:1px solid #DFE4E9;margin-top:20px">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#1F27D6;margin-bottom:12px">For executives</div>
+          <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:26px;font-weight:400;line-height:1.2;letter-spacing:-0.01em;color:#05070A;margin-bottom:12px;text-wrap:balance">Control across the portfolio</div>
+          <p style="font-size:16px;line-height:1.6;color:#555D64;margin:0">Benchmarking, forecasting and enterprise controls from live data.</p>
+        </div>
+      </a>
+      <a href="#for-construction" style="display:block;flex:none;width:clamp(360px,34vw,520px);color:#3C4247">
+        <div style="aspect-ratio:4/3;background:#DFE4E9;overflow:hidden"><img src="https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_091214_dbcb4c5d-fa37-4f0e-9deb-0a042c1746d9.png" alt="Construction director reviewing progress on site" style="width:100%;height:100%;object-fit:cover;display:block" /></div>
+        <div style="padding:20px 0 0;border-top:1px solid #DFE4E9;margin-top:20px">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#1F27D6;margin-bottom:12px">For construction</div>
+          <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:26px;font-weight:400;line-height:1.2;letter-spacing:-0.01em;color:#05070A;margin-bottom:12px;text-wrap:balance">Delivery you can standardise</div>
+          <p style="font-size:16px;line-height:1.6;color:#555D64;margin:0">Programme, cost, RFIs and site data, consistent on every project.</p>
+        </div>
+      </a>
+      <a href="#for-commercial" style="display:block;flex:none;width:clamp(360px,34vw,520px);color:#3C4247">
+        <div style="aspect-ratio:4/3;background:#DFE4E9;overflow:hidden"><img src="https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_091214_46734602-90e5-4e14-ad6e-702fba181cfe.png" alt="Contracts manager reviewing a procurement schedule" style="width:100%;height:100%;object-fit:cover;display:block" /></div>
+        <div style="padding:20px 0 0;border-top:1px solid #DFE4E9;margin-top:20px">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#1F27D6;margin-bottom:12px">For commercial</div>
+          <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:26px;font-weight:400;line-height:1.2;letter-spacing:-0.01em;color:#05070A;margin-bottom:12px;text-wrap:balance">Cost certainty, end to end</div>
+          <p style="font-size:16px;line-height:1.6;color:#555D64;margin:0">Procurement, contracts and claims tied to the estimate they came from.</p>
+        </div>
+      </a>
+      <a href="#for-development" style="display:block;flex:none;width:clamp(360px,34vw,520px);color:#3C4247">
+        <div style="aspect-ratio:4/3;background:#DFE4E9;overflow:hidden"><img src="https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_091854_6374ee2e-963d-47cb-957d-2355f7bde2d5.png" alt="Development director over a masterplan model" style="width:100%;height:100%;object-fit:cover;display:block" /></div>
+        <div style="padding:20px 0 0;border-top:1px solid #DFE4E9;margin-top:20px">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#1F27D6;margin-bottom:12px">For development</div>
+          <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:26px;font-weight:400;line-height:1.2;letter-spacing:-0.01em;color:#05070A;margin-bottom:12px;text-wrap:balance">Feasibility to handover, connected</div>
+          <p style="font-size:16px;line-height:1.6;color:#555D64;margin:0">Approvals, consultants and design flowing straight into delivery.</p>
+        </div>
+      </a>
+      <a href="#for-site" style="display:block;flex:none;width:clamp(360px,34vw,520px);color:#3C4247">
+        <div style="aspect-ratio:4/3;background:#DFE4E9;overflow:hidden"><img src="https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_091214_671329c1-c57a-48c1-bf1b-d87de2074d8d.png" alt="Site manager checking a tablet on a formwork deck" style="width:100%;height:100%;object-fit:cover;display:block" /></div>
+        <div style="padding:20px 0 0;border-top:1px solid #DFE4E9;margin-top:20px">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#1F27D6;margin-bottom:12px">For site teams</div>
+          <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:26px;font-weight:400;line-height:1.2;letter-spacing:-0.01em;color:#05070A;margin-bottom:12px;text-wrap:balance">Less admin. Faster answers.</div>
+          <p style="font-size:16px;line-height:1.6;color:#555D64;margin:0">ITPs, inspections and defects in the field, paperwork chased for you.</p>
+        </div>
+      </a>
+      <a href="#for-digital" style="display:block;flex:none;width:clamp(360px,34vw,520px);color:#3C4247">
+        <div style="aspect-ratio:4/3;background:#DFE4E9;overflow:hidden"><img src="https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_091854_8dd47f97-9394-4749-936f-d0517718333c.png" alt="Head of digital construction on site at dawn" style="width:100%;height:100%;object-fit:cover;display:block" /></div>
+        <div style="padding:20px 0 0;border-top:1px solid #DFE4E9;margin-top:20px">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#1F27D6;margin-bottom:12px">For digital &amp; IT</div>
+          <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:26px;font-weight:400;line-height:1.2;letter-spacing:-0.01em;color:#05070A;margin-bottom:12px;text-wrap:balance">Architecture your EA will sign</div>
+          <p style="font-size:16px;line-height:1.6;color:#555D64;margin:0">Open APIs, SSO, data governance and a true system of record.</p>
+        </div>
+      </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="eve" data-screen-label="EVE (dark)" style="position:relative;background:#F7F9FA;color:#3C4247;overflow:hidden">
+  <img data-parallax="true" src="https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_101710_72405a29-f030-4572-aa74-793a9152a997.png" alt="" style="position:absolute;inset:-6% 0;width:100%;height:112%;object-fit:cover;display:block;opacity:0.55" />
+  <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(247,249,250,0.92) 0%,rgba(247,249,250,0.78) 40%,rgba(247,249,250,0.5) 100%)"></div>
+  <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(247,249,250,0.85) 0%,rgba(247,249,250,0) 30%,rgba(247,249,250,0) 70%,rgba(247,249,250,0.85) 100%)"></div>
+  <div style="position:relative;width:100%;margin:0;padding:96px 48px 88px">
+    <div style="display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:64px;align-items:center">
+      <div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;color:#2E38FF;margin-bottom:26px">Meet EVE · AI orchestration layer</div>
+        <h2 style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:clamp(40px,4.8vw,72px);font-weight:300;line-height:0.98;letter-spacing:-0.015em;color:#05070A;margin:0;text-wrap:balance">Intelligence that <span style="font-family:Archivo,sans-serif;font-weight:200;font-stretch:118%;color:#1F27D6;letter-spacing:-0.01em">acts.</span><br />Not another place to look.</h2>
+        <div style="display:flex;flex-direction:column;margin-top:40px;border-top:1px solid #DFE4E9">
+          <div style="display:grid;grid-template-columns:56px minmax(0,1fr);gap:18px;align-items:baseline;padding:20px 0;border-bottom:1px solid #DFE4E9">
+            <div style="font-family:Archivo,sans-serif;font-weight:200;font-stretch:118%;font-size:34px;color:#2E38FF;line-height:1">01</div>
+            <div style="font-size:21px;line-height:1.45;color:#05070A"><span style="color:#05070A;font-weight:500">Connects</span> every drawing, cost, contract and site record you already have.</div>
+          </div>
+          <div style="display:grid;grid-template-columns:56px minmax(0,1fr);gap:18px;align-items:baseline;padding:20px 0;border-bottom:1px solid #DFE4E9">
+            <div style="font-family:Archivo,sans-serif;font-weight:200;font-stretch:118%;font-size:34px;color:#2E38FF;line-height:1">02</div>
+            <div style="font-size:21px;line-height:1.45;color:#05070A"><span style="color:#05070A;font-weight:500">Directs</span> a workforce of 20+ specialist agents — one coordinated team, not scattered tools.</div>
+          </div>
+          <div style="display:grid;grid-template-columns:56px minmax(0,1fr);gap:18px;align-items:baseline;padding:20px 0;border-bottom:1px solid #DFE4E9">
+            <div style="font-family:Archivo,sans-serif;font-weight:200;font-stretch:118%;font-size:34px;color:#2E38FF;line-height:1">03</div>
+            <div style="font-size:21px;line-height:1.45;color:#05070A"><span style="color:#05070A;font-weight:500">Acts</span> only inside the workflows you approve. You stay in control — always.</div>
+          </div>
+        </div>
+        <div style="margin-top:32px">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#555D64;margin-bottom:10px">Autonomy, set by you</div>
+          <div style="display:flex;background:#F0F1F4;border:1px solid #DFE4E9;border-radius:4px;padding:3px;max-width:420px">
+            <div style="flex:1;text-align:center;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#555D64;padding:10px 8px">Manual</div>
+            <div style="flex:1;text-align:center;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#05070A;background:#9AA0FF;border-radius:3px;padding:10px 8px">Copilot</div>
+            <div style="flex:1;text-align:center;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#555D64;padding:10px 8px">Autopilot</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="background:#FFFFFF;border:1px solid #1F27D6;border-radius:6px;overflow:hidden">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 22px;border-bottom:1px solid #DFE4E9">
+          <div style="display:flex;align-items:center;gap:14px">
+            <div data-eve-wave="true" style="display:flex;align-items:center;gap:3px;height:34px"><span style="display:block;width:3px;height:10px;border-radius:2px;background:#1F27D6;transform-origin:center;animation:bfWave 1.6s ease-in-out 0.0s infinite"></span><span style="display:block;width:3px;height:20px;border-radius:2px;background:#6B72FF;transform-origin:center;animation:bfWave 1.95s ease-in-out 0.12s infinite"></span><span style="display:block;width:3px;height:34px;border-radius:2px;background:#9AA0FF;transform-origin:center;animation:bfWave 2.3s ease-in-out 0.24s infinite"></span><span style="display:block;width:3px;height:24px;border-radius:2px;background:#6B72FF;transform-origin:center;animation:bfWave 1.6s ease-in-out 0.36s infinite"></span><span style="display:block;width:3px;height:14px;border-radius:2px;background:#6B72FF;transform-origin:center;animation:bfWave 1.95s ease-in-out 0.48s infinite"></span><span style="display:block;width:3px;height:28px;border-radius:2px;background:#9AA0FF;transform-origin:center;animation:bfWave 2.3s ease-in-out 0.6s infinite"></span><span style="display:block;width:3px;height:12px;border-radius:2px;background:#1F27D6;transform-origin:center;animation:bfWave 1.6s ease-in-out 0.72s infinite"></span></div>
+            <div>
+              <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:18px;font-weight:300;letter-spacing:0.14em;color:#05070A;line-height:1">EVE</div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:#1F27D6;margin-top:5px">AI orchestration layer</div>
+            </div>
+          </div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#555D64">Riverside · Tower A</div>
+        </div>
+        <div style="padding:28px 26px;display:flex;flex-direction:column;gap:22px">
+          <div style="display:flex;gap:14px">
+            <div style="width:30px;height:30px;border-radius:999px;background:#F0F1F4;border:1px solid #DFE4E9;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:10px;color:#3C4247;flex:none">DN</div>
+            <div style="font-size:17px;line-height:1.55;color:#05070A;padding-top:4px">Draft an RFI for the clash between S-101 detail 3 and A-205 at the Level 12 façade bracket.</div>
+          </div>
+          <div style="background:#F7F9FA;border:1px solid #DFE4E9;border-radius:4px;padding:16px 18px">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px">
+              <div style="display:flex;align-items:center;gap:10px;font-size:17px;font-weight:500;color:#05070A"><span data-eve-pulse="true" style="display:inline-block;width:6px;height:6px;border-radius:999px;background:#6B72FF;animation:bfPulse 2.4s ease-in-out infinite"></span>RFI Creation Agent</div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#555D64">3 steps · 41s</div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:10px;font-family:'JetBrains Mono',monospace;font-size:13px;color:#555D64">
+              <div style="display:flex;gap:10px;align-items:center"><span style="color:#137A42">✓</span>Pulled S-101 rev C and A-205 rev F from the CDE</div>
+              <div style="display:flex;gap:10px;align-items:center"><span style="color:#137A42">✓</span>Matched clash to coordination issue #212 (Revizto)</div>
+              <div style="display:flex;gap:10px;align-items:center"><span style="color:#2E38FF">→</span>Drafted RFI-128, assigned to structural engineer, due 12 Sep</div>
+            </div>
+          </div>
+          <div style="font-size:17px;line-height:1.55;color:#05070A">I've drafted RFI-128 and attached both revisions. Want me to issue it, or hold for your review?</div>
+          <div style="display:flex;gap:8px">
+            <span style="font-size:15px;font-weight:500;color:#FFFFFF;background:#2E38FF;border-radius:4px;padding:12px 18px">Issue RFI-128</span>
+            <span style="font-size:15px;font-weight:500;color:#3C4247;background:transparent;border:1px solid #DFE4E9;border-radius:4px;padding:12px 18px">Review first</span>
+          </div>
+        </div>
+        <div style="padding:14px 22px;border-top:1px solid #DFE4E9;display:flex;align-items:center;gap:12px">
+          <div style="flex:1;font-size:14px;color:#555D64">Ask EVE anything about this project…</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#2E38FF">Send</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:104px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:32px;flex-wrap:wrap">
+        <div style="max-width:760px">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;color:#2E38FF;margin-bottom:22px">How EVE works</div>
+          <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:clamp(30px,3.4vw,48px);font-weight:300;line-height:1.04;letter-spacing:-0.015em;color:#05070A;text-wrap:balance">Everything you already have goes in. Finished work comes out.</div>
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#555D64;line-height:1.9;text-align:right">Read · Reason · Act<br />Nothing is sent without approval</div>
+      </div>
+      <div style="margin-top:40px;background:#F7F9FA;border:1px solid #DFE4E9;border-radius:8px;padding:28px 28px 20px">{{ eveFlow }}</div>
+        <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px 32px;margin-top:40px">
+          <div style="border-top:1px solid #DFE4E9;padding-top:14px"><div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:22px;font-weight:300;color:#05070A">Tango</div><div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#1F27D6;margin-top:6px">Opportunity · sites &amp; sourcing</div></div>
+          <div style="border-top:1px solid #DFE4E9;padding-top:14px"><div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:22px;font-weight:300;color:#05070A">Cash</div><div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#1F27D6;margin-top:6px">Execution · RFIs, variations, claims</div></div>
+          <div style="border-top:1px solid #DFE4E9;padding-top:14px"><div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:22px;font-weight:300;color:#05070A">Sophia</div><div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#1F27D6;margin-top:6px">Defects &amp; DLP · traceability</div></div>
+          <div style="border-top:1px solid #DFE4E9;padding-top:14px"><div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:22px;font-weight:300;color:#05070A">+ 17 functional agents</div><div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#555D64;margin-top:6px">Cost · QA · Safety · Programme · Design</div></div>
+        </div>
+    </div>
+
+  </div>
+</section>
+
+<section id="native" data-screen-label="Platform" data-hscroll-section="true" style="position:relative;height:250vh;background:#F7F9FA;border-top:1px solid #DFE4E9;border-bottom:1px solid #DFE4E9">
+  <div data-hscroll="true" style="position:sticky;top:0;height:100vh;overflow:hidden;display:flex;flex-direction:column;justify-content:center">
+    <div style="width:100%;margin:0;padding:0 48px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:24px">
+      <div style="max-width:640px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;color:#1F27D6;margin-bottom:22px">The platform — keep scrolling</div>
+        <h2 style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:clamp(28px,3.2vw,42px);font-weight:300;line-height:1.1;letter-spacing:-0.015em;color:#05070A;margin:0;text-wrap:balance">Construction-native. Transparent. Built to act.</h2>
+      </div>
+    </div>
+    <div style="position:relative;margin-top:32px;width:100%">
+      <div data-hscroll-progress="true" style="position:absolute;left:48px;top:0;height:3px;width:0;max-width:calc(100vw - 96px);background:#2E38FF;border-radius:2px;z-index:1"></div>
+      <div data-hscroll-track="true" style="display:flex;gap:24px;padding:20px 48px 0;will-change:transform">
+        <div style="flex:none;width:calc(100vw - 96px);min-height:min(68vh,660px);background:#FFFFFF;border:1px solid #DFE4E9;border-radius:8px;overflow:hidden;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr)">
+          <div style="padding:40px 44px 36px;display:flex;flex-direction:column">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:#1F27D6;margin-bottom:18px">Construction-native</div>
+            <h3 style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:clamp(24px,2.6vw,36px);font-weight:300;line-height:1.1;letter-spacing:-0.015em;color:#05070A;margin:0;text-wrap:balance">Intelligence built from real buildings, not theory.</h3>
+            <p style="font-size:14.5px;line-height:1.6;color:#3C4247;margin:16px 0 0;text-wrap:pretty">EVE reads drawings, costs, contracts, programmes, site diaries and compliance records across every system you run — and understands how they relate. That understanding came from more than $5 billion of delivered high-density residential work.</p>
+            <div style="margin-top:auto;padding-top:24px">
+              <div style="border-top:1px solid #DFE4E9;padding:14px 0">
+                <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:15px;font-weight:400;color:#05070A;line-height:1.35">Grounded in $5B+ of delivered projects</div>
+                <div style="font-size:13.5px;line-height:1.55;color:#555D64;margin-top:4px">Benchmarked against real cost plans, programmes and defects from completed towers.</div>
+              </div>
+              <div style="border-top:1px solid #DFE4E9;padding:14px 0">
+                <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:15px;font-weight:400;color:#05070A;line-height:1.35">Reasons across drawing, cost, contract and programme</div>
+                <div style="font-size:13.5px;line-height:1.55;color:#555D64;margin-top:4px">A clash in S-101 is connected to the RFI, the variation and the slab it will delay.</div>
+              </div>
+              <div style="border-top:1px solid #DFE4E9;padding:14px 0">
+                <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:15px;font-weight:400;color:#05070A;line-height:1.35">Reads 41 sources across your systems</div>
+                <div style="font-size:13.5px;line-height:1.55;color:#555D64;margin-top:4px">Site diaries, BOM feeds, photos and models in the same working memory as the register.</div>
+              </div>
+            </div>
+          </div>
+          <div style="position:relative;background:#F0F1FA;border-left:1px solid #DFE4E9;overflow:hidden">
+            {{ signalField }}
+          </div>
+        </div>
+        <div style="flex:none;width:calc(100vw - 96px);min-height:min(68vh,660px);background:#FFFFFF;border:1px solid #DFE4E9;border-radius:8px;overflow:hidden;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr)">
+          <div style="padding:40px 44px 36px;display:flex;flex-direction:column">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:#1F27D6;margin-bottom:18px">Trust and transparency</div>
+            <h3 style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:clamp(24px,2.6vw,36px);font-weight:300;line-height:1.1;letter-spacing:-0.015em;color:#05070A;margin:0;text-wrap:balance">Deploy AI you stay in control of.</h3>
+            <p style="font-size:14.5px;line-height:1.6;color:#3C4247;margin:16px 0 0;text-wrap:pretty">Every agent works inside the permissions your organisation already has. Every answer traces back to the source file. And no write action reaches Procore, Aconex or Jobpac until a person says so.</p>
+            <div style="margin-top:auto;padding-top:24px">
+              <div style="border-top:1px solid #DFE4E9;padding:14px 0">
+                <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:15px;font-weight:400;color:#05070A;line-height:1.35">Human sign-off on every write action</div>
+                <div style="font-size:13.5px;line-height:1.55;color:#555D64;margin-top:4px">Cash drafts, assigns and attaches. Submitting to Procore waits for your approval, every time.</div>
+              </div>
+              <div style="border-top:1px solid #DFE4E9;padding:14px 0">
+                <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:15px;font-weight:400;color:#05070A;line-height:1.35">Every answer traced to source</div>
+                <div style="font-size:13.5px;line-height:1.55;color:#555D64;margin-top:4px">Drawing references, programme lines and cost codes are cited inline and open the real record.</div>
+              </div>
+              <div style="border-top:1px solid #DFE4E9;padding:14px 0">
+                <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:15px;font-weight:400;color:#05070A;line-height:1.35">Your project permissions, enforced</div>
+                <div style="font-size:13.5px;line-height:1.55;color:#555D64;margin-top:4px">Agents see exactly what the person asking can see. Roles carry straight through.</div>
+              </div>
+            </div>
+          </div>
+          <div style="position:relative;background:#F7F9FA;border-left:1px solid #DFE4E9;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:28px">
+            <img src="assets/img/plate-cash-rfi-light.png" alt="Cash holding an RFI for review before submitting to Procore" style="width:100%;height:auto;max-height:100%;object-fit:contain;display:block" />
+          </div>
+        </div>
+        <div style="flex:none;width:calc(100vw - 96px);min-height:min(68vh,660px);background:#FFFFFF;border:1px solid #DFE4E9;border-radius:8px;overflow:hidden;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr)">
+          <div style="padding:40px 44px 36px;display:flex;flex-direction:column">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:#1F27D6;margin-bottom:18px">Built-in agents</div>
+            <h3 style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:clamp(24px,2.6vw,36px);font-weight:300;line-height:1.1;letter-spacing:-0.015em;color:#05070A;margin:0;text-wrap:balance">Agents that act inside the systems you already run.</h3>
+            <p style="font-size:14.5px;line-height:1.6;color:#3C4247;margin:16px 0 0;text-wrap:pretty">No new logins, no re-keying. EVE orchestrates the workforce; connectors carry the work into Procore, Aconex, Jobpac, Xero and the rest. Copilot by default. Autopilot only where you’ve approved it.</p>
+            <div style="margin-top:auto;padding-top:24px">
+              <div style="border-top:1px solid #DFE4E9;padding:14px 0">
+                <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:15px;font-weight:400;color:#05070A;line-height:1.35">Connectors to Procore, Aconex, Jobpac and more</div>
+                <div style="font-size:13.5px;line-height:1.55;color:#555D64;margin-top:4px">Governed read and write. Keep the systems that work; Biltflow makes them behave as one.</div>
+              </div>
+              <div style="border-top:1px solid #DFE4E9;padding:14px 0">
+                <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:15px;font-weight:400;color:#05070A;line-height:1.35">Workflows triggered by project events</div>
+                <div style="font-size:13.5px;line-height:1.55;color:#555D64;margin-top:4px">A storm stops a pour; EVE logs the lost hours, tests the critical path, drafts the notice — then asks you.</div>
+              </div>
+              <div style="border-top:1px solid #DFE4E9;padding:14px 0">
+                <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:15px;font-weight:400;color:#05070A;line-height:1.35">Copilot by default, Autopilot when approved</div>
+                <div style="font-size:13.5px;line-height:1.55;color:#555D64;margin-top:4px">Autonomy is a setting per workflow. Move the control and the same agent executes without waiting.</div>
+              </div>
+            </div>
+          </div>
+          <div style="position:relative;background:#FFFFFF;border-left:1px solid #DFE4E9;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:28px">
+            <img src="assets/img/plate-eve-executing-light.png" alt="EVE executing a site-diary workflow and holding it for approval" style="width:100%;height:auto;max-height:100%;object-fit:contain;display:block" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="assets" data-screen-label="Asset classes" data-classlist-section="true" style="position:relative;height:340vh;margin-top:0">
+  <div data-classlist-sticky="true" style="position:sticky;top:0;height:100vh;overflow:hidden;background:#05070A">
+      <div data-classlist-bg="0" class="is-live" style="position:absolute;inset:-6% 0;width:100%;height:112%;opacity:1;will-change:transform,opacity;transition:opacity 620ms cubic-bezier(0.16,1,0.3,1)"><img src="https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_091214_83fb9d30-31eb-4aff-8f60-1e64803d21e6.png" alt="Completed apartment façade beside a tower under construction" style="width:100%;height:100%;object-fit:cover;display:block" /></div>
+      <div data-classlist-bg="1" style="position:absolute;inset:-6% 0;width:100%;height:112%;opacity:0;will-change:transform,opacity;transition:opacity 620ms cubic-bezier(0.16,1,0.3,1)"><img src="https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_091214_b5244e30-f3e2-49ff-9eb2-c8cc0e28df68.png" alt="Build-to-rent apartment lobby at dusk" style="width:100%;height:100%;object-fit:cover;display:block" /></div>
+      <div data-classlist-bg="2" style="position:absolute;inset:-6% 0;width:100%;height:112%;opacity:0;will-change:transform,opacity;transition:opacity 620ms cubic-bezier(0.16,1,0.3,1)"><img src="https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_091214_7e6bcff6-ff08-49e4-90a7-c29053a4daa2.png" alt="Serviced apartment suite at blue hour" style="width:100%;height:100%;object-fit:cover;display:block" /></div>
+      <div data-classlist-bg="3" style="position:absolute;inset:-6% 0;width:100%;height:112%;opacity:0;will-change:transform,opacity;transition:opacity 620ms cubic-bezier(0.16,1,0.3,1)"><img src="https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_091214_50fc7bd5-a8db-4271-9034-ee5596326253.png" alt="Mixed-use residential precinct at golden hour" style="width:100%;height:100%;object-fit:cover;display:block" /></div>
+      <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(5,7,10,0.9) 0%,rgba(5,7,10,0.72) 42%,rgba(5,7,10,0.34) 100%)"></div>
+      <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,7,10,0.5) 0%,rgba(5,7,10,0) 26%,rgba(5,7,10,0) 70%,rgba(5,7,10,0.6) 100%)"></div>
+
+      <div style="position:relative;height:100%;display:flex;flex-direction:column;justify-content:center;padding:0 48px;max-width:1180px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;color:#9AA0FF;margin-bottom:30px">Asset classes</div>
+        <h2 style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:clamp(24px,2.5vw,34px);font-weight:300;line-height:1.15;letter-spacing:-0.015em;color:#FFFFFF;margin:0 0 44px;max-width:620px;text-wrap:balance">Built for the buildings that are hardest to deliver.</h2>
+
+        <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:44px">
+          <a href="#hdr" data-classlist-item="0" style="display:block;font-family:Archivo,sans-serif;font-stretch:112%;font-size:clamp(30px,4.4vw,62px);font-weight:300;line-height:1.16;letter-spacing:-0.02em;color:#FFFFFF;opacity:1;transition:opacity 420ms cubic-bezier(0.16,1,0.3,1)">High-density residential</a>
+          <a href="#btr" data-classlist-item="1" style="display:block;font-family:Archivo,sans-serif;font-stretch:112%;font-size:clamp(30px,4.4vw,62px);font-weight:300;line-height:1.16;letter-spacing:-0.02em;color:#FFFFFF;opacity:0.45;transition:opacity 420ms cubic-bezier(0.16,1,0.3,1)">Build-to-rent</a>
+          <a href="#hotels" data-classlist-item="2" style="display:block;font-family:Archivo,sans-serif;font-stretch:112%;font-size:clamp(30px,4.4vw,62px);font-weight:300;line-height:1.16;letter-spacing:-0.02em;color:#FFFFFF;opacity:0.45;transition:opacity 420ms cubic-bezier(0.16,1,0.3,1)">Hotels & serviced apartments</a>
+          <a href="#mixed" data-classlist-item="3" style="display:block;font-family:Archivo,sans-serif;font-stretch:112%;font-size:clamp(30px,4.4vw,62px);font-weight:300;line-height:1.16;letter-spacing:-0.02em;color:#FFFFFF;opacity:0.45;transition:opacity 420ms cubic-bezier(0.16,1,0.3,1)">Mixed-use</a>
+        </div>
+
+        <div style="position:relative;min-height:104px">
+            <p data-classlist-copy="0" style="position:absolute;left:0;top:0;margin:0;max-width:520px;font-size:16px;line-height:1.6;color:#C6CDD4;opacity:1;transition:opacity 420ms cubic-bezier(0.16,1,0.3,1)">Class 2 towers, structures, façades and services at scale — hundreds of subcontract packages and staged commissioning in one live record.</p>
+            <p data-classlist-copy="1" style="position:absolute;left:0;top:0;margin:0;max-width:520px;font-size:16px;line-height:1.6;color:#C6CDD4;opacity:0;transition:opacity 420ms cubic-bezier(0.16,1,0.3,1)">One continuous record from feasibility into decades of operation — because the owner keeps the asset, and every design decision becomes an operating cost.</p>
+            <p data-classlist-copy="2" style="position:absolute;left:0;top:0;margin:0;max-width:520px;font-size:16px;line-height:1.6;color:#C6CDD4;opacity:0;transition:opacity 420ms cubic-bezier(0.16,1,0.3,1)">Brand standards, operator requirements, FF&amp;E and a fixed opening date — several fit-out specifications and compliance classes coordinated inside one tower.</p>
+            <p data-classlist-copy="3" style="position:absolute;left:0;top:0;margin:0;max-width:520px;font-size:16px;line-height:1.6;color:#C6CDD4;opacity:0;transition:opacity 420ms cubic-bezier(0.16,1,0.3,1)">Retail, residential and commercial stakeholders sharing one programme, one procurement pipeline and one handover.</p>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:28px;margin-top:8px">
+          <a href="#assets" data-classlist-explore="true" style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:15px;font-weight:400;color:#FFFFFF;border-bottom:1px solid rgba(255,255,255,0.42);padding-bottom:4px">Explore →</a>
+          <div style="display:flex;align-items:center;gap:14px">
+            <div data-classlist-counter="true" style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#9AA0FF;font-variant-numeric:tabular-nums">01 / 04</div>
+            <div style="position:relative;width:132px;height:2px;background:rgba(255,255,255,0.22)">
+              <div data-classlist-progress="true" style="position:absolute;left:0;top:0;height:2px;width:25%;background:#FFFFFF;transition:width 420ms cubic-bezier(0.16,1,0.3,1)"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</section>
+
+<section id="knows" data-screen-label="The next project already knows" data-trace-section="true" style="position:relative;background:#F7F9FA;margin-top:0;overflow:hidden;color:#3C4247">
+  <img data-parallax="true" src="https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_091214_fee1785e-9adf-48a5-8046-54a6adcc044e.png" alt="" style="position:absolute;inset:-6% 0;width:100%;height:112%;object-fit:cover;display:block;opacity:0.22" />
+  <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(247,249,250,0.96) 0%,rgba(247,249,250,0.86) 55%,rgba(247,249,250,0.72) 100%)"></div>
+  <div style="position:relative;max-width:none;margin:0 auto;padding:104px 48px 96px;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:80px;align-items:start">
+    <div style="position:sticky;top:120px">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;color:#2E38FF;margin-bottom:26px">Connecting what happened to why</div>
+      <h2 style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:clamp(40px,4.8vw,68px);font-weight:300;line-height:1.02;letter-spacing:-0.015em;color:#05070A;margin:0;text-wrap:balance">The next project already knows.</h2>
+      <p style="font-size:16px;line-height:1.65;color:#555D64;margin:32px 0 0;max-width:440px;text-wrap:pretty">A defect on Level 08 is never just a defect. Sophia traces it back through installation, subcontractor, product, supplier and procurement to the design decision that started it — then carries the lesson forward into the next feasibility, estimate and supplier call.</p>
+      <div style="display:flex;gap:16px;align-items:flex-start;margin-top:40px;padding-top:28px;border-top:1px solid #DFE4E9">
+        <div style="display:flex;align-items:center;gap:3px;height:22px;flex:none;margin-top:2px"><span style="width:2px;height:8px;background:#6B72FF;border-radius:1px"></span><span style="width:2px;height:16px;background:#6B72FF;border-radius:1px"></span><span style="width:2px;height:22px;background:#9AA0FF;border-radius:1px"></span><span style="width:2px;height:12px;background:#6B72FF;border-radius:1px"></span><span style="width:2px;height:18px;background:#6B72FF;border-radius:1px"></span></div>
+        <div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#1F27D6;margin-bottom:8px">Sophia · Defects &amp; DLP agent</div>
+          <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:19px;font-weight:300;line-height:1.4;color:#05070A">“I’ve traced it back to the original design, product and installation. The next project already knows.”</div>
+        </div>
+      </div>
+    </div>
+
+    <div data-trace-timeline="true" style="position:relative;padding-top:6px">
+      <div style="position:absolute;left:11px;top:12px;bottom:0;width:1px;background:#F0F1F4"></div>
+      <div data-trace-spine="true" style="position:absolute;left:10px;top:12px;width:3px;height:0;background:linear-gradient(180deg,#FF3B30 0%,#6B72FF 60%,#19C26B 100%);border-radius:2px"></div>
+          <div data-trace-step="0" style="position:relative;display:grid;grid-template-columns:24px minmax(0,1fr);gap:22px;align-items:start;padding:0 0 40px;opacity:0.32;transition:opacity 420ms ease">
+            <div data-trace-node="0" style="width:13px;height:13px;border-radius:999px;background:#F7F9FA;border:1px solid #DFE4E9;margin:6px 0 0 5px;transition:background 300ms ease,border-color 300ms ease"></div>
+            <div>
+              <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap">
+                <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:24px;font-weight:300;color:#B3261E;line-height:1.1">Defect</div>
+                <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#555D64">Where it surfaced</div>
+              </div>
+              <div style="font-size:15px;line-height:1.55;color:#3C4247;margin-top:8px">Waterproofing failure · Level 08, Apt 8.04</div>
+            </div>
+          </div>
+          <div data-trace-step="1" style="position:relative;display:grid;grid-template-columns:24px minmax(0,1fr);gap:22px;align-items:start;padding:0 0 40px;opacity:0.32;transition:opacity 420ms ease">
+            <div data-trace-node="1" style="width:13px;height:13px;border-radius:999px;background:#F7F9FA;border:1px solid #DFE4E9;margin:6px 0 0 5px;transition:background 300ms ease,border-color 300ms ease"></div>
+            <div>
+              <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap">
+                <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:24px;font-weight:300;color:#05070A;line-height:1.1">Installation</div>
+                <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#555D64">← traced</div>
+              </div>
+              <div style="font-size:15px;line-height:1.55;color:#3C4247;margin-top:8px">Membrane lapped against the fall · 14 Mar 2025</div>
+            </div>
+          </div>
+          <div data-trace-step="2" style="position:relative;display:grid;grid-template-columns:24px minmax(0,1fr);gap:22px;align-items:start;padding:0 0 40px;opacity:0.32;transition:opacity 420ms ease">
+            <div data-trace-node="2" style="width:13px;height:13px;border-radius:999px;background:#F7F9FA;border:1px solid #DFE4E9;margin:6px 0 0 5px;transition:background 300ms ease,border-color 300ms ease"></div>
+            <div>
+              <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap">
+                <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:24px;font-weight:300;color:#05070A;line-height:1.1">Subcontractor</div>
+                <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#555D64">← traced</div>
+              </div>
+              <div style="font-size:15px;line-height:1.55;color:#3C4247;margin-top:8px">Package WP-02 · third repeat of the same pattern</div>
+            </div>
+          </div>
+          <div data-trace-step="3" style="position:relative;display:grid;grid-template-columns:24px minmax(0,1fr);gap:22px;align-items:start;padding:0 0 40px;opacity:0.32;transition:opacity 420ms ease">
+            <div data-trace-node="3" style="width:13px;height:13px;border-radius:999px;background:#F7F9FA;border:1px solid #DFE4E9;margin:6px 0 0 5px;transition:background 300ms ease,border-color 300ms ease"></div>
+            <div>
+              <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap">
+                <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:24px;font-weight:300;color:#05070A;line-height:1.1">Product</div>
+                <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#555D64">← traced</div>
+              </div>
+              <div style="font-size:15px;line-height:1.55;color:#3C4247;margin-top:8px">Sheet membrane substituted for liquid-applied</div>
+            </div>
+          </div>
+          <div data-trace-step="4" style="position:relative;display:grid;grid-template-columns:24px minmax(0,1fr);gap:22px;align-items:start;padding:0 0 40px;opacity:0.32;transition:opacity 420ms ease">
+            <div data-trace-node="4" style="width:13px;height:13px;border-radius:999px;background:#F7F9FA;border:1px solid #DFE4E9;margin:6px 0 0 5px;transition:background 300ms ease,border-color 300ms ease"></div>
+            <div>
+              <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap">
+                <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:24px;font-weight:300;color:#05070A;line-height:1.1">Supplier</div>
+                <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#555D64">← traced</div>
+              </div>
+              <div style="font-size:15px;line-height:1.55;color:#3C4247;margin-top:8px">Substitution approved via RFI-088</div>
+            </div>
+          </div>
+          <div data-trace-step="5" style="position:relative;display:grid;grid-template-columns:24px minmax(0,1fr);gap:22px;align-items:start;padding:0 0 40px;opacity:0.32;transition:opacity 420ms ease">
+            <div data-trace-node="5" style="width:13px;height:13px;border-radius:999px;background:#F7F9FA;border:1px solid #DFE4E9;margin:6px 0 0 5px;transition:background 300ms ease,border-color 300ms ease"></div>
+            <div>
+              <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap">
+                <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:24px;font-weight:300;color:#05070A;line-height:1.1">Procurement</div>
+                <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#555D64">← traced</div>
+              </div>
+              <div style="font-size:15px;line-height:1.55;color:#3C4247;margin-top:8px">Award saved $41k against the estimate</div>
+            </div>
+          </div>
+          <div data-trace-step="6" style="position:relative;display:grid;grid-template-columns:24px minmax(0,1fr);gap:22px;align-items:start;padding:0 0 40px;opacity:0.32;transition:opacity 420ms ease">
+            <div data-trace-node="6" style="width:13px;height:13px;border-radius:999px;background:#F7F9FA;border:1px solid #DFE4E9;margin:6px 0 0 5px;transition:background 300ms ease,border-color 300ms ease"></div>
+            <div>
+              <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap">
+                <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:24px;font-weight:300;color:#1F27D6;line-height:1.1">Design</div>
+                <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#555D64">Where it started</div>
+              </div>
+              <div style="font-size:15px;line-height:1.55;color:#3C4247;margin-top:8px">Detail D-317 · balcony threshold</div>
+            </div>
+          </div>
+      <div data-trace-step="7" style="position:relative;display:grid;grid-template-columns:24px minmax(0,1fr);gap:22px;align-items:start;opacity:0.32;transition:opacity 420ms ease">
+        <div data-trace-node="7" style="width:13px;height:13px;border-radius:999px;background:#F7F9FA;border:1px solid #DFE4E9;margin:6px 0 0 5px;transition:background 300ms ease,border-color 300ms ease"></div>
+        <div style="background:#FFFFFF;border:1px solid #155E38;border-radius:6px;padding:26px 28px">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:14px">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#1F27D6">→ Flows forward · Project 02 · Feasibility</div>
+            <span style="display:inline-flex;align-items:center;gap:7px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#137A42;background:#E3F6EA;border:1px solid #155E38;border-radius:3px;padding:6px 10px"><span style="width:5px;height:5px;border-radius:999px;background:#19C26B"></span>Flagged before it happens</span>
+          </div>
+          <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:22px;font-weight:300;color:#05070A;line-height:1.3;margin-bottom:12px">Detail D-317 flagged at design review. Liquid-applied membrane specified. Supplier substitution blocked.</div>
+          <div style="font-size:14px;line-height:1.6;color:#555D64">Every building creates knowledge. Biltflow remembers it — and every development makes the next one smarter, faster, with fewer repeated mistakes.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="people" data-screen-label="Human close" style="padding:96px 0 0">
+  <div style="width:100%;margin:0;padding:0 48px 44px">
+  <div style="max-width:760px">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;color:#1F27D6;margin-bottom:22px">Built for people who build</div>
+    <h2 style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:clamp(28px,3.2vw,42px);font-weight:300;line-height:1.1;letter-spacing:-0.015em;color:#05070A;margin:0;text-wrap:balance">This isn't about replacing construction expertise. It's about amplifying it.</h2>
+    <p style="font-size:16px;line-height:1.65;color:#3C4247;margin:24px 0 0;max-width:600px;text-wrap:pretty">Your people get the intelligence, automation and digital workforce to do more — while everything your organisation learns along the way stays with the organisation.</p>
+  </div>
+  </div>
+  <div style="position:relative;overflow:hidden;background:#F7F9FA;height:70vh;min-height:480px">
+    <img data-parallax="true" src="https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260909_033412_5a23df2f-a001-4c35-a556-b166271881ba.png" alt="Workers on the top deck of a rising apartment tower in bright Sydney daylight" style="position:absolute;inset:-6% 0;width:100%;height:112%;object-fit:cover;display:block" />
+    <video ref="{{ videoRef2 }}" poster="https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260909_033412_5a23df2f-a001-4c35-a556-b166271881ba.png" preload="none" playsInline="playsInline" loop="loop" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;background:transparent;opacity:0;transition:opacity 600ms ease" data-fade-video="true">
+      <source src="assets/video/human-close.mp4" type="video/mp4" />
+    </video>
+    <sc-if value="{{ showPlay2 }}" hint-placeholder-val="{{ true }}">
+      <button onClick="{{ playVideo2 }}" style="position:absolute;inset:0;width:100%;height:100%;background:linear-gradient(180deg,rgba(5,7,10,0) 50%,rgba(5,7,10,0.62) 100%);border:none;cursor:pointer;display:flex;align-items:flex-end;justify-content:center;padding:0 48px 56px;text-align:center">
+        <span style="display:inline-flex;flex-direction:column;align-items:center;gap:18px">
+          <span style="width:72px;height:72px;border-radius:999px;background:rgba(46,56,255,0.92);border:1px solid #9AA0FF;display:inline-flex;align-items:center;justify-content:center;transition:background 160ms ease"><svg viewBox="0 0 24 24" style="width:24px;height:24px;fill:#FFFFFF;margin-left:3px"><path d="M8 5v14l11-7z"></path></svg></span>
+          <span style="display:block;font-family:Archivo,sans-serif;font-stretch:112%;font-size:18px;font-weight:400;color:#FFFFFF">Hear from the people who build with it</span>
+          <span style="display:block;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#9AA0FF">Customer film · 2:10</span>
+        </span>
+      </button>
+    </sc-if>
+  </div>
+  <div style="background:#FFFFFF;border-top:1px solid #DFE4E9">
+    <div style="width:100%;box-sizing:border-box;padding:72px 48px 64px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0">
+      <div style="padding:8px 32px;border-left:1px solid #DFE4E9">
+        <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:clamp(40px,4vw,60px);font-weight:300;color:#05070A;line-height:1;font-variant-numeric:tabular-nums">13</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#555D64;margin-top:16px;line-height:1.7">Lifecycle stages,<br />one record</div>
+      </div>
+      <div style="padding:8px 32px;border-left:1px solid #DFE4E9">
+        <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:clamp(40px,4vw,60px);font-weight:300;color:#05070A;line-height:1;font-variant-numeric:tabular-nums">20+</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#555D64;margin-top:16px;line-height:1.7">Specialist agents,<br />one workforce</div>
+      </div>
+      <div style="padding:8px 32px;border-left:1px solid #DFE4E9">
+        <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:clamp(40px,4vw,60px);font-weight:300;color:#05070A;line-height:1;font-variant-numeric:tabular-nums">90+</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#555D64;margin-top:16px;line-height:1.7">Systems it can<br />connect to</div>
+      </div>
+      <div style="padding:8px 32px;border-left:1px solid #DFE4E9">
+        <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:clamp(40px,4vw,60px);font-weight:300;color:#2E38FF;line-height:1;font-variant-numeric:tabular-nums">1</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#555D64;margin-top:16px;line-height:1.7">Operating system<br />for construction</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="walkthrough" data-screen-label="Closing CTA (dark)" data-close-section="true" style="position:relative;background:#FFFFFF;margin-top:0;overflow:hidden;border-top:1px solid #DFE4E9">
+  <div style="position:relative;max-width:none;margin:0 auto;padding:128px 48px 112px;text-align:center">
+    <div style="position:relative;display:inline-block;margin:0 auto 34px">
+      <img src="assets/biltflow-logo-charcoal.svg" alt="Biltflow" style="height:52px;display:block" />
+    </div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.24em;text-transform:uppercase;color:#555D64;line-height:2">The AI-native operating system for<br />high-density residential development + construction</div>
+    <div style="font-family:Archivo,sans-serif;font-stretch:112%;font-size:clamp(22px,2.8vw,32px);font-weight:300;color:#05070A;margin-top:44px;letter-spacing:0.02em">Build. Learn. Improve. Repeat.</div>
+    <div style="display:flex;justify-content:center;flex-wrap:wrap;gap:12px;margin-top:40px">
+      <a href="#book" style="font-size:15px;font-weight:500;color:#FFFFFF;background:#2E38FF;border:1px solid #2E38FF;border-radius:4px;padding:14px 26px;display:block;transition:background 160ms ease" style-hover="background:#6B72FF;color:#05070A">Book a walkthrough</a>
+      <a href="#film" style="font-size:15px;font-weight:500;color:#05070A;background:transparent;border:1px solid #DFE4E9;border-radius:4px;padding:14px 26px;display:block;transition:border-color 160ms ease" style-hover="border-color:#1F27D6;color:#05070A">Watch the film</a>
+    </div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:0.2em;text-transform:uppercase;color:#2E38FF;margin-top:56px">biltflow.com</div>
+  </div>
+  <footer style="position:relative;border-top:1px solid #DFE4E9;background:#FFFFFF">
+    <div style="max-width:none;margin:0 auto;padding:30px 48px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:20px 40px">
+      <div style="display:flex;flex-wrap:wrap;gap:24px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase">
+        <a href="#native" style="color:#555D64;position:relative;padding-bottom:4px;transition:color 160ms ease" style-hover="color:#05070A">Platform</a>
+        <a href="#who" style="color:#555D64;position:relative;padding-bottom:4px;transition:color 160ms ease" style-hover="color:#05070A">Who it's for</a>
+        <a href="#eve" style="color:#555D64;position:relative;padding-bottom:4px;transition:color 160ms ease" style-hover="color:#05070A">EVE</a>
+        <a href="#security" style="color:#555D64;position:relative;padding-bottom:4px;transition:color 160ms ease" style-hover="color:#05070A">Security</a>
+        <a href="#company" style="color:#555D64;position:relative;padding-bottom:4px;transition:color 160ms ease" style-hover="color:#05070A">Company</a>
+        <a href="#privacy" style="color:#555D64;position:relative;padding-bottom:4px;transition:color 160ms ease" style-hover="color:#05070A">Privacy</a>
+      </div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#3C4247">© 2026 Hunt Global Pte Ltd · Sydney · Powered by EVE</div>
+    </div>
+  </footer>
+</section>
+</div>
+</x-dc>
+<script src="./motion.js"></script>
+<!-- three.js r186 is ESM-only: the UMD build/three.min.js and examples/js/ are both gone,
+     so an importmap is the only supported path. Pin the exact patch (three@0.186.0 serves
+     immutable; the range forms float). The specifier is three/addons/ but the physical
+     path on the CDN is examples/jsm/ — /addons/ is a bundler-only alias and 404s here. -->
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.186.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.186.0/examples/jsm/"
+  }
+}
+</script>
+<script type="module" src="./hero-gl.js"></script>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { showPlay: true, showPlay2: true, acc: { A: 0, B: 0, C: 0 }, stage: 0, scrolled: false };
+  stagePanelRef = React.createRef();
+  stageImgRef = React.createRef();
+  arcRef = React.createRef();
+  stages = [];
+  // EVE orbit: agents on two rings around EVE, data packets travelling in, slow rotation, soft pulses (SMIL — no CSS keyframes needed)
+  buildOrbit() {
+    const E = React.createElement, cx = 300, cy = 300;
+    const named = ['Tango', 'Cash', 'Sophia', 'Fred', 'Wilma'];
+    const func = ['Cost', 'QA', 'Safety', 'Programme', 'Design', 'Procurement', 'Compliance', 'Handover'];
+    const ring = (names, r, size, color, labelColor, offset) => names.map((n, i) => {
+      const a = -Math.PI / 2 + offset + i * (2 * Math.PI / names.length);
+      const x = cx + r * Math.cos(a), y = cy + r * Math.sin(a);
+      const lx = cx + (r + 22) * Math.cos(a), ly = cy + (r + 22) * Math.sin(a);
+      return E('g', { key: n },
+        E('line', { x1: cx, y1: cy, x2: x, y2: y, stroke: 'rgba(5,7,10,0.08)', strokeWidth: 1 }),
+        E('circle', { cx: x, cy: y, r: size, fill: '#05070A', stroke: color, strokeWidth: 1.5 }),
+        E('text', { x: lx, y: ly, fill: labelColor, textAnchor: lx > cx + 8 ? 'start' : (lx < cx - 8 ? 'end' : 'middle'), dominantBaseline: 'middle',
+          style: { fontFamily: "'JetBrains Mono', monospace", fontSize: '11px', letterSpacing: '0.12em', textTransform: 'uppercase' } }, n),
+        E('circle', { r: 3, fill: '#6B72FF' },
+          E('animateMotion', { path: 'M' + x + ',' + y + ' L' + cx + ',' + cy, dur: (2.4 + (i % 3) * 0.7) + 's', begin: (i * 0.45) + 's', repeatCount: 'indefinite' }),
+          E('animate', { attributeName: 'opacity', values: '0;1;1;0', keyTimes: '0;0.15;0.85;1', dur: (2.4 + (i % 3) * 0.7) + 's', begin: (i * 0.45) + 's', repeatCount: 'indefinite' })));
+    });
+    const pulse = (d, b) => E('circle', { cx, cy, r: 40, fill: 'none', stroke: '#2E38FF', strokeWidth: 1 },
+      E('animate', { attributeName: 'r', from: 40, to: 250, dur: d, begin: b, repeatCount: 'indefinite' }),
+      E('animate', { attributeName: 'opacity', from: 0.5, to: 0, dur: d, begin: b, repeatCount: 'indefinite' }));
+    const bars = [10, 20, 30, 18, 26, 14].map((hh, i) => E('rect', { key: i, x: cx - 22 + i * 8, y: cy - hh / 2, width: 3, height: hh, rx: 1, fill: i === 2 ? '#6B72FF' : '#2E38FF' },
+      E('animate', { attributeName: 'height', values: hh + ';' + (hh * 0.45) + ';' + hh, dur: (1.1 + i * 0.17) + 's', repeatCount: 'indefinite' }),
+      E('animate', { attributeName: 'y', values: (cy - hh / 2) + ';' + (cy - hh * 0.225) + ';' + (cy - hh / 2), dur: (1.1 + i * 0.17) + 's', repeatCount: 'indefinite' })));
+    return E('svg', { viewBox: '0 0 600 600', style: { width: 'min(100%, 560px)', height: 'auto', display: 'block', overflow: 'visible' } },
+      E('circle', { cx, cy, r: 150, fill: 'none', stroke: 'rgba(5,7,10,0.10)', strokeWidth: 1, strokeDasharray: '2 6' }),
+      E('circle', { cx, cy, r: 240, fill: 'none', stroke: 'rgba(5,7,10,0.08)', strokeWidth: 1, strokeDasharray: '2 6' }),
+      pulse('4.2s', '0s'), pulse('4.2s', '2.1s'),
+      E('g', null, E('animateTransform', { attributeName: 'transform', type: 'rotate', from: '0 ' + cx + ' ' + cy, to: '360 ' + cx + ' ' + cy, dur: '140s', repeatCount: 'indefinite' }), ...ring(func, 240, 5, '#555D64', '#9AA3AB', 0.22)),
+      ...ring(named, 150, 7, '#2E38FF', '#05070A', 0),
+      E('circle', { cx, cy, r: 46, fill: '#FFFFFF', stroke: '#2E38FF', strokeWidth: 1.5 }),
+      ...bars,
+      E('text', { x: cx, y: cy + 68, fill: '#05070A', textAnchor: 'middle', style: { fontFamily: "Archivo, sans-serif", fontSize: '16px', fontWeight: 500, letterSpacing: '0.16em' } }, 'EVE'));
+  }
+  // EVE flow: inputs → EVE (agents / reasoning / intelligence / governance) → outputs, with flow travelling along the connectors
+  buildFlow() {
+    const E = React.createElement;
+    const inputs = ['Drawings & models', 'Cost plans & contracts', 'Programmes', 'Site diaries & photos', 'Emails, RFIs & submittals'];
+    const outputs = ['Draft RFIs & variations', 'Compare & award packages', 'Write diaries & EOT notices', 'Answer with sources cited', 'Flag programme risk early'];
+    const stack = ['Agents', 'Reasoning', 'Construction intelligence', 'Governance & approvals'];
+    const ys = [96, 200, 304, 408, 512], midY = 304;
+    const mono = { fontFamily: "'JetBrains Mono', monospace", fontSize: '13px', letterSpacing: '0.06em' };
+    const box = (x, y, w, label, key, arrow) => E('g', { key },
+      E('rect', { x: x - 6, y: y - 38, width: w + 12, height: 76, rx: 8, fill: '#E6E9ED' }),
+      E('rect', { x, y: y - 32, width: w, height: 64, rx: 5, fill: '#FFFFFF' }),
+      E('text', { x: x + (arrow ? 24 : w / 2), y: y + 1, fill: '#05070A', textAnchor: arrow ? 'start' : 'middle', dominantBaseline: 'middle', style: { fontFamily: "'Archivo', sans-serif", fontSize: '17px', fontWeight: 500 } }, (arrow ? '→  ' : '') + label));
+    const wire = (d, i, dir) => E('g', { key: 'w' + dir + i },
+      E('path', { d, fill: 'none', stroke: '#C6CDD4', strokeWidth: 1.25, strokeLinejoin: 'round' }),
+      E('path', { d, fill: 'none', stroke: '#2E38FF', strokeWidth: 1.5, strokeDasharray: '5 9', strokeLinejoin: 'round', opacity: 0.9 },
+        E('animate', { attributeName: 'stroke-dashoffset', from: 0, to: -28, dur: '1.4s', repeatCount: 'indefinite' })),
+      E('circle', { r: 3.5, fill: '#05070A' },
+        E('animateMotion', { path: d, dur: (2.6 + i * 0.35) + 's', begin: (i * 0.5) + 's', repeatCount: 'indefinite' }),
+        E('animate', { attributeName: 'opacity', values: '0;1;1;0', keyTimes: '0;0.1;0.9;1', dur: (2.6 + i * 0.35) + 's', begin: (i * 0.5) + 's', repeatCount: 'indefinite' })));
+    const leftWires = ys.map((y, i) => wire('M340 ' + y + ' L400 ' + y + ' L400 ' + midY + ' L460 ' + midY, i, 'l'));
+    const rightWires = ys.map((y, i) => wire('M740 ' + midY + ' L800 ' + midY + ' L800 ' + y + ' L860 ' + y, i, 'r'));
+    const rows = stack.map((s, i) => { const y = 104 + i * 108; return E('g', { key: 'row' + i },
+      E('rect', { x: 484, y, width: 232, height: 80, rx: 5, fill: '#1F27D6' }),
+      E('rect', { x: 484, y, width: 232, height: 80, rx: 5, fill: '#6B72FF', opacity: 0 },
+        E('animate', { attributeName: 'opacity', values: '0;0.55;0', dur: '4.4s', begin: (i * 1.1) + 's', repeatCount: 'indefinite' })),
+      E('text', { x: 600, y: y + 41, fill: '#FFFFFF', textAnchor: 'middle', dominantBaseline: 'middle', style: { fontFamily: "'Archivo', sans-serif", fontSize: '18px', fontWeight: 500 } }, s)); });
+    const bars = [8, 16, 24, 14, 20].map((hh, i) => E('rect', { key: 'b' + i, x: 528 + i * 7, y: 30 - hh / 2, width: 3, height: hh, rx: 1, fill: i === 2 ? '#6B72FF' : '#2E38FF' },
+      E('animate', { attributeName: 'height', values: hh + ';' + (hh * 0.4) + ';' + hh, dur: (1 + i * 0.16) + 's', repeatCount: 'indefinite' }),
+      E('animate', { attributeName: 'y', values: (30 - hh / 2) + ';' + (30 - hh * 0.2) + ';' + (30 - hh / 2), dur: (1 + i * 0.16) + 's', repeatCount: 'indefinite' })));
+    return E('svg', { viewBox: '0 0 1200 600', style: { width: '100%', height: 'auto', display: 'block', overflow: 'visible' } },
+      ...leftWires, ...rightWires,
+      ...inputs.map((t, i) => box(40, ys[i], 300, t, 'in' + i, false)),
+      ...outputs.map((t, i) => box(860, ys[i], 300, t, 'out' + i, true)),
+      E('rect', { x: 460, y: 68, width: 280, height: 476, rx: 8, fill: '#FFFFFF', stroke: '#2E38FF', strokeWidth: 1 }),
+      ...rows,
+      ...bars,
+      E('text', { x: 576, y: 31, fill: '#05070A', dominantBaseline: 'middle', style: { fontFamily: "Archivo, sans-serif", fontSize: '22px', fontWeight: 500, letterSpacing: '0.14em' } }, 'EVE'),
+      E('text', { x: 190, y: 570, fill: '#555D64', textAnchor: 'middle', style: mono }, 'WHAT YOU ALREADY HAVE'),
+      E('text', { x: 1010, y: 570, fill: '#555D64', textAnchor: 'middle', style: mono }, 'WHAT COMES BACK'),
+      E('text', { x: 600, y: 570, fill: '#555D64', textAnchor: 'middle', style: mono }, 'COPILOT · YOU APPROVE'));
+  }
+  // Noise → signal field: line icons drifting in slow circles around a live EVE bar (waveform, glow, sparkles)
+  buildSignalField() {
+    const E = React.createElement;
+    const P = {
+      doc: 'M6 3h8l4 4v14H6z M14 3v4h4 M9 12h6 M9 16h6',
+      cal: 'M4 6h16v14H4z M4 10h16 M8 3v4 M16 3v4 M8 14h2 M12 14h2',
+      bld: 'M5 21V5l7-2v18 M12 21V9l7 2v10 M8 8h1 M8 12h1 M8 16h1 M15 14h1 M15 17h1',
+      cam: 'M4 8h4l2-3h4l2 3h4v11H4z M15 13a3 3 0 11-6 0 3 3 0 016 0',
+      key: 'M12 14a4 4 0 11-8 0 4 4 0 018 0 M11 11l9-9 M17 4l2 2 M14 7l2 2',
+      usd: 'M12 3v18 M16 7h-6a3 3 0 000 6h4a3 3 0 010 6H8',
+      chk: 'M4 5h16v14H4z M7 9h2 M11 9h6 M7 13h2 M11 13h6',
+      flg: 'M6 21V4 M6 4h11l-2 4 2 4H6',
+      hat: 'M4 17h16 M6 17a6 6 0 0112 0 M10 11V8h4v3',
+      sch: 'M17 11a6 6 0 11-12 0 6 6 0 0112 0 M20 20l-4-4 M8.5 11l2 2 3.5-4',
+      tgt: 'M17 12a5 5 0 11-10 0 5 5 0 0110 0 M12 3v4 M12 17v4 M3 12h4 M17 12h4',
+      lst: 'M5 7h14 M5 12h10 M5 17h14'
+    };
+    const icons = [
+      [120, 110, 'doc', 1.6, 0.9], [300, 70, 'bld', 1.5, 0.55], [470, 60, 'cal', 1.8, 0.85], [640, 95, 'hat', 1.4, 0.4],
+      [90, 250, 'chk', 1.7, 0.8], [230, 200, 'usd', 1.4, 0.5], [380, 210, 'flg', 1.6, 0.7], [560, 180, 'cam', 1.5, 0.6], [700, 240, 'sch', 1.7, 0.9],
+      [60, 400, 'key', 1.5, 0.75], [150, 500, 'tgt', 1.3, 0.45], [720, 420, 'lst', 1.6, 0.8],
+      [110, 620, 'cal', 1.4, 0.65], [280, 580, 'doc', 1.7, 0.9], [420, 640, 'hat', 1.5, 0.5], [580, 600, 'bld', 1.6, 0.75], [700, 560, 'usd', 1.3, 0.45],
+      [220, 720, 'cam', 1.4, 0.55], [400, 740, 'sch', 1.5, 0.7], [600, 720, 'chk', 1.6, 0.6]
+    ];
+    const orbit = (r, dur, begin, ccw) => E('animateMotion', { path: 'M0 ' + (-r) + ' A ' + r + ' ' + r + ' 0 1 ' + (ccw ? 0 : 1) + ' 0 ' + r + ' A ' + r + ' ' + r + ' 0 1 ' + (ccw ? 0 : 1) + ' 0 ' + (-r), dur: dur + 's', begin: begin + 's', repeatCount: 'indefinite' });
+    const glyphs = icons.map(([x, y, k, s, o], i) => E('g', { key: i, transform: 'translate(' + x + ' ' + y + ')' },
+      E('g', { opacity: o }, orbit(6 + (i % 4) * 3, 9 + (i % 5) * 2.2, -(i * 1.3), i % 2 === 0),
+        E('path', { d: P[k], fill: 'none', stroke: '#2B3138', strokeWidth: 1.6, strokeLinecap: 'round', strokeLinejoin: 'round', transform: 'scale(' + s + ') translate(-12 -12)' }))));
+    const bars = [10, 18, 26, 14, 22, 12, 20].map((hh, i) => E('rect', { key: 'wb' + i, x: 166 + i * 8, y: 400 - hh / 2, width: 3.5, height: hh, rx: 1.5, fill: i === 2 || i === 4 ? '#6B72FF' : '#2E38FF' },
+      E('animate', { attributeName: 'height', values: hh + ';' + (hh * 0.3) + ';' + (hh * 1.15) + ';' + hh, keyTimes: '0;0.35;0.7;1', dur: (0.9 + i * 0.13) + 's', repeatCount: 'indefinite' }),
+      E('animate', { attributeName: 'y', values: (400 - hh / 2) + ';' + (400 - hh * 0.15) + ';' + (400 - hh * 0.575) + ';' + (400 - hh / 2), keyTimes: '0;0.35;0.7;1', dur: (0.9 + i * 0.13) + 's', repeatCount: 'indefinite' })));
+    const spark = (x, y, s, dur, begin) => E('path', { key: 's' + x + y, d: 'M0 -' + s + ' Q0 0 ' + s + ' 0 Q0 0 0 ' + s + ' Q0 0 -' + s + ' 0 Q0 0 0 -' + s, fill: '#6B72FF', transform: 'translate(' + x + ' ' + y + ')', opacity: 0 },
+      E('animate', { attributeName: 'opacity', values: '0;1;0', dur: dur + 's', begin: begin + 's', repeatCount: 'indefinite' }),
+      E('animateTransform', { attributeName: 'transform', type: 'rotate', from: '0 ' + x + ' ' + y, to: '90 ' + x + ' ' + y, dur: dur + 's', begin: begin + 's', repeatCount: 'indefinite', additive: 'sum' }));
+    return E('svg', { viewBox: '0 0 800 800', preserveAspectRatio: 'xMidYMid slice', style: { position: 'absolute', inset: 0, width: '100%', height: '100%', display: 'block' } },
+      E('defs', null, E('radialGradient', { id: 'sf-glow' }, E('stop', { offset: 0, stopColor: '#6B72FF', stopOpacity: 0.35 }), E('stop', { offset: 1, stopColor: '#6B72FF', stopOpacity: 0 }))),
+      E('rect', { x: 0, y: 0, width: 800, height: 800, fill: '#F0F1FA' }),
+      E('ellipse', { cx: 400, cy: 400, rx: 300, ry: 200, fill: 'url(#sf-glow)' }, E('animate', { attributeName: 'opacity', values: '0.5;1;0.5', dur: '4.5s', repeatCount: 'indefinite' })),
+      E('circle', { cx: 400, cy: 400, r: 240, fill: 'none', stroke: '#6B72FF', strokeWidth: 1 },
+        E('animate', { attributeName: 'r', from: 240, to: 420, dur: '5s', repeatCount: 'indefinite' }), E('animate', { attributeName: 'opacity', from: 0.35, to: 0, dur: '5s', repeatCount: 'indefinite' })),
+      ...glyphs,
+      E('rect', { x: 140, y: 364, width: 520, height: 72, rx: 8, fill: '#FFFFFF', stroke: '#9AA0FF', strokeWidth: 1.2 }),
+      ...bars,
+      E('text', { x: 238, y: 401, fill: '#2E38FF', dominantBaseline: 'middle', style: { fontFamily: "'JetBrains Mono', monospace", fontSize: '11px', letterSpacing: '0.22em' } }, 'EVE'),
+      E('line', { x1: 280, y1: 382, x2: 280, y2: 418, stroke: '#DFE4E9', strokeWidth: 1 }),
+      E('text', { x: 296, y: 401, fill: '#05070A', dominantBaseline: 'middle', style: { fontFamily: "'Archivo', sans-serif", fontSize: '18px', fontWeight: 500 } }, 'Reading 41 sources across 6 systems.'),
+      spark(128, 352, 7, 2.6, 0), spark(676, 446, 6, 3.1, 1.1), spark(662, 350, 5, 2.2, 0.6), spark(146, 452, 4, 2.9, 1.8),
+      E('text', { x: 400, y: 776, fill: '#767E86', textAnchor: 'middle', style: { fontFamily: "'JetBrains Mono', monospace", fontSize: '10px', letterSpacing: '0.24em' } }, 'NOISE  →  SILENCE  →  '),
+      E('text', { x: 481, y: 776, fill: '#2E38FF', style: { fontFamily: "'JetBrains Mono', monospace", fontSize: '10px', letterSpacing: '0.24em' } }, 'SIGNAL'));
+  }
+  // Closing: a slow ultramarine light drifting behind the CTA (SMIL, GPU-cheap)
+  buildFooterGlow() {
+    const E = React.createElement;
+    return E('svg', { viewBox: '0 0 1600 900', preserveAspectRatio: 'xMidYMid slice', style: { position: 'absolute', inset: 0, width: '100%', height: '100%', display: 'block', pointerEvents: 'none' } },
+      E('defs', null, E('radialGradient', { id: 'fg-a' }, E('stop', { offset: 0, stopColor: '#2E38FF', stopOpacity: 0.32 }), E('stop', { offset: 1, stopColor: '#2E38FF', stopOpacity: 0 })),
+        E('radialGradient', { id: 'fg-b' }, E('stop', { offset: 0, stopColor: '#6B72FF', stopOpacity: 0.16 }), E('stop', { offset: 1, stopColor: '#6B72FF', stopOpacity: 0 }))),
+      E('ellipse', { cx: 800, cy: 720, rx: 620, ry: 260, fill: 'url(#fg-a)' },
+        E('animate', { attributeName: 'cx', values: '640;960;640', dur: '14s', repeatCount: 'indefinite' }),
+        E('animate', { attributeName: 'ry', values: '260;320;260', dur: '9s', repeatCount: 'indefinite' })),
+      E('ellipse', { cx: 800, cy: 200, rx: 420, ry: 200, fill: 'url(#fg-b)' },
+        E('animate', { attributeName: 'cx', values: '900;700;900', dur: '17s', repeatCount: 'indefinite' })),
+      E('g', { stroke: 'rgba(5,7,10,0.05)', strokeWidth: 1 }, ...[0, 1, 2, 3, 4, 5, 6, 7].map(i => E('line', { key: i, x1: 200 * i, y1: 0, x2: 200 * i, y2: 900 }))));
+  }
+  stageVals() {
+    const st = this.stages[this.state.stage] || { n: '01', title: 'Site sourcing', desc: '', agent: 'Tango' };
+    const N = 13, R = 236, cx = 320, cy = 320;
+    const nodes = this.stages.length ? this.stages : Array.from({ length: N }, (_, i) => ({ title: '' }));
+    const stageNodes = nodes.map((sg, i) => {
+      const a = -Math.PI / 2 + i * (2 * Math.PI / N);
+      const on = i <= this.state.stage, active = i === this.state.stage;
+      const x = cx + R * Math.cos(a), y = cy + R * Math.sin(a);
+      const lx = cx + (R + 30) * Math.cos(a), ly = cy + (R + 30) * Math.sin(a);
+      return { cx: x, cy: y, r: active ? 9 : 5, fill: on ? '#2E38FF' : '#FFFFFF', stroke: on ? '#2E38FF' : '#9AA3AB',
+        lx, ly, anchor: lx > cx + 12 ? 'start' : (lx < cx - 12 ? 'end' : 'middle'),
+        color: on ? '#05070A' : '#9AA3AB', label: (sg.title || '').replace('Site sourcing', 'Sourcing') };
+    });
+    // SVG <text> can't take template holes — build the 13 ring labels directly
+    const stageLabels = React.createElement('g', { key: 'labels' }, stageNodes.map((n, i) => React.createElement('text', {
+      key: i, x: n.lx, y: n.ly, fill: n.color, textAnchor: n.anchor, dominantBaseline: 'middle',
+      style: { fontFamily: "'JetBrains Mono', monospace", fontSize: '11.5px', letterSpacing: '0.14em', textTransform: 'uppercase', transition: 'fill 260ms ease' }
+    }, n.label)));
+    return { stageNum: st.n, stageTitle: st.title, stageDesc: st.desc, stageAgent: 'Agent · ' + st.agent, stageNodes, stageLabels,
+      stageImage: st.img || 'https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_101409_8f8c3c8a-32e3-4d97-bf27-ab18476c02a7.png',
+      stageImage0: (this.stages[0] && this.stages[0].img) || 'https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_113134_1a0f068f-2888-4015-b312-482b0c632c0a.png',
+      stagePanelRef: this.stagePanelRef, stageImgRef: this.stageImgRef, arcRef: this.arcRef };
+  }
+  toggleAcc = (k, i) => this.setState(s => ({ acc: Object.assign({}, s.acc, { [k]: s.acc[k] === i ? -1 : i }) }));
+  videoRef = React.createRef();
+  videoRef2 = React.createRef();
+  startVideo = (ref, key) => {
+    const v = ref.current;
+    if (!v) return;
+    // NETWORK_NO_SOURCE (3): the mp4 isn't there yet — keep the poster + control, do nothing.
+    if (v.networkState === 3) return;
+    const onPlaying = () => { this.setState({ [key]: false }); v.style.opacity = '1'; v.removeEventListener('playing', onPlaying); };
+    v.addEventListener('playing', onPlaying);
+    v.load();
+    const p = v.play();
+    if (p && p.catch) p.catch(() => this.setState({ [key]: true }));
+    // If nothing has started within 3s (source 404 etc.), restore the control.
+    setTimeout(() => { if (v.readyState === 0 || v.networkState === 3) this.setState({ [key]: true }); }, 3000);
+  };
+  playVideo = () => this.startVideo(this.videoRef, 'showPlay');
+  playVideo2 = () => this.startVideo(this.videoRef2, 'showPlay2');
+  componentDidMount() {
+    if (typeof window === 'undefined') return;
+    const navFrame = () => { const hero = document.getElementById('top'); const sc = hero ? hero.getBoundingClientRect().bottom <= 76 : document.body.getBoundingClientRect().top < -80; if (sc !== this.state.scrolled) this.setState({ scrolled: sc }); this._navRaf = requestAnimationFrame(navFrame); };
+    this._navRaf = requestAnimationFrame(navFrame);
+    const show = (el) => { el.style.opacity = '1'; el.style.transform = 'none'; };
+    if ('IntersectionObserver' in window) {
+      this._rio = new IntersectionObserver((entries) => entries.forEach(en => { if (en.isIntersecting) { show(en.target); this._rio.unobserve(en.target); } }), { threshold: 0.1 });
+      const scan = () => document.querySelectorAll('[data-reveal]:not([data-revealed])').forEach(el => { el.setAttribute('data-revealed', '1'); this._rio.observe(el); });
+      scan(); this._rscan = setInterval(scan, 600); setTimeout(() => clearInterval(this._rscan), 20000);
+    } else document.querySelectorAll('[data-reveal]').forEach(show);
+    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) return;
+    this._onScroll = () => { if (this._update) { try { this._update(); } catch (err) { console.warn('scroll update', err); } } };
+    window.addEventListener('scroll', this._onScroll, { passive: true });
+    window.addEventListener('resize', this._onScroll);
+    document.addEventListener('scroll', this._onScroll, { capture: true, passive: true });
+    let _sig = null;
+    const frame = () => {
+      const s = Math.round(document.body.getBoundingClientRect().top) + '|' + window.innerHeight;
+      if (s !== _sig) { _sig = s; this._onScroll(); }
+      this._raf = requestAnimationFrame(frame);
+    };
+    this._raf = requestAnimationFrame(frame);
+    // Lazy DOM lookups: refs are (re-)resolved on demand, so nodes that stream in after mount still get wired
+    const _c = {};
+    const el1 = (s) => { const v = _c[s]; if (v && v.isConnected) return v; return (_c[s] = document.querySelector(s)); };
+    const elN = (s) => { const k = '*' + s; const v = _c[k]; if (v && v.length && v[0].isConnected) return v; return (_c[k] = Array.from(document.querySelectorAll(s))); };
+    // Scroll reveal: fade + rise. Elements start visible (no-JS safe), get hidden only if below the fold.
+    const targets = Array.from(document.querySelectorAll('[data-screen-label]:not(header) > div > *'))
+      .filter(el => !el.closest('header') && el.tagName !== 'IMG' && el.tagName !== 'VIDEO'
+        && !el.hasAttribute('data-classlist-bg'));  // the crossfade stack owns its own opacity
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        const el = e.target, sib = Array.from(el.parentNode.children).indexOf(el);
+        el.style.transitionDelay = Math.min(sib * 90, 360) + 'ms';
+        el.style.opacity = '1'; el.style.transform = 'none';
+        io.unobserve(el);
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+    targets.forEach(el => {
+      const r = el.getBoundingClientRect();
+      if (r.top > window.innerHeight * 0.92) {
+        el.style.opacity = '0'; el.style.transform = 'translateY(28px)';
+        el.style.transition = 'opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1)';
+        el.style.willChange = 'opacity, transform';
+      }
+      io.observe(el);
+    });
+    // Scroll-driven horizontal lifecycle journey (vertical scroll → horizontal travel).
+    let _journeys = null;
+    const journeysOf = () => {
+      if (_journeys && _journeys.length && _journeys[0].sec.isConnected && _journeys[0].count) return _journeys;
+      _journeys = Array.from(document.querySelectorAll('[data-hscroll-section]')).map(sec => {
+      const track = sec.querySelector('[data-hscroll-track]');
+      const nodes = Array.from(sec.querySelectorAll('[data-hscroll-node]'));
+      const items = nodes.length ? nodes : (track ? Array.from(track.children) : []);
+      return { sec, track, prog: sec.querySelector('[data-hscroll-progress]'), counter: sec.querySelector('[data-hscroll-counter]'),
+        nodes, nodeTitles: nodes.map(n => n.parentNode.children[2]), count: items.length, lastIdx: -1 };
+      });
+      return _journeys;
+    };
+    // Laptop: fit lid + hinge into the height the hero band actually has (lid is 16:9 + 32px bezel, hinge 14px)
+    const laptop = document.querySelector('[data-laptop]');
+    const fitLaptop = () => {
+      if (!laptop) return;
+      const band = laptop.parentNode;
+      // room between the band's top (at scroll 0) and the bottom of the first viewport
+      const docTop = band.getBoundingClientRect().top + window.scrollY;
+      const avail = window.innerHeight - docTop - parseFloat(getComputedStyle(band).paddingTop) - 52;
+      const maxW = band.clientWidth - 48;
+      // laptop height = (w - 32) * 9/16 + 16 (top bezel) + 14 (hinge)
+      const wFromH = ((avail - 30) * 16 / 9) + 32;
+      // fit to the fold when that still gives a generous screen; otherwise go wide and let the hero grow
+      const w = wFromH >= maxW * 0.66 ? Math.min(maxW, 1480, wFromH) : Math.min(maxW, 1480);
+      laptop.style.width = Math.round(w) + 'px';
+    };
+    fitLaptop();
+    window.addEventListener('resize', fitLaptop);
+    this._fitLaptop = fitLaptop;
+    // Lifecycle loop: one stage in focus at a time; the arc draws around the ring with scroll
+    fetch('lifecycle-stages.json').then(r => r.json()).then(d => {
+      this.stages = d; this.forceUpdate();
+      const mb = document.querySelector('[data-morph-b]'); if (mb && d[0] && d[0].img && mb.getAttribute('src') !== d[0].img) mb.setAttribute('src', d[0].img);
+    }).catch(() => {});
+    const stageSecOf = () => el1('[data-stage-section]');
+    let stageT = null;
+    const stageTick = () => {
+      const stageSec = stageSecOf();
+      if (!stageSec) return;
+      const r = stageSec.getBoundingClientRect();
+      const total = r.height - window.innerHeight;
+      const p = Math.max(0, Math.min(1, -r.top / total));
+      if (this.arcRef.current) this.arcRef.current.setAttribute('stroke-dasharray', (p * 1483) + ' 1483');
+      const idx = Math.min(12, Math.floor(p * 13));
+      if (idx !== this.state.stage) {
+        const panel = this.stagePanelRef.current;
+        // swap the copy immediately; a single quick rise (160ms) covers the change — no waiting
+        const pic = this.stageImgRef.current;
+        if (panel) { panel.style.transition = 'none'; panel.style.opacity = '0'; panel.style.transform = 'translateY(8px)'; }
+        // the picture flips: collapse on its vertical axis, swap, expand
+        if (pic) { pic.style.transition = 'none'; pic.style.transform = 'scaleX(0.02)'; pic.style.opacity = '0.4'; }
+        this.setState({ stage: idx }, () => requestAnimationFrame(() => {
+          if (panel) {
+            panel.style.transition = 'opacity 160ms ease, transform 160ms cubic-bezier(0.16,1,0.3,1)';
+            panel.style.opacity = '1'; panel.style.transform = 'translateY(0)';
+          }
+          if (pic) {
+            pic.style.transition = 'transform 260ms cubic-bezier(0.16,1,0.3,1), opacity 260ms ease';
+            pic.style.transform = 'scaleX(1)'; pic.style.opacity = '1';
+          }
+        }));
+      }
+    };
+    this._stageTick = stageTick;
+    // Hero → lifecycle morph: the laptop screen becomes the ring's circle and travels to the right while the next chapter rises
+    const eio = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    // progress = how far the lifecycle chapter has risen into the viewport; both rects are measured live each frame so the circle lands exactly on the ring
+    this._morphTick = () => {
+      const stageSec = stageSecOf(), morph = el1('[data-morph]'), screenEl = el1('[data-laptop-screen]'), ringSvg = el1('[data-stage-section] svg');
+      const mA = el1('[data-morph-a]'), mB = el1('[data-morph-b]'), mTint = el1('[data-morph-tint]');
+      const laptopEl = el1('[data-laptop]'), heroText = el1('[data-hero-text]'), ringPic = el1('[data-ring-pic]');
+      if (!stageSec || !morph || !screenEl || !ringSvg) return;
+      const vh = window.innerHeight;
+      const secTop = stageSec.getBoundingClientRect().top;
+      const p = Math.max(0, Math.min(1, (vh - secTop) / vh));
+      if (p <= 0) { morph.style.opacity = '0'; if (laptopEl) laptopEl.style.opacity = '1'; if (heroText) { heroText.style.opacity = '1'; heroText.style.transform = 'none'; } if (ringPic) ringPic.style.opacity = '0'; return; }
+      if (p >= 1) { morph.style.opacity = '0'; if (ringPic) ringPic.style.opacity = '1'; if (laptopEl) laptopEl.style.opacity = '0'; return; }
+      const s0 = screenEl.getBoundingClientRect();
+      // keep the departing panel on screen: never let its start point ride above the header while it travels
+      const s = { left: s0.left, width: s0.width, height: s0.height, top: Math.max(s0.top, 84) };
+      const r = ringSvg.getBoundingClientRect();
+      const d = r.width * 440 / 640;
+      const ex = r.left + (r.width - d) / 2, ey = r.top + (r.height - d) / 2;
+      const e = eio(p);
+      const w = s.width + (d - s.width) * e, hh = s.height + (d - s.height) * e;
+      const x = s.left + (ex - s.left) * e, y = s.top + (ey - s.top) * e;
+      morph.style.opacity = '1';
+      morph.style.transform = 'translate(' + x + 'px,' + y + 'px)';
+      morph.style.width = w + 'px'; morph.style.height = hh + 'px';
+      morph.style.borderRadius = (10 + (d / 2 - 10) * e) + 'px';
+      morph.style.borderColor = 'rgba(107,114,255,' + (0.9 * e) + ')';
+      if (mA) mA.style.opacity = String(1 - Math.min(1, e * 1.4));
+      if (mB) mB.style.opacity = String(Math.min(1, e * 1.4));
+      if (mTint) mTint.style.opacity = String(e);
+      if (laptopEl) laptopEl.style.opacity = String(Math.max(0, 1 - p * 6));
+      if (heroText) { heroText.style.opacity = String(Math.max(0, 1 - p * 2.2)); }
+      if (ringPic) ringPic.style.opacity = '0';
+    };
+    // Statement band: two halves of one photograph slide together as you scroll, then the line appears
+    const joinSecOf = () => el1('[data-join-section]');
+    const easeOut = t => 1 - Math.pow(1 - t, 3);
+    const easeInOut = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    const mix = (a, b, t) => a + (b - a) * t;
+    // two staggered panels of one photograph (start) → one full-bleed picture (end); rendered on the compositor via clip-path + transform
+    let joinTarget = 0, joinCur = 0, joinRaf = null;
+    const paintJoin = (p) => {
+      const jl = el1('[data-join-layer="left"]'), jr = el1('[data-join-layer="right"]');
+      const jscrim = el1('[data-join-scrim]'), jtext = el1('[data-join-text]');
+      if (!jl || !jr) return;
+      const j = easeInOut(Math.max(0, Math.min(1, p / 0.7)));
+      const dy = mix(10, 0, j);
+      jl.style.clipPath = 'inset(' + mix(14, 0, j) + 'vh ' + mix(56, 50, j) + 'vw ' + mix(18, 0, j) + 'vh ' + mix(8, 0, j) + 'vw)';
+      jl.style.transform = 'translateY(' + dy + 'vh)';
+      jr.style.clipPath = 'inset(' + mix(18, 0, j) + 'vh ' + mix(12, 0, j) + 'vw ' + mix(14, 0, j) + 'vh ' + mix(52, 50, j) + 'vw)';
+      jr.style.transform = 'translateY(' + (-dy) + 'vh)';
+      // the moment the picture is whole (j = 1 at p = 0.7) the line snaps in — quick, centred
+      const t = easeOut(Math.max(0, Math.min(1, (p - 0.7) / 0.08)));
+      if (jscrim) jscrim.style.opacity = String(t);
+      if (jtext) { jtext.style.opacity = String(t); jtext.style.transform = 'translateY(' + (20 * (1 - t)) + 'px)'; }
+    };
+    const joinLoop = () => {
+      joinCur += (joinTarget - joinCur) * 0.16;            // smooth the scroll input
+      if (Math.abs(joinTarget - joinCur) < 0.0005) { joinCur = joinTarget; paintJoin(joinCur); joinRaf = null; return; }
+      paintJoin(joinCur);
+      joinRaf = requestAnimationFrame(joinLoop);
+    };
+    this._joinTick = () => {
+      const joinSec = joinSecOf();
+      if (!joinSec || !el1('[data-join-layer="left"]')) return;
+      const r = joinSec.getBoundingClientRect();
+      if (r.bottom < -200 || r.top > window.innerHeight + 200) return;
+      joinTarget = Math.max(0, Math.min(1, -r.top / (r.height - window.innerHeight)));
+      if (!joinRaf) joinRaf = requestAnimationFrame(joinLoop);
+    };
+    // Traceability spine: draws top→bottom as the timeline scrolls through the viewport; steps light up as it passes.
+    const tColors = ['#FF3B30', '#6B72FF', '#6B72FF', '#6B72FF', '#6B72FF', '#6B72FF', '#9AA0FF', '#19C26B'];
+    let tLast = -1;
+    const update = () => {
+      const vh = window.innerHeight;
+      const shift = el1('[data-hshift]'), tl = el1('[data-trace-timeline]'), spine = el1('[data-trace-spine]');
+      const tSteps = elN('[data-trace-step]'), tNodes = elN('[data-trace-node]'), px = elN('[data-parallax]');
+      journeysOf().forEach(j => {
+        if (!j.track) return;
+        const r = j.sec.getBoundingClientRect();
+        if (r.bottom < 0 || r.top > vh) return;
+        const total = r.height - vh;
+        const raw = total > 0 ? -r.top / total : 0;
+        const p = Math.max(0, Math.min(1, Number.isFinite(raw) ? raw : 0));
+        const eased = p < 0.04 ? 0 : p > 0.96 ? 1 : (p - 0.04) / 0.92;
+        const max = Math.max(0, j.track.scrollWidth - window.innerWidth);
+        j.track.style.transform = 'translateX(' + (-max * eased) + 'px)';
+        if (j.prog) j.prog.style.width = (eased * 100) + '%';
+        let idx = Math.floor(eased * j.count);
+        idx = Number.isFinite(idx) ? Math.max(0, Math.min(j.count - 1, idx)) : 0;
+        if (idx !== j.lastIdx) {
+          j.lastIdx = idx;
+          j.nodes.forEach((n, i) => {
+            const on = i <= idx;
+            const dark = false;
+            n.style.background = on ? '#2E38FF' : (dark ? '#05070A' : '#FFFFFF');
+            n.style.borderColor = on ? (dark ? '#6B72FF' : '#1F27D6') : (dark ? '#767E86' : '#9AA3AB');
+            if (j.nodeTitles[i]) j.nodeTitles[i].style.color = dark ? (i === idx ? '#FFFFFF' : (on ? '#C6CDD4' : '#767E86')) : (i === idx ? '#05070A' : (on ? '#3C4247' : '#9AA3AB'));
+          });
+          if (j.counter) j.counter.textContent = String(idx + 1).padStart(2, '0') + ' / ' + String(j.count).padStart(2, '0');
+        }
+      });
+      if (shift) shift.style.transform = 'translateX(' + Math.max(-360, -window.scrollY * 0.22) + 'px)';
+      if (this._stageTick) { try { this._stageTick(); } catch (err) { console.warn('stage tick', err); } }
+      if (this._morphTick) { try { this._morphTick(); } catch (err) { console.warn('morph tick', err); } }
+      if (this._joinTick) { try { this._joinTick(); } catch (err) { console.warn('join tick', err); } }
+      if (tl && spine) {
+        const r = tl.getBoundingClientRect();
+        const p = Math.max(0, Math.min(1, (vh * 0.78 - r.top) / r.height));
+        spine.style.height = (p * 100) + '%';
+        const idx = Math.floor(p * tSteps.length + 0.5) - 1;
+        if (idx !== tLast) {
+          tLast = idx;
+          tSteps.forEach((el, i) => {
+            const on = i <= idx;
+            el.style.opacity = on ? '1' : '0.32';
+            if (tNodes[i]) { tNodes[i].style.background = on ? tColors[i] : '#05070A'; tNodes[i].style.borderColor = on ? tColors[i] : '#3C4247'; }
+          });
+        }
+      }
+      px.forEach(img => {
+        const r = img.parentNode.getBoundingClientRect();
+        if (r.bottom < 0 || r.top > vh) return;
+        const p = (r.top + r.height / 2 - vh / 2) / vh; // -1..1
+        const abs = getComputedStyle(img).position === 'absolute';
+        img.style.transform = abs ? 'translateY(' + (p * -5) + '%)' : 'translateY(' + (p * -18) + 'px) scale(1.08)';
+      });
+    };
+    this._update = update;
+    let kicks = 0;
+    const kick = () => { try { update(); } catch (err) { console.warn('initial update', err); } if (++kicks < 40) requestAnimationFrame(kick); };
+    kick();
+  }
+  componentWillUnmount() {
+    if (this._navRaf) cancelAnimationFrame(this._navRaf);
+    if (this._rscan) clearInterval(this._rscan);
+    if (this._rio) this._rio.disconnect();
+    if (this._onScroll) { window.removeEventListener('scroll', this._onScroll); window.removeEventListener('resize', this._onScroll); document.removeEventListener('scroll', this._onScroll, { capture: true }); }
+    if (this._raf) cancelAnimationFrame(this._raf);
+  }
+  renderVals() {
+    const h = React.createElement;
+    const bars = [10, 20, 34, 24, 14, 28, 12];
+    const eveWave = h('div', { 'data-eve-wave': 'true', style: { display: 'flex', alignItems: 'center', gap: 3, height: 34 } },
+      bars.map((b, i) => h('span', {
+        key: i,
+        style: {
+          display: 'block', width: 3, height: b, borderRadius: 2,
+          background: i === 2 || i === 5 ? '#9AA0FF' : (i === 0 || i === 6 ? '#1F27D6' : '#6B72FF'),
+          transformOrigin: 'center',
+          animation: 'bfWave ' + (1.6 + (i % 3) * 0.35) + 's ease-in-out ' + (i * 0.12) + 's infinite'
+        }
+      }))
+    );
+    const agentPulse = h('span', { 'data-eve-pulse': 'true', style: { display: 'inline-block', width: 6, height: 6, borderRadius: 999, background: '#6B72FF', animation: 'bfPulse 2.4s ease-in-out infinite' } });
+    if (!this._flow) this._flow = this.buildFlow();
+    if (!this._signal) this._signal = this.buildSignalField();
+    if (!this._fglow) this._fglow = this.buildFooterGlow();
+    const stuck = this.state.scrolled;
+    const vals = { navPos: stuck ? 'fixed' : 'absolute', navTop: stuck ? '0' : 'auto', navBottom: stuck ? 'auto' : '0', navBg: stuck ? 'rgba(255,255,255,0.94)' : 'rgba(255,255,255,0.74)', navBorder: stuck ? '#DFE4E9' : 'rgba(223,228,233,0)', navBorderTop: stuck ? 'rgba(223,228,233,0)' : 'rgba(255,255,255,0.6)', eveWave, agentPulse, eveFlow: this._flow, signalField: this._signal, footerGlow: this._fglow, videoRef: this.videoRef, playVideo: this.playVideo, showPlay: this.state.showPlay, ...this.stageVals(),
+      videoRef2: this.videoRef2, playVideo2: this.playVideo2, showPlay2: this.state.showPlay2 };
+    ['A', 'B', 'C'].forEach(k => [0, 1, 2].forEach(i => {
+      const open = this.state.acc[k] === i;
+      vals['open' + k + i] = open;
+      vals['icon' + k + i] = open ? '−' : '+';
+      vals['toggle' + k + i] = () => this.toggleAcc(k, i);
+    }));
+    return vals;
+  }
+}
+</script>
+</body>
+</html>
