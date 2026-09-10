@@ -76,17 +76,20 @@ function mulberry32(a) {
 const SEED = 0x81174F10;
 const ss = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
 
-const HW = 4.5, HH = 3.0, GAP = 3.15, LEVELS = 32, Z0 = 4.0;
+const HW = 4.5, HH = 3.0, GAP = 3.15, LEVELS = 288, Z0 = 4.0;
+// Silhouette events stay PROPORTIONAL to the tower rather than pinned to absolute levels:
+// L14 of 32 is 44% up; L14 of 288 would be 5% and the setback would slide off the bottom.
+const SB0 = LEVELS * 0.44, SB1 = LEVELS * 0.48, LSC = LEVELS / 32;
 const zOf = k => Z0 - k * GAP;                          // L0 z=+4.0 … L31 z=-93.65
-const hw = kf => HW * (1.0 - 0.14 * ss(13.0, 15.4, kf)); // podium→tower X setback at L14
-const leanX = kf => 0.62 * Math.pow(kf / (LEVELS - 1), 1.25);
-const leanY = kf => -0.34 * (kf / (LEVELS - 1));
+const hw = kf => HW * (1.0 - 0.14 * ss(SB0, SB1, kf));   // podium→tower X setback
+const leanX = kf => 0.62 * LSC * Math.pow(kf / (LEVELS - 1), 1.25);  // LSC holds the lean RATE
+const leanY = kf => -0.34 * LSC * (kf / (LEVELS - 1));
 
 // 6-vertex L-plan: a rectangle with a re-entrant notch at the NE corner. The notch
 // re-cuts across the same L14 band the setback happens in, so the two events read as
 // one structural move rather than two coincidences.
 function planVerts(kf) {
-  const s = ss(13.0, 15.4, kf);
+  const s = ss(SB0, SB1, kf);
   const nu = 0.36 + 0.26 * s;    // notch return moves outboard
   const nv = 0.18 - 0.40 * s;    // notch soffit drops
   return [[-1, -1], [1, -1], [1, nv], [nu, nv], [nu, 1], [-1, 1]];
@@ -112,12 +115,16 @@ function stationAt(l, kf) {
 const tangent = l => LANES[l][2] === 0 ? [1, 0] : [0, 1];
 
 /* ── Class A: streams ─────────────────────────────────────────────────────── */
-const SUB = 6, TRANS = 6.0, OFF = 1.55;
+// SUB drops 6->2: at 288 levels, 6 samples/level is 1728 points per stream for no visible
+// gain — one sample per 1.6 world units is finer than the tube can resolve anyway.
+const SUB = 2, TRANS = 6.0, OFF = 2.60;   // wider lateral spread: 34 streams need more room
 function makeStream(i, R) {
-  const kStart = (i < 14) ? R() * 1.8 : 3.0 + R() * 8.0, kEnd = LEVELS - 1 - R() * 1.0;
+  // Most streams start at the very bottom so the near field is populated; the rest enter
+  // progressively up the tower, which is what keeps new lines arriving during the scroll.
+  const kStart = (i < 14) ? R() * 1.8 : (3.0 + R() * 8.0) * LSC, kEnd = LEVELS - 1 - R() * 1.0 * LSC;
   let lane = i % NL; const sched = [{ k: kStart, lane }];
-  let k = kStart + 2.4 + R() * 2.6;
-  while (k < kEnd - 1.8) {
+  let k = kStart + (2.4 + R() * 2.6) * LSC;
+  while (k < kEnd - 1.8 * LSC) {
     lane = ((lane + [-2, -1, -1, 1, 1, 2][(R() * 6) | 0]) % NL + NL) % NL;
     sched.push({ k, lane }); k += 9.0 + R() * 8.0;
   }
@@ -237,10 +244,12 @@ function buildTicks(R) {
    The aspect breakpoints are functional, not cosmetic — ultrawide has the least
    headroom (0.07 NDC vs 0.10 on desktop) and ULTRA's longer lens is what buys it back. */
 const MODES = {
-  WIDE:  { fov: 40, eye: [1.10, 0.60, 6.50], fx: 0.63, fy: 0.30, bandY: -0.10, nStream: 20 },
-  ULTRA: { fov: 34, eye: [1.35, 0.60, 10.40], fx: 0.60, fy: 0.32, bandY: -0.10, nStream: 20 },
-  TABLET:{ fov: 40, eye: [1.00, 0.55, 6.20], fx: 0.60, fy: 0.28, bandY: -0.10, nStream: 16 },
-  TALL:  { fov: 44, eye: [0.70, 0.40, 5.60], fx: 0.52, fy: 0.22, bandY: -0.10, nStream: 10 },
+  WIDE:  { fov: 40, eye: [1.10, 0.60, 6.50], fx: 0.63, fy: 0.30, bandY: -0.10, nStream: 34 },
+  // ULTRA's tx is ~30% larger than WIDE's, which compresses x and made streams read as
+  // merged for 18 levels. Measured sweep: fov 34 -> 18.0, 30 -> 7.5, 28 -> 7.5, 26 -> 3.5.
+  ULTRA: { fov: 26, eye: [1.35, 0.60, 8.00], fx: 0.60, fy: 0.32, bandY: -0.10, nStream: 34 },
+  TABLET:{ fov: 40, eye: [1.00, 0.55, 6.20], fx: 0.60, fy: 0.28, bandY: -0.10, nStream: 26 },
+  TALL:  { fov: 44, eye: [0.70, 0.40, 5.60], fx: 0.52, fy: 0.22, bandY: -0.10, nStream: 16 },
 };
 function modeFor(aspect) {
   if (aspect >= 2.10) return MODES.ULTRA;
@@ -254,7 +263,11 @@ function modeFor(aspect) {
 const MASK_FLOOR = 0.06;
 const maskStops = bandY => { const e = (1 - bandY) * 0.5; return [e - 0.15, e + 0.03]; };
 
-const FOG_NEAR = 22, FOG_FAR = 104, MIN_PX = 1.15;
+// FOG_FAR rose 104 -> 320 with the tower. At 104 you saw ~30 of 288 levels, and since the
+// lean and setback are now spread over 900 units, that slice was a nearly straight prism —
+// the sweep had been scaled out of view. Seeing ~100 levels at once puts it back, and the
+// min-pixel width clamp dims the far end to ~27% on its own, so depth still reads.
+const FOG_NEAR = 22, FOG_FAR = 320, MIN_PX = 1.15;
 // Everything nearer than this fades out entirely; see the depth cull in the fragment shader.
 const NEAR_CULL = 5.0;
 
@@ -264,7 +277,9 @@ const NEAR_CULL = 5.0;
    0.55 sits 2.24x above the white ticks (0.2455) and 3.10x below the crest (1.706),
    so the selection is not marginal. */
 const CLASSES = {
-  stream: { color: '#2E38FF', alpha: 1.00, radius: 0.022, near: 0.42, far: 0.86, heat: 1.6 },
+  // near 0.42 -> 0.18: as a world distance that is 41 units -> 18, so a stream reaches full
+  // strength well inside the near field instead of halfway to the vanishing point.
+  stream: { color: '#2E38FF', alpha: 1.00, radius: 0.022, near: 0.18, far: 0.86, heat: 1.6 },
   tick:   { color: '#F7F9FA', alpha: 0.26, radius: 0.010, near: 0.55, far: 1.00, heat: 0.0 },
   level:  { color: '#434CAA', alpha: 0.20, radius: 0.013, near: 0.38, far: 0.88, heat: 0.0 },
   part:   { color: '#434CAA', alpha: 0.16, radius: 0.011, near: 0.38, far: 0.88, heat: 0.0 },
@@ -418,8 +433,10 @@ function buildScene(mode, aspect) {
     const len = curve.getLength();
     if (!(len > 0.001)) return;
 
+    // The cap has to rise with the tower or a 900-unit stream gets 160 segments — 5.6
+    // units each — and the smooth sweep turns into a polygon.
     const tubular = it.cls === 'stream'
-      ? Math.min(lowPower ? 48 : 160, Math.max(24, Math.round(len * 2)))
+      ? Math.min(lowPower ? 260 : 900, Math.max(24, Math.round(len * 1.2)))
       : Math.max(6, Math.min(48, it.pts.length * 2));
 
     const g = new THREE.TubeGeometry(curve, tubular, C.radius, radial, false);
@@ -442,11 +459,17 @@ function buildScene(mode, aspect) {
     const aFade = new Float32Array(n * 2);
     const aRadius = new Float32Array(n);
     const aFar = new Float32Array(n);
+    // The end-fades are fractions of uv.x, i.e. of CURVE LENGTH, and the class constants
+    // were tuned against a ~98-unit tower. On a 900-unit stream 0.42 fades the first 380
+    // units — the whole visible band — and the hero comes up empty. Convert each fraction
+    // to the world distance it used to mean and re-derive it for this curve's real length.
+    const nearFrac = Math.min(0.45, C.near * 98 / len);
+    const farFrac = Math.max(0.55, 1 - (1 - C.far) * 98 / len);
     for (let v = 0; v < n; v++) {
       aColor[v * 3] = col.r; aColor[v * 3 + 1] = col.g; aColor[v * 3 + 2] = col.b;
       aWave[v * 4] = uSize; aWave[v * 4 + 1] = speed; aWave[v * 4 + 2] = phase; aWave[v * 4 + 3] = C.heat;
-      aFade[v * 2] = C.alpha; aFade[v * 2 + 1] = C.near;
-      aRadius[v] = C.radius; aFar[v] = C.far;
+      aFade[v * 2] = C.alpha; aFade[v * 2 + 1] = nearFrac;
+      aRadius[v] = C.radius; aFar[v] = farFrac;
     }
     g.setAttribute('aColor', new THREE.BufferAttribute(aColor, 3));
     g.setAttribute('aWave', new THREE.BufferAttribute(aWave, 4));
@@ -509,7 +532,10 @@ function start() {
 
   let renderer, composer, camera, scene, built = null, compositePass, bloomPass;
   let scrollP = 0;
-  const TRAVEL = 58;          // world units the camera covers over one full page scroll
+  // 10x the journey. The tower is now ~900 units tall and fog hides everything past 104,
+  // so structure emerges continuously out of the dark for the whole scroll instead of the
+  // camera running out of building partway down the page.
+  const TRAVEL = 620;         // world units the camera covers over one full page scroll
   const state = { visible: !document.hidden, alive: true, paused: false, running: false };
   let reduced = reduceMQ.matches;
   let t = 0, last = performance.now(), mode = null;
@@ -544,7 +570,7 @@ function start() {
   scene = new THREE.Scene();
   const aspect0 = window.innerWidth / window.innerHeight;
   mode = modeFor(aspect0);
-  camera = new THREE.PerspectiveCamera(mode.fov, aspect0, 0.5, 150);
+  camera = new THREE.PerspectiveCamera(mode.fov, aspect0, 0.5, 420);   // far must clear FOG_FAR
   camera.position.set(mode.eye[0], mode.eye[1], mode.eye[2]);
   // camera.rotation stays (0,0,0). Never lookAt(), never OrbitControls, never group.rotation.z.
 

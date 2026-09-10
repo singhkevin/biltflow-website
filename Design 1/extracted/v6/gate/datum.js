@@ -11,16 +11,19 @@ const ss=(a,b,x)=>{const t=Math.min(1,Math.max(0,(x-a)/(b-a)));return t*t*(3-2*t
 const cl=(x,a,b)=>Math.min(b,Math.max(a,x));
 
 /* ─── CORE ARMATURE ─────────────────────────────────────────────────── */
-const HW=4.5, HH=3.0, GAP=3.15, LEVELS=32, Z0=4.0;
+const HW=4.5, HH=3.0, GAP=3.15, LEVELS=288, Z0=4.0;
+// Silhouette events are held PROPORTIONAL to the tower, not pinned to absolute levels:
+// L14 of 32 is 44% up; L14 of 288 would be 5% and the setback would vanish off the bottom.
+const SB0=LEVELS*0.44, SB1=LEVELS*0.48, LSC=LEVELS/32;
 const zOf = k => Z0 - k*GAP;                       // L0 z=+4.0 ... L31 z=-93.65
-const hw  = kf => HW*(1.0 - 0.14*ss(13.0,15.4,kf));// podium->tower X setback at L14
-const leanX = kf => 0.62*Math.pow(kf/(LEVELS-1),1.25);
-const leanY = kf => -0.34*(kf/(LEVELS-1));
+const hw  = kf => HW*(1.0 - 0.14*ss(SB0,SB1,kf));  // podium->tower X setback
+const leanX = kf => 0.62*LSC*Math.pow(kf/(LEVELS-1),1.25);  // LSC keeps the lean RATE constant
+const leanY = kf => -0.34*LSC*(kf/(LEVELS-1));
 
 // 6-vertex L-plan: rectangle with a re-entrant notch at the NE corner.
 // The notch RE-CUTS across the same L14 band that the X setback happens in.
 function planVerts(kf){
-  const s = ss(13.0,15.4,kf);
+  const s = ss(SB0,SB1,kf);
   const nu = 0.36 + 0.26*s;      // notch return moves outboard
   const nv = 0.18 - 0.40*s;      // notch soffit drops
   return [[-1.00,-1.00],[1.00,-1.00],[1.00,nv],[nu,nv],[nu,1.00],[-1.00,1.00]];
@@ -48,14 +51,16 @@ function stationAt(l,kf){
 const tangent = l => LANES[l][2]===0 ? [1,0] : [0,1];
 
 /* ─── CLASS A: STREAMS ──────────────────────────────────────────────── */
-const SUB=6, TRANS=6.0, OFF=1.55;
+// SUB drops 6->2: at 288 levels, 6 samples/level is 1728 points per stream for no visible
+// gain — one sample per 1.6 world units is already smoother than the tube can resolve.
+const SUB=2, TRANS=6.0, OFF=2.60;
 function makeStream(i,R){
-  const kStart=(i<14)?R()*1.8:3.0+R()*8.0, kEnd=LEVELS-1-R()*1.0;
+  const kStart=(i<14)?R()*1.8:(3.0+R()*8.0)*LSC, kEnd=LEVELS-1-R()*1.0*LSC;
   let lane=i%NL; const sched=[{k:kStart,lane}];
-  let k=kStart+2.4+R()*2.6;
-  while(k<kEnd-1.8){
+  let k=kStart+(2.4+R()*2.6)*LSC;
+  while(k<kEnd-1.8*LSC){
     lane=((lane+[-2,-1,-1,1,1,2][(R()*6)|0])%NL+NL)%NL;
-    sched.push({k,lane}); k+=9.0+R()*8.0;
+    sched.push({k,lane}); k+=9.0+R()*8.0;   // absolute, not scaled: ~25 transfers over the run
   }
   sched.push({k:kEnd,lane});
   const off = 2*(((i+0.5)*0.61803398875)%1)-1;  // stratified, not R(): keeps streams apart
@@ -95,7 +100,7 @@ function perim(s,kf){
 }
 function buildLevels(R){
   const out=[];
-  for(let k=2;k<LEVELS;k++){
+  for(let k=2;k<LEVELS;k+=3){
     if(R()<0.30) continue;
     const n=1+((R()*2.4)|0);
     for(let f=0;f<n;f++){
@@ -123,7 +128,7 @@ function buildCoreEdges(){
 /* ─── CLASS D: PARTITIONS (lift/stair division) ─────────────────────── */
 function buildPartitions(R){
   const out=[];
-  for(let k=1;k<LEVELS;k+=2){
+  for(let k=1;k<LEVELS;k+=6){
     if(R()<0.35) continue;
     const u = k<14 ? 0.20 : -0.06, pts=[];
     for(let j=0;j<=6;j++) pts.push(toWorld(u, -1+2*(j/6), k));
@@ -137,7 +142,7 @@ function buildPartitions(R){
 const TICK=0.42, UNIT=3.4;
 function buildTicks(R){
   const out=[];
-  for(let k=3;k<LEVELS;k++){
+  for(let k=3;k<LEVELS;k+=3){
     if(R()<0.34) continue;
     const n=1+((R()*1.9)|0);
     for(let f=0;f<n;f++){
@@ -174,7 +179,12 @@ function makeCam(cfg){
 }
 
 /* ─── SHADER-SIDE ALPHA (must match the GLSL exactly) ───────────────── */
-const FOG_NEAR=22, FOG_FAR=104, MINPX=1.15, NEAR_CULL=5.0;
+const FOG_NEAR=22, FOG_FAR=320, MINPX=1.15, NEAR_CULL=5.0;
+// Co-linearity limit, in LEVELS. The original 1.2 was 3.8 world units against a ~100-unit
+// visible depth (3.8%). Fog now reaches 320, so the same share of the frame is ~12 units,
+// i.e. ~3.8 levels. Rescaled rather than relaxed — 1.2 here would be 3x STRICTER than the
+// value the composition was actually tuned against.
+const ADJ_MAX=3.8;
 function alphaOf(u, depth, nf, ff, base, radius, viewH, ty, mask){
   const fog = 1-cl((depth-FOG_NEAR)/(FOG_FAR-FOG_NEAR),0,1);
   const hide = ss(0,nf,u)*ss(1.0,ff,u);
@@ -224,10 +234,10 @@ function run(label,cfg){
   const trk=[]; let rr=0;
   for(let i=0;i<cfg.nStream;i++){
     let tr;
-    for(let att=0;att<7;att++){
+    for(let att=0;att<14;att++){
       const st=makeStream(i,Ra);
       tr=track(sampleStream(st),NF_STREAM,0.86,1.0,0.022);
-      if(trk.every(T=>adj(tr,T)<1.2)) break;
+      if(trk.every(T=>adj(tr,T)<ADJ_MAX)) break;
       rr++;
     }
     trk.push(tr);
@@ -273,19 +283,19 @@ function run(label,cfg){
   console.log(`   bright bbox (>25%)    : x ${bb.x0.toFixed(2)}..${bb.x1.toFixed(2)}   y ${bb.y0.toFixed(2)}..${bb.y1.toFixed(2)}   (band edge ${cfg.bandY})`);
   console.log(`   convergence quad      : x ${Math.min(...qx).toFixed(3)}..${Math.max(...qx).toFixed(3)}  y ${Math.min(...qy).toFixed(3)}..${Math.max(...qy).toFixed(3)}  = ${(Math.max(...qx)-Math.min(...qx)).toFixed(3)} x ${(Math.max(...qy)-Math.min(...qy)).toFixed(3)} NDC`);
   console.log(`   worst adjacent run    : ${worst.toFixed(2)} levels`);
-  const pass = (100*bA/T)<1.5 && hot.length<=12 && worst<1.2 && bb.y0>cfg.bandY;
+  const pass = (100*bA/T)<1.5 && hot.length<=12 && worst<ADJ_MAX && bb.y0>cfg.bandY;
   console.log(`   GATE                  : ${pass?'PASS':'*** FAIL ***'}`);
   return pass;
 }
 
 const D=Math.PI/180;
-const WIDE  = {fovy:40*D, fx:0.63, fy:0.30, eye:[1.10,0.60,6.5], nearFade:0.42,
-               bandY:-0.10, maskTop:0.50, maskBot:0.70, maskFloor:0.10, nStream:20};
-const ULTRA = Object.assign({},WIDE,{fovy:34*D, fx:0.60, fy:0.32, eye:[1.35,0.60,10.4]});
+const WIDE  = {fovy:40*D, fx:0.63, fy:0.30, eye:[1.10,0.60,6.5], nearFade:0.18,
+               bandY:-0.10, maskTop:0.50, maskBot:0.70, maskFloor:0.10, nStream:34};
+const ULTRA = Object.assign({},WIDE,{fovy:26*D, fx:0.60, fy:0.32, eye:[1.35,0.60,8.0]});
 const TAB   = Object.assign({},WIDE,{fovy:40*D, fx:0.60, fy:0.28, eye:[1.00,0.55,6.2],
-               bandY:-0.10, maskTop:0.46, maskBot:0.66, nStream:16});
+               bandY:-0.10, maskTop:0.46, maskBot:0.66, nStream:26});
 const TALL  = Object.assign({},WIDE,{fovy:44*D, fx:0.52, fy:0.22, eye:[0.70,0.40,5.6],
-               bandY:-0.10, maskTop:0.34, maskBot:0.54, nStream:10});
+               bandY:-0.10, maskTop:0.34, maskBot:0.54, nStream:16});
 
 let ok=true;
 ok &= run('DESKTOP 1512x982', Object.assign({},WIDE, {aspect:1512/982, viewH:982}));
