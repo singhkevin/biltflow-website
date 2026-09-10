@@ -121,6 +121,23 @@
     background-image: linear-gradient(180deg, rgba(5,7,10,0.85) 0%, rgba(5,7,10,0) 30%, rgba(5,7,10,0) 70%, rgba(5,7,10,0.85) 100%) !important;
   }
 
+  /* ── SVG diagrams ──────────────────────────────────────────────────────────
+     The diagrams colour themselves with fill/stroke ATTRIBUTES, not inline styles,
+     so none of the rules above can reach them: the EVE card kept white boxes with
+     near-black text on a dark page. Presentation attributes lose to any CSS rule,
+     so an attribute selector is enough — and because React re-renders write the
+     same attribute string back, these keep matching.
+     The white plates go translucent rather than opaque dark, so the scene reads
+     through the diagram instead of the diagram punching a hole in it. */
+  svg [fill="#FFFFFF"] { fill: rgba(10,14,36,0.55) !important; }
+  svg [fill="#E6E9ED"], svg [fill="#F0F1FA"] { fill: rgba(154,160,255,0.14) !important; }
+  svg [fill="#05070A"] { fill: #F7F9FA !important; }
+  svg [fill="#555D64"], svg [fill="#767E86"] { fill: #C6CDD4 !important; }
+  svg [fill="#1F27D6"] { fill: #6B72FF !important; }        /* too dark to read on this ground */
+  /* #2B3138 strokes are near-black — they were hairlines on white and vanish on dark. */
+  svg [stroke="#2B3138"] { stroke: rgba(154,160,255,0.30) !important; }
+  svg [stroke="#C6CDD4"], svg [stroke="#DFE4E9"] { stroke: rgba(154,160,255,0.34) !important; }
+
   /* Filled accent buttons keep their fill and their white label. */
   [style*="background:#2E38FF"],
   [style*="background: rgb(46, 56, 255)"],
