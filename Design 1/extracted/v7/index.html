@@ -3,6 +3,7 @@
      selector layer. This exists to judge ART STYLE, not to be a page.
      Palette, shader grammar and post chain are identical to /v6 so the two are
      directly comparable. -->
+<meta charset="utf-8">
 <title>Biltflow — hero beat concept</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@200;300;500&family=JetBrains+Mono:wght@400;500&display=swap');
@@ -17,13 +18,28 @@
                opacity: 0; transition: opacity 700ms ease-out; }
   .scrim { position: fixed; inset: 0; z-index: 1; pointer-events: none;
            background: linear-gradient(180deg, rgba(5,7,10,0) 40%, rgba(5,7,10,0.45) 64%, rgba(5,7,10,0.82) 82%); }
-  .copy { position: fixed; left: 0; right: 0; bottom: 104px; z-index: 2; padding: 0 48px; }
+  /* Beats are stacked and cross-faded — never more than one on screen, so the hero
+     holds 5-6 words at a time instead of a paragraph. */
+  .copy { position: fixed; left: 0; right: 0; bottom: 104px; z-index: 2; padding: 0 48px; height: 200px; }
   .eyebrow { display: flex; align-items: center; gap: 12px; font-family: 'JetBrains Mono', monospace;
-             font-size: 11px; font-weight: 500; letter-spacing: 0.24em; text-transform: uppercase; color: #9AA0FF; }
+             font-size: 11px; font-weight: 500; letter-spacing: 0.24em; text-transform: uppercase;
+             color: #9AA0FF; position: absolute; left: 48px; bottom: 178px;
+             opacity: 0; transition: opacity 600ms ease; }
+  .eyebrow.is-on { opacity: 1; }
   .eyebrow i { width: 10px; height: 10px; border-radius: 2px; background: #2E38FF; flex: none; }
-  h1 { font-weight: 200; font-stretch: 118%; font-size: clamp(40px, 5vw, 84px); line-height: 1.04;
-       letter-spacing: -0.015em; color: #F7F9FA; margin: 26px 0 0; max-width: 15ch; text-wrap: balance; }
-  h1 span { color: #6B72FF; }
+  /* Two different words cross-fading in the SAME position reads as a smear, so the
+     outgoing beat leaves quickly and the incoming one is delayed past it. */
+  .beat { position: absolute; left: 48px; right: 48px; bottom: 0; opacity: 0;
+          transform: translateY(14px); pointer-events: none;
+          transition: opacity 200ms ease, transform 200ms ease; }
+  .beat.is-on { opacity: 1; transform: none;
+          transition: opacity 480ms cubic-bezier(0.16,1,0.3,1) 170ms,
+                      transform 620ms cubic-bezier(0.16,1,0.3,1) 170ms; }
+  .lead { display: block; font-weight: 200; font-stretch: 118%; font-size: clamp(38px, 5.4vw, 92px);
+          line-height: 1.0; letter-spacing: -0.012em; color: #F7F9FA; text-transform: uppercase; }
+  .lead em { font-style: normal; color: #6B72FF; }
+  .sub { display: block; margin-top: 20px; font-family: 'JetBrains Mono', monospace; font-size: 12px;
+         font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: #9AA0FF; }
   /* Beat readout — this is the STAGE label, never a metric. */
   .stage { position: fixed; right: 48px; bottom: 104px; z-index: 2; text-align: right;
            font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.18em;
@@ -41,10 +57,17 @@
 <div id="gl" aria-hidden="true"></div>
 <div class="scrim" aria-hidden="true"></div>
 <div class="copy">
-  <div class="eyebrow"><i></i>AI-native construction operating system</div>
-  <h1>The tools changed. The way construction operates didn't. <span>Until now.</span></h1>
+  <div class="eyebrow" id="eyebrow"><i></i>AI-native construction operating system</div>
+  <div class="beat"><span class="lead">Every stage.</span></div>
+  <div class="beat"><span class="lead">One <em>system.</em></span></div>
+  <div class="beat"><span class="lead">Development</span><span class="sub">Feasibility · Approvals</span></div>
+  <div class="beat"><span class="lead">Design</span><span class="sub">Coordination · Documentation</span></div>
+  <div class="beat"><span class="lead">Procurement</span><span class="sub">Estimating · Tendering</span></div>
+  <div class="beat"><span class="lead">Commercial</span><span class="sub">Contracts · Cost</span></div>
+  <div class="beat"><span class="lead">Construction</span><span class="sub">Programme · Delivery</span></div>
+  <div class="beat"><span class="lead">Asset care</span><span class="sub">Handover · Defects</span></div>
 </div>
-<div class="stage">Stage <b id="stageNo">01</b> / 13<br><span id="stageName">Site sourcing</span><u><i id="stageBar"></i></u></div>
+<div class="stage"><b id="stageNo">01</b> / 08<u><i id="stageBar"></i></u></div>
 
 <script type="importmap">
 { "imports": {
@@ -351,14 +374,13 @@ function frame(){
 }
 frame();
 
-const STAGES = [
-  [0.00,'01','Site sourcing'], [0.05,'02','Feasibility'],   [0.11,'03','Design'],
-  [0.16,'04','Approvals'],     [0.21,'05','Procurement'],   [0.27,'06','Enabling works'],
-  [0.32,'07','Substructure'],  [0.38,'08','Structure'],     [0.58,'09','Façade'],
-  [0.70,'10','Services'],      [0.78,'11','Fit-out'],       [0.88,'12','Handover'],
-  [0.95,'13','Operation'],
-];
-const noEl = document.getElementById('stageNo'), nmEl = document.getElementById('stageName'), barEl = document.getElementById('stageBar');
+// Eight beats across the page, aligned to what the SCENE is doing at that moment:
+// CONSTRUCTION lands as the tower tops out, ASSET CARE as the crane leaves and the
+// floors light up. Text and geometry tell the same story or neither reads.
+const BEATS = [0.00, 0.11, 0.21, 0.33, 0.45, 0.56, 0.68, 0.84];
+const beatEls = Array.from(document.querySelectorAll('.beat'));
+const noEl = document.getElementById('stageNo'), barEl = document.getElementById('stageBar');
+const eyeEl = document.getElementById('eyebrow');
 let shown = -1, t = 0, last = performance.now(), build = 0, docH = 1;
 const measure = () => { docH = Math.max(1, document.documentElement.scrollHeight - innerHeight); };
 measure();
@@ -374,8 +396,16 @@ function tick(now){
   // The camera lifts and pulls back as the tower stands up, so the subject stays framed.
   // Rises with the building, then keeps pulling back so the finished tower reads whole.
   cam.position.set(0, 12.0 + build*26, 44 + build*48);
-  let i = 0; for (let k = 0; k < STAGES.length; k++) if (build >= STAGES[k][0]) i = k;
-  if (i !== shown) { shown = i; noEl.textContent = STAGES[i][1]; nmEl.textContent = STAGES[i][2]; }
+  let i = 0; for (let k = 0; k < BEATS.length; k++) if (build >= BEATS[k]) i = k;
+  if (i !== shown) {
+    if (shown >= 0) beatEls[shown].classList.remove('is-on');
+    beatEls[i].classList.add('is-on');
+    shown = i;
+    noEl.textContent = String(i + 1).padStart(2, '0');
+    // The descriptor belongs to the opening statement, then gets out of the way so the
+    // frame never carries more than the beat itself.
+    eyeEl.classList.toggle('is-on', i < 2);
+  }
   barEl.style.width = (build*132).toFixed(1) + 'px';
   composer.render();
 }
