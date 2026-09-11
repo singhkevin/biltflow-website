@@ -17,7 +17,7 @@
     background: #05070A radial-gradient(120% 85% at 66% 52%, #16205C 0%, #0A0E36 44%, #05070A 100%) fixed; }
   body { font-family: Archivo, system-ui, sans-serif; }
   /* The hero's share of the build front; the page below carries it the rest of the way. */
-  #scroll { height: 900vh; }
+  #scroll { height: 1300vh; }
   #gl { position: fixed; inset: 0; z-index: 0; }
   #gl canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block;
                opacity: 0; transition: opacity 700ms ease-out; }
@@ -175,9 +175,11 @@
   <div class="beat"><span class="lead">Commercial</span><span class="sub">Contracts · Cost</span></div>
   <div class="beat"><span class="lead">Construction</span><span class="sub">Programme · Delivery</span></div>
   <div class="beat"><span class="lead">Asset care</span><span class="sub">Handover · Defects</span></div>
+  <div class="beat"><span class="lead">In use</span><span class="sub">Occupancy · Operations</span></div>
+  <div class="beat"><span class="lead">Learning</span><span class="sub">Record · Next project</span></div>
   <div class="beat"><span class="lead">Every stage.<br>One <em>system.</em></span></div>
 </div>
-<div class="stage"><b id="stageNo">01</b> / 09<u><i id="stageBar"></i></u></div>
+<div class="stage"><b id="stageNo">01</b> / 11<u><i id="stageBar"></i></u></div>
 
 <main id="story">
   <section class="sec">
@@ -351,9 +353,11 @@ function refuseReason() {
 // Eight beats across the page, aligned to what the SCENE is doing at that moment:
 // CONSTRUCTION lands as the tower tops out, ASSET CARE as the crane leaves and the
 // floors light up. Text and geometry tell the same story or neither reads.
-const BEATS = [0.00, 0.04, 0.08, 0.145, 0.20, 0.25, 0.30, 0.50, 0.58];
+const BEATS = [0.00, 0.03, 0.07, 0.145, 0.20, 0.25, 0.30, 0.545, 0.640, 0.780, 0.850];
 // The hero's share of the build front; the page below carries the rest.
-const SPLIT = 0.62;
+const SPLIT = 0.86;
+// The content carries the orbit on from there; the outro holds its last stretch.
+const STORY_END = 0.95;
 // Where the geometry is finished and the closing orbit takes the rest of the scroll.
 const ORBIT0 = 0.86;
 
@@ -408,10 +412,10 @@ const C = {
   tick:   { hex:'#1A43C4', hot:'#2C6CB3', ramp:0.4,  a:0.56, r:0.036, heat:0 },    // temporary works
   plan:   { hex:'#2C6CB3', hot:'#55FCFD', ramp:0.7,  a:0.94, r:0.052, heat:0.25 }, // footprint
   draft:  { hex:'#1552B2', hot:'#55FCFD', ramp:0.8,  a:0.66, r:0.034, heat:0.18 }, // the design, before it is built
-  stream: { hex:'#1552B2', hot:'#55FCFD', ramp:1.0,  a:0.70, r:0.100, heat:0.78 }, // the live record
+  stream: { hex:'#1552B2', hot:'#55FCFD', ramp:1.0,  a:0.52, r:0.078, heat:0.48 }, // the live record
   // warm — delivery, occupation, the building in use
   lit:    { hex:'#C25134', hot:'#FBD949', ramp:0.85, a:0.98, r:0.078, heat:1.25 }, // occupied
-  slow:   { hex:'#B5233D', hot:'#F0AC47', ramp:1.0,  a:0.66, r:0.120, heat:0.70 }, // operating record
+  slow:   { hex:'#B5233D', hot:'#F0AC47', ramp:1.0,  a:0.56, r:0.095, heat:0.52 }, // operating record
   car:    { hex:'#CE7538', hot:'#FBD949', ramp:1.0,  a:0.88, r:0.150, heat:1.10 }, // traffic
 };
 
@@ -814,6 +818,18 @@ for (const [nx, nz, nw, nd, nL, t0] of [[-30, -120, 15, 11, 18, 0.868], [20, -13
   push('plan',  [[mx, mh, nz], [mx - 6, mh, nz]], t0 - 0.004, done + 0.010);
 }
 
+/* ── LEARNING. The record does not stay with the building. A thread leaves the tower
+   and runs to each plot developed after it — what this job learned is what the next one
+   starts from. Warm, because it belongs to the in-use half, and slow. ── */
+for (const [ni, nx, nz] of [[0, -30, -120], [1, 20, -138]]) {
+  const pts = [];
+  for (let j = 0; j <= 32; j++) {
+    const t = j / 32, e = t * t * (3 - 2 * t);
+    pts.push([CX + (nx - CX) * e, 24 + Math.sin(t * Math.PI) * 13, CZ + (nz - CZ) * e]);
+  }
+  push('slow', pts, 0.930 + ni * 0.014);
+}
+
 /* ── LANDSCAPE. The lot stops being a site and becomes an address. Ground planting
    only reads in the wide shots before the camera drops, so it arrives at handover; the
    podium terrace is placed to still be in frame on the very last screen. ── */
@@ -836,7 +852,7 @@ for (const [nx, nz, nw, nd, nL, t0] of [[-30, -120, 15, 11, 18, 0.868], [20, -13
 // ── streams: arrive across the ground, then climb the core ──
 const N_STREAM = lowPower ? 6 : 11;
 for (let i = 0; i < N_STREAM; i++) {
-  const a = (i/N_STREAM)*Math.PI*2, lx = CX + Math.cos(a)*3.2, lz = CZ + Math.sin(a)*2.4;
+  const a = (i/N_STREAM)*Math.PI*2, lx = CX + Math.cos(a)*8.6, lz = CZ + Math.sin(a)*5.6;
   const off = (i/N_STREAM - 0.5) * 30, pts = [];
   for (let j = 0; j <= 46; j++) {
     const t = j/46;
@@ -849,7 +865,7 @@ for (let i = 0; i < N_STREAM; i++) {
 // The record does NOT stop at handover — it changes character. Fewer, slower, steadier,
 // and they run to the last pixel of scroll.
 for (let i = 0; i < 4; i++) {
-  const a = (i/4)*Math.PI*2 + 0.7, lx = CX + Math.cos(a)*3.0, lz = CZ + Math.sin(a)*2.2, pts = [];
+  const a = (i/4)*Math.PI*2 + 0.7, lx = CX + Math.cos(a)*7.8, lz = CZ + Math.sin(a)*5.0, pts = [];
   for (let j = 0; j <= 40; j++) {
     const t = j/40;
     pts.push([lx, t*t*(LV*H), lz]);
@@ -1093,8 +1109,8 @@ const measure = () => {
 const progress = () => {
   const y = scrollY;
   if (y <= heroH) return (y / heroH) * SPLIT;
-  if (y <= heroH + bodyH) return SPLIT + ((y - heroH) / bodyH) * (ORBIT0 - SPLIT);
-  return ORBIT0 + Math.min(1, (y - heroH - bodyH) / outroH) * (1 - ORBIT0);
+  if (y <= heroH + bodyH) return SPLIT + ((y - heroH) / bodyH) * (STORY_END - SPLIT);
+  return STORY_END + Math.min(1, (y - heroH - bodyH) / outroH) * (1 - STORY_END);
 };
 measure();
 
