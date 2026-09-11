@@ -413,9 +413,10 @@ const C = {
   plan:   { hex:'#2C6CB3', hot:'#55FCFD', ramp:0.7,  a:0.94, r:0.052, heat:0.25 }, // footprint
   draft:  { hex:'#1552B2', hot:'#55FCFD', ramp:0.8,  a:0.66, r:0.034, heat:0.18 }, // the design, before it is built
   sys:    { hex:'#F0AC47', hot:'#FFFFFF', ramp:0.0,  a:1.00, r:0.140, heat:1.25 }, // THE SYSTEM — one thread, every stage
+  sysc:   { hex:'#F0AC47', hot:'#FFFFFF', ramp:0.0,  a:0.95, r:0.072, heat:0.85 }, // the same thread, in close-up
   stream: { hex:'#1552B2', hot:'#55FCFD', ramp:1.0,  a:0.52, r:0.078, heat:0.48 }, // the live record
   // warm — delivery, occupation, the building in use
-  lit:    { hex:'#C25134', hot:'#FBD949', ramp:0.85, a:0.98, r:0.078, heat:1.25 }, // occupied
+  lit:    { hex:'#C25134', hot:'#FBD949', ramp:0.85, a:0.98, r:0.105, heat:1.45 }, // occupied
   slow:   { hex:'#1552B2', hot:'#2C6CB3', ramp:1.0,  a:0.40, r:0.090, heat:0.35 }, // ambient, cooled — no longer the record
   car:    { hex:'#B5233D', hot:'#CE7538', ramp:1.0,  a:0.62, r:0.130, heat:0.60 }, // traffic — deep, secondary
 };
@@ -726,12 +727,12 @@ push('tick', [[MX+21,MH,MZ],[MX+21,MH-13,MZ]], 0.330, HANDOVER - 0.02);  // hois
   // Arrivals at the entrance — vehicles pulling up and a steady flow through the doors.
   // "Moving in" has to be visible, not implied by lights alone.
   for (let i = 0; i < 7; i++) {
-    const x = -6.5 + i * 2.1, b = 0.655 + i * 0.009;
+    const x = -6.5 + i * 2.1, b = 0.884 + i * 0.004;
     push('tick', [[CX+x, 0, zf+3.2], [CX+x, 0, zf+7.4]], b, 0, 0.35);          // path in
-    push('lit',  [[CX+x-0.35, 0.9, zf+5.6], [CX+x+0.35, 0.9, zf+5.6]], b + 0.004, b + 0.075);
+    push('lit',  [[CX+x-0.35, 0.9, zf+5.6], [CX+x+0.35, 0.9, zf+5.6]], b + 0.002, b + 0.030);
   }
   for (let v = 0; v < 3; v++) {                                                 // vehicles
-    const x = -9 + v * 9, b = 0.648 + v * 0.016, r = b + 0.10;
+    const x = -9 + v * 9, b = 0.880 + v * 0.010, r = b + 0.045;
     push('plan', [[CX+x-2.6, 1.1, zf+10], [CX+x+2.6, 1.1, zf+10]], b, r);
     push('plan', [[CX+x-2.6, 1.1, zf+10], [CX+x-2.6, 2.6, zf+10]], b, r);
     push('plan', [[CX+x+2.6, 1.1, zf+10], [CX+x+2.6, 2.6, zf+10]], b, r);
@@ -759,6 +760,8 @@ push('tick', [[MX+21,MH,MZ],[MX+21,MH-13,MZ]], 0.330, HANDOVER - 0.02);  // hois
     push('lit',  [[bx-1.4, y, bz], [bx+1.4, y, bz]], b, r);            // cradle platform
     push('tick', [[bx-1.4, y, bz], [bx-1.4, y+0.8, bz]], b, r);        // end frames
     push('tick', [[bx+1.4, y, bz], [bx+1.4, y+0.8, bz]], b, r);
+    push('plan', [[bx-0.35, y, bz], [bx-0.35, y+1.7, bz]], b, r);          // the operative
+    push('plan', [[bx-0.35, y+1.25, bz], [bx+0.55, y+1.55, bz]], b, r);   // arm up to the glass
     push('tick', [[bx-1.0, y+0.8, bz], [bx-1.0, Math.min(roof+2.4, y+11), bz]], b, r);  // suspension
     push('tick', [[bx+1.0, y+0.8, bz], [bx+1.0, Math.min(roof+2.4, y+11), bz]], b, r);
   }
@@ -783,6 +786,8 @@ push('tick', [[MX+21,MH,MZ],[MX+21,MH-13,MZ]], 0.330, HANDOVER - 0.02);  // hois
     push('lit',  [[b2x-1.4, y, bz], [b2x+1.4, y, bz]], b, r);
     push('tick', [[b2x-1.4, y, bz], [b2x-1.4, y+0.8, bz]], b, r);
     push('tick', [[b2x+1.4, y, bz], [b2x+1.4, y+0.8, bz]], b, r);
+    push('plan', [[b2x-0.35, y, bz], [b2x-0.35, y+1.7, bz]], b, r);
+    push('plan', [[b2x-0.35, y+1.25, bz], [b2x+0.55, y+1.55, bz]], b, r);
     push('tick', [[b2x-1.0, y+0.8, bz], [b2x-1.0, Math.min(roof+2.4, y+11), bz]], b, r);
     push('tick', [[b2x+1.0, y+0.8, bz], [b2x+1.0, Math.min(roof+2.4, y+11), bz]], b, r);
   }
@@ -878,8 +883,8 @@ for (let i = 0; i < 4; i++) {
 {
   const G = 0.7, TOP = LV * H;
   const lag = (b0, b1) => Math.min(0.026, Math.max(0.007, (b1 - b0) * 0.28));
-  const thread = (pts, b0, b1, persist = false) =>
-    push('sys', pts, b0, persist ? 0 : b0 + lag(b0, b1), 0,
+  const thread = (pts, b0, b1, persist = false, cls = 'sys') =>
+    push(cls, pts, b0, persist ? 0 : b0 + lag(b0, b1), 0,
          { buildEnd: b1, retireEnd: persist ? 0 : b1 + lag(b0, b1) });
   const seg = (A, B, m) => { const o = []; for (let j = 0; j <= m; j++) { const t = j / m;
     o.push([A[0]+(B[0]-A[0])*t, A[1]+(B[1]-A[1])*t, A[2]+(B[2]-A[2])*t]); } return o; };
@@ -943,18 +948,22 @@ for (let i = 0; i < 4; i++) {
           [CX+pw,G,pz],[CX,G,pz+3]], 0.78, 0.803);
 
   // 09  IN USE — up through the occupied floors; each lights as it passes.
-  thread(tower(G, TOP, 9, 220, 0.6, Math.PI/2), 0.805, 0.875);
+  thread(tower(G, TOP, 9, 220, 0.6, Math.PI/2), 0.805, 0.875, false, 'sysc');
   //     then along the parapet to the rig
-  thread([[CX,TOP,CZ+6.4],[CX-10.5,TOP+0.4,CZ+7],[CX+10.5,TOP+0.4,CZ+7],[CX+5,TOP+2.4,CZ+4.8]],
-         0.875, MAINT0);
+  //     then down the front of the building to the street …
+  thread([[CX,TOP,CZ+6.4],[CX,G,CZ+7],[CX,G,CZ+10.5],[CX-16,G,-9]], 0.875, 0.895, false, 'sysc');
+  //     … along the kerb with the traffic …
+  thread(seg([CX-16,G,-9],[CX+24,G,-9],10), 0.895, 0.912, false, 'sysc');
+  //     … and back up the façade to the rig on the roof
+  thread([[CX+24,G,-9],[CX+5,G,CZ+7],[CX+5,TOP+2.4,CZ+4.8]], 0.912, MAINT0);
   //     and down the façade with the cleaners
-  thread(seg([CX+5, TOP, CZ+7], [CX+5, PODIUM*H + 2, CZ+7], 30), MAINT0, MAINT0 + 17*0.0026);
+  thread(seg([CX+1.6, TOP, CZ+7], [CX+1.6, PODIUM*H + 2, CZ+7], 30), MAINT0, MAINT0 + 17*0.0026, false, 'sysc');
 
   // 10  LEARNING — leaves, for the plots developed after it. What this job learned is
   //     what the next one starts from.
   const arc = (A, B, h, m) => { const o = []; for (let j = 0; j <= m; j++) { const t = j / m, e = t*t*(3-2*t);
     o.push([A[0]+(B[0]-A[0])*e, A[1]+(B[1]-A[1])*e + Math.sin(t*Math.PI)*h, A[2]+(B[2]-A[2])*e]); } return o; };
-  thread(arc([CX+5, PODIUM*H+2, CZ+7], [-30, 57.6, -120], 16, 40), 0.965, 0.985);
+  thread(arc([CX+1.6, PODIUM*H+2, CZ+7], [-30, 57.6, -120], 16, 40), 0.965, 0.985);
   thread(arc([-30, 57.6, -120], [20, 70.4, -138], 12, 32), 0.985, 1.005);
 
   // 11  EVERY STAGE. ONE SYSTEM. — a ring around all of it, and it stays.
@@ -1025,7 +1034,7 @@ void main(){
   // The crane comes down; the temporary works go with it.
   float gone = (vSeq.x > 0.0) ? 1.0 - smoothstep(vSeq.x, vSeq.x + 0.05, front) : 1.0;
   // Once the building is in use the construction layer recedes and the record keeps running.
-  float late = 1.0 - vSeq.y * smoothstep(0.68, 0.90, front);
+  float late = 1.0 - vSeq.y * smoothstep(0.60, 0.78, front);
   float a = vFade.x * hide * fogF * nearF * vWidthFade * statMod * mask * born * gone * late;
   gl_FragColor = vec4(col, a);   // fog lives in alpha; doubling it squared the falloff
 }`;
@@ -1035,7 +1044,7 @@ const radial = lowPower ? 3 : 5;
 items.forEach((it, idx) => {
   const K = C[it.cls], curve = new Poly(it.pts), len = curve.getLength();
   if (!(len > 0.01)) return;
-  const seg = (it.cls === 'stream' || it.cls === 'slow' || it.cls === 'sys') ? (lowPower ? 90 : 200)
+  const seg = (it.cls === 'stream' || it.cls === 'slow' || it.cls === 'sys' || it.cls === 'sysc') ? (lowPower ? 90 : 200)
             : Math.max(2, Math.min(40, Math.round(len/3)));
   const g = new THREE.TubeGeometry(curve, seg, K.r, radial, false);
   const n = g.attributes.position.count;
@@ -1046,12 +1055,12 @@ items.forEach((it, idx) => {
     g.setAttribute(name, new THREE.BufferAttribute(arr, size));
   };
   const uSize = 2*Math.PI*len/(it.cls === 'car' ? 5 : 16), phase = idx*2.399963;
-  const speed = it.cls === 'stream' ? 1 : it.cls === 'slow' ? 0.38 : it.cls === 'car' ? 1.4 : it.cls === 'sys' ? 0.9 : 0;
+  const speed = it.cls === 'stream' ? 1 : it.cls === 'slow' ? 0.38 : it.cls === 'car' ? 1.4 : (it.cls === 'sys' || it.cls === 'sysc') ? 0.9 : 0;
   const hot = new THREE.Color(K.hot || K.hex);
   put('aColor', 3, (a,o)=>{ a[o]=col.r; a[o+1]=col.g; a[o+2]=col.b; });
   put('aTint', 4, (a,o)=>{ a[o]=hot.r; a[o+1]=hot.g; a[o+2]=hot.b; a[o+3]=K.ramp||0; });
   put('aWave', 4, (a,o)=>{ a[o]=uSize; a[o+1]=speed; a[o+2]=phase; a[o+3]=K.heat; });
-  const head = (it.cls === 'stream' || it.cls === 'slow') ? Math.min(0.4, 16/len) : it.cls === 'sys' ? 0.012 : 0.05;
+  const head = (it.cls === 'stream' || it.cls === 'slow') ? Math.min(0.4, 16/len) : (it.cls === 'sys' || it.cls === 'sysc') ? 0.012 : 0.05;
   put('aFade', 2, (a,o)=>{ a[o]=K.a; a[o+1]=head; });
   put('aRadius', 1, (a,o)=>{ a[o]=K.r; });
   // TubeGeometry lays vertices out ring by ring, so ring index / segment count is the
@@ -1163,11 +1172,16 @@ const CAM = [
   [0.42,  0,  34,  94],   // frame rising
   [0.49,  1,  44, 106],   // topped out, finishing
   [0.55,  2,  46, 100],   // handover, crane gone
-  [0.62,  4,  38,  56],   // push in — the windows start coming on
-  [0.66,  5,  34,  42],   // closest on the façade, lights filling floor by floor
-  [0.73,  3,  15,  54],   // DROP to the street: podium, arrivals, traffic
-  [0.79,  3,  12,  46],   // holding low — the development at the bottom
-  [0.84,  6,  46,  46],   // back up the façade with the cleaners
+  [0.575, 4,  40,  30],   // push in hard
+  [0.60,  3,  30, -28],   // 27 units off the glass: six floors in frame, windows coming on
+  [0.655, 3,  52, -28],   // drift up the façade with the lights
+  [0.675, 2,  30,  -8],   // coming down
+  [0.70,  7,   5,  14],   // the kerb: road in the foreground, podium behind, cars passing
+  [0.745, 7,   4,  18],   // holding low — arrivals, vehicles pulling up
+  [0.77,  7,  76, -28],   // up to the rig as the first cradle starts down
+  [0.795, 7,  49, -28],   // tracking it, four units below the platform
+  [0.82,  7,  21, -28],   // it lands
+  [0.845,-4,  30, -28],   // the other bay — second cradle, second cleaner
   [0.88,  2,  44,  82],   // pull back for the orbit
   [1.00,  2,  46,  88],   // holding while the world turns a full circle
 ];
