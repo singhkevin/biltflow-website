@@ -17,7 +17,7 @@
     background: #05070A radial-gradient(120% 85% at 66% 52%, #16205C 0%, #0A0E36 44%, #05070A 100%) fixed; }
   body { font-family: Archivo, system-ui, sans-serif; }
   /* 4 viewports of scroll drives the build front; the beat is legible in the first one. */
-  #scroll { height: 760vh; }
+  #scroll { height: 900vh; }
   #gl { position: fixed; inset: 0; z-index: 0; }
   #gl canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block;
                opacity: 0; transition: opacity 700ms ease-out; }
@@ -168,7 +168,18 @@ const items = [];
 // retire: the point the element LEAVES (0 = never). late: how far it dims once the
 // building is in use. Together these are what turn a build-up into a full lifecycle —
 // construction has to end, not just accumulate.
-const push = (cls, pts, build = 0, retire = 0, late = 0) => items.push({ cls, pts, build, retire, late });
+// Schedule remap. Knots are (as authored) -> (where it should land); linear between,
+// extrapolating along the last segment so retire points past the end still resolve.
+const WARP = [[0,0], [0.20,0.20], [0.50,0.42], [0.63,0.52], [0.785,0.63],
+              [0.80,0.657], [0.90,0.84], [0.94,0.92], [1.01,1.05]];
+function warp(v) {
+  if (v <= 0) return 0;
+  let i = 0; while (i < WARP.length - 2 && v > WARP[i+1][0]) i++;
+  const [a0,b0] = WARP[i], [a1,b1] = WARP[i+1];
+  return b0 + (v - a0) * (b1 - b0) / (a1 - a0);
+}
+const push = (cls, pts, build = 0, retire = 0, late = 0) =>
+  items.push({ cls, pts, build: warp(build), retire: retire ? warp(retire) : 0, late });
 const GX = 34, ZN = 14, ZF = -210;
 // Phase markers, hoisted: the site hoarding below reads HANDOVER before the building
 // section is reached, and a const declared down there is in its temporal dead zone.
@@ -512,7 +523,7 @@ void main(){
   // or removed at runtime — this is the entire storytelling mechanism.
   // The front starts slightly AHEAD of zero, otherwise smoothstep(0, .035, 0) discards
   // even the ground datum and the beat opens on an empty frame.
-  float front = uBuild * 0.86 + 0.14;
+  float front = uBuild * 0.94 + 0.14;   // runs past 1.0 so the LAST element still completes
   float born = smoothstep(vBuild, vBuild + 0.035, front);
   if (born <= 0.001) discard;
   // A brief flash as each element lands, so the drawing reads as being DRAWN.
@@ -533,7 +544,7 @@ void main(){
   // The crane comes down; the temporary works go with it.
   float gone = (vSeq.x > 0.0) ? 1.0 - smoothstep(vSeq.x, vSeq.x + 0.05, front) : 1.0;
   // Once the building is in use the construction layer recedes and the record keeps running.
-  float late = 1.0 - vSeq.y * smoothstep(0.84, 0.96, front);
+  float late = 1.0 - vSeq.y * smoothstep(0.68, 0.90, front);
   float a = vFade.x * hide * fogF * nearF * vWidthFade * statMod * mask * born * gone * late;
   gl_FragColor = vec4(col, a);   // fog lives in alpha; doubling it squared the falloff
 }`;
@@ -643,13 +654,13 @@ frame();
    still cannot drift. */
 const CAM = [
   [0.00,  0,  10,  44],   // on the lot
-  [0.18,  0,  13,  54],   // substructure, piles
-  [0.38,  0,  26,  76],   // frame rising
-  [0.55,  0,  40, 100],   // topped out — the whole building
-  [0.70,  1,  44, 106],   // finishing, holding
-  [0.82,  2,  46, 102],   // handover, crane gone
-  [0.88,  5,  58,  60],   // push in toward the working façade
-  [0.94,  6,  50,  44],   // starting down with the cradle
+  [0.14,  0,  13,  54],   // substructure, piles
+  [0.27,  0,  26,  76],   // frame rising
+  [0.39,  0,  40, 100],   // topped out — the whole building
+  [0.49,  1,  44, 106],   // finishing, holding
+  [0.64,  2,  46, 102],   // handover, crane gone
+  [0.74,  5,  58,  60],   // push in toward the working façade
+  [0.85,  6,  50,  44],   // starting down with the cradle
   [1.00,  5,  40,  22],   // the building, lit and in use, still being kept
 ];
 function camAt(b) {
@@ -663,7 +674,7 @@ function camAt(b) {
 // Eight beats across the page, aligned to what the SCENE is doing at that moment:
 // CONSTRUCTION lands as the tower tops out, ASSET CARE as the crane leaves and the
 // floors light up. Text and geometry tell the same story or neither reads.
-const BEATS = [0.00, 0.09, 0.16, 0.24, 0.32, 0.40, 0.48, 0.72, 0.93];
+const BEATS = [0.00, 0.08, 0.12, 0.18, 0.23, 0.29, 0.34, 0.50, 0.83];
 const beatEls = Array.from(document.querySelectorAll('.beat'));
 const noEl = document.getElementById('stageNo'), barEl = document.getElementById('stageBar');
 const eyeEl = document.getElementById('eyebrow');
