@@ -16,7 +16,7 @@
   html, body { margin: 0; height: 100%;
     background: #05070A radial-gradient(120% 85% at 66% 52%, #16205C 0%, #0A0E36 44%, #05070A 100%) fixed; }
   body { font-family: Archivo, system-ui, sans-serif; }
-  /* 4 viewports of scroll drives the build front; the beat is legible in the first one. */
+  /* The hero's share of the build front; the page below carries it the rest of the way. */
   #scroll { height: 900vh; }
   #gl { position: fixed; inset: 0; z-index: 0; }
   #gl canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block;
@@ -362,6 +362,8 @@ const C = {
   slow:   { hex:'#2E38FF', a:0.46, r:0.016, heat:0.36 },  // the record, after handover
   city:   { hex:'#4A5599', a:0.90, r:0.021, heat:0 },    // far context, always present
   grid:   { hex:'#5A63A8', a:0.52, r:0.018, heat:0 },    // ground datum
+  road:   { hex:'#5A63A8', a:0.42, r:0.015, heat:0 },    // carriageways in the context
+  car:    { hex:'#DDE2F2', a:0.82, r:0.013, heat:0.90 }, // traffic — driven by TIME, never stops
 };
 
 /* ── site + structure, all on a ground plane at y=0 ────────────────────────
@@ -417,6 +419,34 @@ for (let x = -GX; x <= GX; x += 9) push('grid', [[x,0,ZN],[x,0,ZF]]);
       push('city', [[cx-cw/2,y,cz+cw/2],[cx+cw/2,y,cz+cw/2]], 0);
     }
   }
+}
+
+/* ── ROADS AND TRAFFIC ──────────────────────────────────────────────────────
+   The one thing in the scene that is driven by TIME rather than by scroll. Every
+   other element is a function of the build front, so standing still froze the whole
+   frame; these keep running whatever the scroll is doing, which is what makes the
+   drawing feel inhabited rather than paused. Carriageways sit at three depths so
+   there is always one low in frame as the camera rises and pushes in, and the lanes
+   run in opposite directions — a reversed point list reverses the travel. ── */
+{
+  const ROADS = [
+    [ -8, 70, 0.030],   // near approach — reads while the camera is still low
+    [-112, 90, 0.035],  // mid, between the site and the neighbouring plots
+    [-156, 110, 0.040], // far, holds the horizon through the in-use act
+  ];
+  for (const [rz, half, b] of ROADS) {
+    push('road', [[-half, 0, rz], [half, 0, rz]], b);
+    push('road', [[-half, 0, rz - 3.2], [half, 0, rz - 3.2]], b + 0.002);
+    const A = [[-half, 0, rz - 0.9], [half, 0, rz - 0.9]];
+    const B = [[half, 0, rz - 2.3], [-half, 0, rz - 2.3]];   // reversed = oncoming
+    push('car', A, b + 0.02);
+    push('car', B, b + 0.024);
+  }
+  // One cross route running away from the camera, so traffic is not all lateral.
+  push('road', [[-44, 0, 14], [-44, 0, -170]], 0.033);
+  push('road', [[-47.2, 0, 14], [-47.2, 0, -170]], 0.035);
+  push('car',  [[-44.9, 0, 14], [-44.9, 0, -170]], 0.05);
+  push('car',  [[-46.3, 0, -170], [-46.3, 0, 14]], 0.054);
 }
 
 // The lot.
@@ -736,8 +766,9 @@ void main(){
   float ink = 1.0 + 2.4 * exp(-pow((front - vBuild) * 26.0, 2.0));
 
   float phase = vUvL.x * vWave.x - uTime * vWave.y + vWave.z;
-  float pulse = smoothstep(-0.5, 0.5, sin(phase)) * step(0.5, vWave.y);
-  float statMod = mix(0.76 + 0.24 * sin(vUvL.x * vWave.x * 0.5 + vWave.z), 1.0, step(0.5, vWave.y));
+  float moving = step(0.01, vWave.y);
+  float pulse = smoothstep(-0.5, 0.5, sin(phase)) * moving;
+  float statMod = mix(0.76 + 0.24 * sin(vUvL.x * vWave.x * 0.5 + vWave.z), 1.0, moving);
 
   float fogF  = 1.0 - smoothstep(uFogNear, uFogFar, vDepth);
   float nearF = smoothstep(uNearCull, uNearCull + 9.0, vDepth);
@@ -770,8 +801,8 @@ items.forEach((it, idx) => {
     for (let v = 0; v < n; v++) fn(arr, v*size);
     g.setAttribute(name, new THREE.BufferAttribute(arr, size));
   };
-  const uSize = 2*Math.PI*len/16, phase = idx*2.399963;
-  const speed = it.cls === 'stream' ? 1 : (it.cls === 'slow' ? 0.38 : 0);
+  const uSize = 2*Math.PI*len/(it.cls === 'car' ? 5 : 16), phase = idx*2.399963;
+  const speed = it.cls === 'stream' ? 1 : it.cls === 'slow' ? 0.38 : it.cls === 'car' ? 1.4 : 0;
   put('aColor', 3, (a,o)=>{ a[o]=col.r; a[o+1]=col.g; a[o+2]=col.b; });
   put('aWave', 4, (a,o)=>{ a[o]=uSize; a[o+1]=speed; a[o+2]=phase; a[o+3]=K.heat; });
   const head = (it.cls === 'stream' || it.cls === 'slow') ? Math.min(0.4, 16/len) : 0.05;
@@ -880,19 +911,34 @@ function camAt(b) {
 // Eight beats across the page, aligned to what the SCENE is doing at that moment:
 // CONSTRUCTION lands as the tower tops out, ASSET CARE as the crane leaves and the
 // floors light up. Text and geometry tell the same story or neither reads.
-const BEATS = [0.00, 0.08, 0.12, 0.18, 0.23, 0.29, 0.34, 0.50, 0.83];
+const BEATS = [0.00, 0.08, 0.12, 0.18, 0.24, 0.30, 0.36, 0.50, 0.58];
 const beatEls = Array.from(document.querySelectorAll('.beat'));
 const noEl = document.getElementById('stageNo'), barEl = document.getElementById('stageBar');
 const eyeEl = document.getElementById('eyebrow');
-let shown = 0, t = 0, last = performance.now(), build = 0, docH = 1, pastHero = false;
+let shown = 0, t = 0, last = performance.now(), build = 0, heroH = 1, tailH = 1, pastHero = false;
 const heroEl = document.getElementById('scroll');
-const measure = () => { docH = Math.max(1, heroEl.offsetHeight - innerHeight); };
+/* The sequence does not stop at the hero — it CROSSES it. The hero carries the build
+   front as far as SPLIT (construction through handover); the content below carries the
+   rest, which is the whole in-use act: the district filling in, windows turning over,
+   and both window-cleaning runs. Anchoring the split to the hero boundary rather than
+   driving off total document height keeps handover landing exactly as the hero ends at
+   every viewport, however tall the content reflows on a narrow screen. */
+const SPLIT = 0.62;
+const measure = () => {
+  heroH = Math.max(1, heroEl.offsetHeight - innerHeight);
+  tailH = Math.max(1, document.documentElement.scrollHeight - innerHeight - heroH);
+};
+const progress = () => {
+  const y = scrollY;
+  return y <= heroH ? (y / heroH) * SPLIT
+                    : SPLIT + Math.min(1, (y - heroH) / tailH) * (1 - SPLIT);
+};
 measure();
 
 function tick(now){
   if (now - last < 15.5) return;
   t += Math.min(now - last, 33) * 0.001; last = now;
-  const p = Math.min(1, Math.max(0, scrollY / docH));
+  const p = Math.min(1, Math.max(0, progress()));
   build += (p - build) * 0.09;
   mat.uniforms.uBuild.value = build;
   mat.uniforms.uTime.value = t * 0.85;
@@ -917,7 +963,7 @@ function paintBeat() {
     eyeEl.classList.toggle('is-on', i < 2);
   }
   barEl.style.width = (build*132).toFixed(1) + 'px';
-  const past = scrollY >= docH - 8;
+  const past = scrollY >= heroH - 8;
   if (past !== pastHero) { document.body.classList.toggle('past-hero', past); pastHero = past; }
 }
 
@@ -953,7 +999,7 @@ function renderOnce() {
   queued = true;
   requestAnimationFrame(() => {
     queued = false;
-    build = Math.min(1, Math.max(0, scrollY / docH));
+    build = Math.min(1, Math.max(0, progress()));
     mat.uniforms.uBuild.value = build;
     paintBeat();
     composer.render();
