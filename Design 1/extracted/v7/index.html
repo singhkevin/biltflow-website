@@ -353,7 +353,7 @@ function refuseReason() {
 // Eight beats across the page, aligned to what the SCENE is doing at that moment:
 // CONSTRUCTION lands as the tower tops out, ASSET CARE as the crane leaves and the
 // floors light up. Text and geometry tell the same story or neither reads.
-const BEATS = [0.00, 0.03, 0.07, 0.145, 0.20, 0.25, 0.30, 0.545, 0.640, 0.780, 0.850];
+const BEATS = [0.00, 0.03, 0.07, 0.145, 0.20, 0.25, 0.30, 0.545, 0.575, 0.810, 0.850];
 // The hero's share of the build front; the page below carries the rest.
 const SPLIT = 0.86;
 // The content carries the orbit on from there; the outro holds its last stretch.
@@ -412,11 +412,12 @@ const C = {
   tick:   { hex:'#1A43C4', hot:'#2C6CB3', ramp:0.4,  a:0.56, r:0.036, heat:0 },    // temporary works
   plan:   { hex:'#2C6CB3', hot:'#55FCFD', ramp:0.7,  a:0.94, r:0.052, heat:0.25 }, // footprint
   draft:  { hex:'#1552B2', hot:'#55FCFD', ramp:0.8,  a:0.66, r:0.034, heat:0.18 }, // the design, before it is built
+  sys:    { hex:'#F0AC47', hot:'#FFFFFF', ramp:0.0,  a:1.00, r:0.140, heat:1.25 }, // THE SYSTEM — one thread, every stage
   stream: { hex:'#1552B2', hot:'#55FCFD', ramp:1.0,  a:0.52, r:0.078, heat:0.48 }, // the live record
   // warm — delivery, occupation, the building in use
   lit:    { hex:'#C25134', hot:'#FBD949', ramp:0.85, a:0.98, r:0.078, heat:1.25 }, // occupied
-  slow:   { hex:'#B5233D', hot:'#F0AC47', ramp:1.0,  a:0.56, r:0.095, heat:0.52 }, // operating record
-  car:    { hex:'#CE7538', hot:'#FBD949', ramp:1.0,  a:0.88, r:0.150, heat:1.10 }, // traffic
+  slow:   { hex:'#1552B2', hot:'#2C6CB3', ramp:1.0,  a:0.40, r:0.090, heat:0.35 }, // ambient, cooled — no longer the record
+  car:    { hex:'#B5233D', hot:'#CE7538', ramp:1.0,  a:0.62, r:0.130, heat:0.60 }, // traffic — deep, secondary
 };
 
 /* ── site + structure, all on a ground plane at y=0 ────────────────────────
@@ -450,8 +451,13 @@ function warp(v) {
   const [a0,b0] = WARP[i], [a1,b1] = WARP[i+1];
   return b0 + (v - a0) * (b1 - b0) / (a1 - a0);
 }
-const push = (cls, pts, build = 0, retire = 0, late = 0) =>
-  items.push({ cls, pts, build: warp(build), retire: retire ? warp(retire) : 0, late });
+// `ext.buildEnd` / `ext.retireEnd` make the birth and retire points run ALONG the curve
+// instead of hitting every vertex at once. Together with the shader's existing born/gone
+// ramps that gives a lit window that travels the path with a bright head — a thread.
+const push = (cls, pts, build = 0, retire = 0, late = 0, ext = null) =>
+  items.push({ cls, pts, build: warp(build), retire: retire ? warp(retire) : 0, late,
+               buildEnd:  ext && ext.buildEnd  != null ? warp(ext.buildEnd)  : undefined,
+               retireEnd: ext && ext.retireEnd          ? warp(ext.retireEnd) : undefined });
 const GX = 34, ZN = 14, ZF = -210;
 // Phase markers, hoisted: the site hoarding below reads HANDOVER before the building
 // section is reached, and a const declared down there is in its temporal dead zone.
@@ -548,7 +554,7 @@ const tFin = k => 0.50 + (k / LV) * 0.10;               // finishing    50% -> 6
 // Occupancy arrives UNEVENLY — a building fills up floor by floor in no particular
 // order, and a clean sweep up the tower is the one thing that reads as a progress bar.
 const hashK = k => Math.abs(Math.sin(k * 12.9898) * 43758.5453) % 1;
-const tL   = k => 0.805 + hashK(k) * 0.055;             // lights on    after handover
+const tL   = k => 0.805 + (k / LV) * 0.068 + hashK(k) * 0.006;   // lit as THE SYSTEM passes each floor
 
 /* ── THE STAGES THAT COME BEFORE A SITE ────────────────────────────────────
    The beats named DEVELOPMENT, DESIGN, PROCUREMENT and COMMERCIAL had nothing behind
@@ -600,15 +606,8 @@ const tL   = k => 0.805 + hashK(k) * 0.055;             // lights on    after ha
   const PKG = 6, TERM = [];
   for (let i = 0; i < PKG; i++) {
     const a = (i / PKG) * Math.PI * 2 + 0.4;
-    const fx = CX + Math.cos(a) * 155, fz = CZ + Math.sin(a) * 155;
     const tx = CX + Math.cos(a) * 17,  tz = CZ + Math.sin(a) * 13;
-    TERM.push([tx, tz]);
-    const pts = [];
-    for (let j = 0; j <= 28; j++) {
-      const t = j / 28, e = t * t * (3 - 2 * t);
-      pts.push([fx + (tx - fx) * e, 0.4 + Math.sin(t * Math.PI) * 8, fz + (tz - fz) * e]);
-    }
-    push('stream', pts, 0.224 + i * 0.006, HANDOVER);
+    TERM.push([tx, tz]);   // the journey out and back is the thread's own — see THE SYSTEM
   }
   // COMMERCIAL — each package is closed out, and the separate deals become one
   // perimeter: the contract that carries the job.
@@ -821,14 +820,7 @@ for (const [nx, nz, nw, nd, nL, t0] of [[-30, -120, 15, 11, 18, 0.868], [20, -13
 /* ── LEARNING. The record does not stay with the building. A thread leaves the tower
    and runs to each plot developed after it — what this job learned is what the next one
    starts from. Warm, because it belongs to the in-use half, and slow. ── */
-for (const [ni, nx, nz] of [[0, -30, -120], [1, 20, -138]]) {
-  const pts = [];
-  for (let j = 0; j <= 32; j++) {
-    const t = j / 32, e = t * t * (3 - 2 * t);
-    pts.push([CX + (nx - CX) * e, 24 + Math.sin(t * Math.PI) * 13, CZ + (nz - CZ) * e]);
-  }
-  push('slow', pts, 0.930 + ni * 0.014);
-}
+// (the thread itself now makes this journey — see THE SYSTEM, below the landscape)
 
 /* ── LANDSCAPE. The lot stops being a site and becomes an address. Ground planting
    only reads in the wide shots before the camera drops, so it arrives at handover; the
@@ -850,7 +842,7 @@ for (const [ni, nx, nz] of [[0, -30, -120], [1, 20, -138]]) {
 }
 
 // ── streams: arrive across the ground, then climb the core ──
-const N_STREAM = lowPower ? 6 : 11;
+const N_STREAM = 0;   // these climbed the core as “the record”; THE SYSTEM thread does that now
 for (let i = 0; i < N_STREAM; i++) {
   const a = (i/N_STREAM)*Math.PI*2, lx = CX + Math.cos(a)*8.6, lz = CZ + Math.sin(a)*5.6;
   const off = (i/N_STREAM - 0.5) * 30, pts = [];
@@ -871,6 +863,105 @@ for (let i = 0; i < 4; i++) {
     pts.push([lx, t*t*(LV*H), lz]);
   }
   push('slow', pts, OPERATE + i*0.012);
+}
+
+/* ═══ THE SYSTEM ═══════════════════════════════════════════════════════════
+   The headline is “Every stage. One system.” The stages were on screen; the system
+   never was. This is it: ONE thread, present from the first frame to the last, and the
+   only white thing in the scene. At every stage it does what that stage's copy says —
+   surveys, draws, reaches out, closes the deal, climbs with the build, moves through the
+   lit tower, leaves for the next site. The building is what the thread produces.
+
+   Every leg is one curve whose birth and retire points slide along its length, so a lit
+   window with a bright head travels the path and erases behind itself. The legs chain
+   end-to-end in both space and time, so there is never more than one thread. ── */
+{
+  const G = 0.7, TOP = LV * H;
+  const lag = (b0, b1) => Math.min(0.026, Math.max(0.007, (b1 - b0) * 0.28));
+  const thread = (pts, b0, b1, persist = false) =>
+    push('sys', pts, b0, persist ? 0 : b0 + lag(b0, b1), 0,
+         { buildEnd: b1, retireEnd: persist ? 0 : b1 + lag(b0, b1) });
+  const seg = (A, B, m) => { const o = []; for (let j = 0; j <= m; j++) { const t = j / m;
+    o.push([A[0]+(B[0]-A[0])*t, A[1]+(B[1]-A[1])*t, A[2]+(B[2]-A[2])*t]); } return o; };
+  // a helix that follows the plan — wide at the podium, narrower above it
+  const tower = (y0, y1, turns, m, inset = 0, a0 = Math.PI) => { const o = [];
+    for (let j = 0; j <= m; j++) { const t = j / m, y = y0 + (y1 - y0) * t;
+      const { w, d } = plan(Math.max(0, Math.min(LV - 1, Math.floor(y / H))));
+      const a = a0 + t * turns * Math.PI * 2;
+      o.push([CX + Math.cos(a) * (w - inset), y, CZ + Math.sin(a) * (d - inset)]); } return o; };
+  const core = (y0, y1, turns, m) => { const o = [];
+    for (let j = 0; j <= m; j++) { const t = j / m, a = t * turns * Math.PI * 2;
+      o.push([CX + Math.cos(a) * 3.4, y0 + (y1 - y0) * t, CZ + Math.sin(a) * 2.6]); } return o; };
+
+  // 01  arrives on an empty lot
+  thread(seg([-45, G, -21], [-20, G, -24], 18), 0.004, 0.052);
+
+  // 03  DEVELOPMENT — walks the boundary, then tests the envelope: up one edge, across
+  //     the top, down the other — feasibility, drawn as a decision.
+  thread([[-20,G,-24],[26,G,-24],[26,G,-100],[-20,G,-100],[-20,G,-24]], 0.056, 0.104);
+  const EH2 = TOP * 1.12;
+  thread([[-20,G,-24],[CX-19,G,CZ-34],[CX-19,EH2,CZ-34],[CX+19,EH2,CZ-34],
+          [CX+19,EH2,CZ+34],[CX+19,G,CZ+34]], 0.106, 0.150);
+  thread(seg([CX+19, G, CZ+34], [CX-15, G, CZ], 12), 0.152, 0.176);
+
+  // 04  DESIGN — draws the building, one turn every three floors. The plates are timed
+  //     to appear exactly as it passes them.
+  thread(tower(G, TOP, 8, 240), 0.178, 0.216);
+  thread(seg([CX-10.5, TOP, CZ], [CX-10.5, G, CZ], 14), 0.216, 0.224);
+
+  // 05  PROCUREMENT — reaches out beyond the frame and comes back with each package.
+  //     Six journeys at once is the one moment the thread is allowed to be several.
+  const P0 = [CX-10.5, G, CZ], TERM2 = [];
+  for (let i = 0; i < 6; i++) {
+    const a = (i / 6) * Math.PI * 2 + 0.4;
+    const far = [CX + Math.cos(a) * 150, G, CZ + Math.sin(a) * 150];
+    const term = [CX + Math.cos(a) * 17, G, CZ + Math.sin(a) * 13]; TERM2.push(term);
+    const out = [], back = [];
+    for (let j = 0; j <= 22; j++) { const t = j / 22, e = t*t*(3-2*t), lift = G + Math.sin(t*Math.PI)*9;
+      out.push ([P0[0]  + (far[0]-P0[0])*e,  lift, P0[2]  + (far[2]-P0[2])*e]);
+      back.push([far[0] + (term[0]-far[0])*e, lift, far[2] + (term[2]-far[2])*e]); }
+    thread(out.concat(back.slice(1)), 0.224 + i * 0.004, 0.262 + i * 0.001);
+  }
+
+  // 06  COMMERCIAL — one loop through every terminal: the separate deals become one
+  //     contract, and the perimeter is left behind as it passes.
+  thread(TERM2.concat([TERM2[0]]), 0.264, 0.298);
+  thread(seg(TERM2[0], [CX+3.4, G, CZ], 8), 0.298, tF(0));
+
+  // 07  CONSTRUCTION — climbs the core with the structure. Its head is at level k at
+  //     exactly tF(k), so the frame rises with it and never ahead of it.
+  thread(core(G, TOP, 13, 260), tF(0), tF(LV - 1) + 0.008);
+  //     finishing: back down through the floors, wider, as the fit-out goes in
+  thread(tower(TOP, G, 6, 200, 1.2, 0), 0.50, 0.60);
+  //     and out of the core to the front door, ready to hand over
+  thread([[CX+13.8,G,CZ],[CX+13,G,CZ-9],[CX-13,G,CZ-9],[CX-13,G,CZ+9],[CX+13,G,CZ+9],[CX+3.4,G,CZ-2.6]], 0.60, 0.78);
+
+  // 08  ASSET CARE — handover: out the front and once around the podium. The hoarding
+  //     comes down behind it.
+  const pz = CZ + 10, pw = 15;
+  thread([[CX+3.4,G,CZ-2.6],[CX,G,pz+3],[CX-pw,G,pz],[CX-pw,G,CZ-10],[CX+pw,G,CZ-10],
+          [CX+pw,G,pz],[CX,G,pz+3]], 0.78, 0.803);
+
+  // 09  IN USE — up through the occupied floors; each lights as it passes.
+  thread(tower(G, TOP, 9, 220, 0.6, Math.PI/2), 0.805, 0.875);
+  //     then along the parapet to the rig
+  thread([[CX,TOP,CZ+6.4],[CX-10.5,TOP+0.4,CZ+7],[CX+10.5,TOP+0.4,CZ+7],[CX+5,TOP+2.4,CZ+4.8]],
+         0.875, MAINT0);
+  //     and down the façade with the cleaners
+  thread(seg([CX+5, TOP, CZ+7], [CX+5, PODIUM*H + 2, CZ+7], 30), MAINT0, MAINT0 + 17*0.0026);
+
+  // 10  LEARNING — leaves, for the plots developed after it. What this job learned is
+  //     what the next one starts from.
+  const arc = (A, B, h, m) => { const o = []; for (let j = 0; j <= m; j++) { const t = j / m, e = t*t*(3-2*t);
+    o.push([A[0]+(B[0]-A[0])*e, A[1]+(B[1]-A[1])*e + Math.sin(t*Math.PI)*h, A[2]+(B[2]-A[2])*e]); } return o; };
+  thread(arc([CX+5, PODIUM*H+2, CZ+7], [-30, 57.6, -120], 16, 40), 0.965, 0.985);
+  thread(arc([-30, 57.6, -120], [20, 70.4, -138], 12, 32), 0.985, 1.005);
+
+  // 11  EVERY STAGE. ONE SYSTEM. — a ring around all of it, and it stays.
+  const ring = []; for (let j = 0; j <= 96; j++) { const a = (j / 96) * Math.PI * 2;
+    ring.push([CX + Math.cos(a) * 44, G, CZ - 30 + Math.sin(a) * 58]); }
+  thread(arc([20, 70.4, -138], [CX+44, G, CZ-30], 6, 24), 1.005, 1.013);
+  thread(ring, 1.013, 1.040, true);
 }
 
 /* ── curve + build ── */
@@ -944,27 +1035,32 @@ const radial = lowPower ? 3 : 5;
 items.forEach((it, idx) => {
   const K = C[it.cls], curve = new Poly(it.pts), len = curve.getLength();
   if (!(len > 0.01)) return;
-  const seg = (it.cls === 'stream' || it.cls === 'slow') ? (lowPower ? 90 : 200)
+  const seg = (it.cls === 'stream' || it.cls === 'slow' || it.cls === 'sys') ? (lowPower ? 90 : 200)
             : Math.max(2, Math.min(40, Math.round(len/3)));
   const g = new THREE.TubeGeometry(curve, seg, K.r, radial, false);
   const n = g.attributes.position.count;
   const col = new THREE.Color(K.hex);
   const put = (name, size, fn) => {
     const arr = new Float32Array(n*size);
-    for (let v = 0; v < n; v++) fn(arr, v*size);
+    for (let v = 0; v < n; v++) fn(arr, v*size, v);
     g.setAttribute(name, new THREE.BufferAttribute(arr, size));
   };
   const uSize = 2*Math.PI*len/(it.cls === 'car' ? 5 : 16), phase = idx*2.399963;
-  const speed = it.cls === 'stream' ? 1 : it.cls === 'slow' ? 0.38 : it.cls === 'car' ? 1.4 : 0;
+  const speed = it.cls === 'stream' ? 1 : it.cls === 'slow' ? 0.38 : it.cls === 'car' ? 1.4 : it.cls === 'sys' ? 0.9 : 0;
   const hot = new THREE.Color(K.hot || K.hex);
   put('aColor', 3, (a,o)=>{ a[o]=col.r; a[o+1]=col.g; a[o+2]=col.b; });
   put('aTint', 4, (a,o)=>{ a[o]=hot.r; a[o+1]=hot.g; a[o+2]=hot.b; a[o+3]=K.ramp||0; });
   put('aWave', 4, (a,o)=>{ a[o]=uSize; a[o+1]=speed; a[o+2]=phase; a[o+3]=K.heat; });
-  const head = (it.cls === 'stream' || it.cls === 'slow') ? Math.min(0.4, 16/len) : 0.05;
+  const head = (it.cls === 'stream' || it.cls === 'slow') ? Math.min(0.4, 16/len) : it.cls === 'sys' ? 0.012 : 0.05;
   put('aFade', 2, (a,o)=>{ a[o]=K.a; a[o+1]=head; });
   put('aRadius', 1, (a,o)=>{ a[o]=K.r; });
-  put('aBuild', 1, (a,o)=>{ a[o]=it.build; });
-  put('aSeq', 2, (a,o)=>{ a[o]=it.retire||0; a[o+1]=it.late||0; });
+  // TubeGeometry lays vertices out ring by ring, so ring index / segment count is the
+  // arc-length fraction along the path.
+  const uOf = v => Math.floor(v / (radial + 1)) / seg;
+  put('aBuild', 1, (a,o,v)=>{ a[o] = it.buildEnd != null ? it.build + (it.buildEnd - it.build) * uOf(v) : it.build; });
+  put('aSeq', 2, (a,o,v)=>{
+    a[o]   = (it.retireEnd && it.retire) ? it.retire + (it.retireEnd - it.retire) * uOf(v) : (it.retire||0);
+    a[o+1] = it.late||0; });
   geos.push(g);
 });
 
