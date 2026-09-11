@@ -384,18 +384,28 @@ if (refused) {
 }
 
 /* ── palette — identical to /v6, nothing invented ── */
+/* Sampled from the reference recording, not eyeballed: warm ramp #B5233D -> #C25134 ->
+   #CE7538 -> #F0AC47 -> #FBD949, cool ramp #1552B2 -> #1A43C4 -> #2C6CB3 -> #55FCFD.
+   `hex` is the colour at the TAIL of a member, `hot` the colour at its head, and `ramp`
+   how much of that run to actually use — every ribbon in the reference grades along its
+   own length from deep and saturated to near-white, which is what makes them read as
+   light rather than as drawn lines. Structural members take only a touch of it (a hard
+   gradient on a 3.2-unit beam is noise); the long ribbons take all of it.
+   Temperature carries the story: COOL is what is being built, WARM is what is in use. */
 const C = {
-  stream: { hex:'#2E38FF', a:0.70, r:0.017, heat:0.85 },   // the live layer
-  tick:   { hex:'#DDE2F2', a:0.50, r:0.012, heat:0 },     // white drafting
-  set:    { hex:'#9AA0FF', a:0.62, r:0.016, heat:0 },     // setting-out
-  plan:   { hex:'#F7F9FA', a:0.92, r:0.018, heat:0 },     // footprint
-  frame:  { hex:'#7A84D8', a:0.72, r:0.016, heat:0 },     // structure
-  lit:    { hex:'#FFFFFF', a:0.96, r:0.014, heat:0.98 },  // occupied — the payoff
-  slow:   { hex:'#2E38FF', a:0.46, r:0.016, heat:0.36 },  // the record, after handover
-  city:   { hex:'#4A5599', a:0.90, r:0.021, heat:0 },    // far context, always present
-  grid:   { hex:'#5A63A8', a:0.52, r:0.018, heat:0 },    // ground datum
-  road:   { hex:'#5A63A8', a:0.42, r:0.015, heat:0 },    // carriageways in the context
-  car:    { hex:'#DDE2F2', a:0.82, r:0.013, heat:0.90 }, // traffic — driven by TIME, never stops
+  // cool — the drawing, the structure, the work
+  grid:   { hex:'#0E2E63', hot:'#1552B2', ramp:0.5,  a:0.50, r:0.022, heat:0 },    // ground datum
+  set:    { hex:'#1552B2', hot:'#2C6CB3', ramp:0.5,  a:0.64, r:0.026, heat:0 },    // setting-out
+  frame:  { hex:'#1552B2', hot:'#1A43C4', ramp:0.35, a:0.74, r:0.030, heat:0 },    // structure
+  city:   { hex:'#0E2E63', hot:'#1A43C4', ramp:0.45, a:0.86, r:0.034, heat:0 },    // far context
+  road:   { hex:'#0E2E63', hot:'#1552B2', ramp:0.6,  a:0.48, r:0.055, heat:0 },    // carriageways
+  tick:   { hex:'#1A43C4', hot:'#2C6CB3', ramp:0.4,  a:0.56, r:0.024, heat:0 },    // temporary works
+  plan:   { hex:'#2C6CB3', hot:'#55FCFD', ramp:0.7,  a:0.94, r:0.038, heat:0.25 }, // footprint
+  stream: { hex:'#1552B2', hot:'#55FCFD', ramp:1.0,  a:0.78, r:0.150, heat:1.15 }, // the live record
+  // warm — delivery, occupation, the building in use
+  lit:    { hex:'#C25134', hot:'#FBD949', ramp:0.85, a:0.98, r:0.055, heat:1.25 }, // occupied
+  slow:   { hex:'#B5233D', hot:'#F0AC47', ramp:1.0,  a:0.66, r:0.140, heat:0.75 }, // operating record
+  car:    { hex:'#CE7538', hot:'#FBD949', ramp:1.0,  a:0.88, r:0.160, heat:1.20 }, // traffic
 };
 
 /* ── site + structure, all on a ground plane at y=0 ────────────────────────
@@ -766,24 +776,24 @@ class Poly extends THREE.Curve {
 
 const VERT = `
 uniform float uViewportH, uTanHalfFov, uMinPx;
-attribute vec3 aColor; attribute vec4 aWave; attribute vec2 aFade, aSeq; attribute float aRadius, aBuild;
-varying vec3 vColor; varying vec4 vWave; varying vec2 vFade;
+attribute vec3 aColor; attribute vec4 aWave, aTint; attribute vec2 aFade, aSeq; attribute float aRadius, aBuild;
+varying vec3 vColor; varying vec4 vWave, vTint; varying vec2 vFade;
 varying float vDepth, vWidthFade, vBuild; varying vec2 vUvL, vSeq;
 void main(){
-  vUvL = uv; vColor = aColor; vWave = aWave; vFade = aFade; vBuild = aBuild; vSeq = aSeq;
+  vUvL = uv; vColor = aColor; vWave = aWave; vFade = aFade; vBuild = aBuild; vSeq = aSeq; vTint = aTint;
   vec4 mv = modelViewMatrix * vec4(position, 1.0);
   vDepth = -mv.z;
   float pxPerUnit = uViewportH / (2.0 * vDepth * uTanHalfFov);
   float wantR = max(aRadius, uMinPx / (2.0 * pxPerUnit));
   mv.xyz += normalize(normalMatrix * normal) * (wantR - aRadius);
-  vWidthFade = aRadius / wantR;
+  vWidthFade = pow(aRadius / wantR, 0.30);   // was 1.0 — thin-plotted-line behaviour
   gl_Position = projectionMatrix * mv;
 }`;
 
 const FRAG = `
 uniform float uTime, uBuild, uFogNear, uFogFar, uNearCull;
 uniform vec2 uResolution, uMaskStops;
-varying vec3 vColor; varying vec4 vWave; varying vec2 vFade;
+varying vec3 vColor; varying vec4 vWave, vTint; varying vec2 vFade;
 varying float vDepth, vWidthFade, vBuild; varying vec2 vUvL, vSeq;
 void main(){
   // THE BUILD FRONT. One comparison turns the whole scene into a sequence: geometry
@@ -809,7 +819,10 @@ void main(){
   float sy = 1.0 - (gl_FragCoord.y / uResolution.y);
   float mask = 1.0 - 0.16 * smoothstep(uMaskStops.x, uMaskStops.y, sy);
 
-  vec3 col = vColor * ink + pulse * vWave.w;
+  // Grade along the member's own length, tail colour -> head colour. This is the one
+  // move that makes a tube read as light instead of as a drawn line.
+  vec3 base = mix(vColor, vTint.rgb, smoothstep(0.0, 1.0, vUvL.x) * vTint.a);
+  vec3 col = base * ink + pulse * vWave.w * vTint.rgb;
   // The crane comes down; the temporary works go with it.
   float gone = (vSeq.x > 0.0) ? 1.0 - smoothstep(vSeq.x, vSeq.x + 0.05, front) : 1.0;
   // Once the building is in use the construction layer recedes and the record keeps running.
@@ -835,7 +848,9 @@ items.forEach((it, idx) => {
   };
   const uSize = 2*Math.PI*len/(it.cls === 'car' ? 5 : 16), phase = idx*2.399963;
   const speed = it.cls === 'stream' ? 1 : it.cls === 'slow' ? 0.38 : it.cls === 'car' ? 1.4 : 0;
+  const hot = new THREE.Color(K.hot || K.hex);
   put('aColor', 3, (a,o)=>{ a[o]=col.r; a[o+1]=col.g; a[o+2]=col.b; });
+  put('aTint', 4, (a,o)=>{ a[o]=hot.r; a[o+1]=hot.g; a[o+2]=hot.b; a[o+3]=K.ramp||0; });
   put('aWave', 4, (a,o)=>{ a[o]=uSize; a[o+1]=speed; a[o+2]=phase; a[o+3]=K.heat; });
   const head = (it.cls === 'stream' || it.cls === 'slow') ? Math.min(0.4, 16/len) : 0.05;
   put('aFade', 2, (a,o)=>{ a[o]=K.a; a[o+1]=head; });
@@ -851,7 +866,7 @@ const mat = new THREE.ShaderMaterial({
   uniforms: {
     uTime:{value:0}, uBuild:{value:0}, uFogNear:{value:80}, uFogFar:{value:420}, uNearCull:{value:1.5},
     uResolution:{value:new THREE.Vector2(1,1)}, uMaskStops:{value:new THREE.Vector2(0.80,0.99)},
-    uViewportH:{value:1}, uTanHalfFov:{value:Math.tan(19*Math.PI/180)}, uMinPx:{value:1.15},
+    uViewportH:{value:1}, uTanHalfFov:{value:Math.tan(19*Math.PI/180)}, uMinPx:{value:2.4},
   },
 });
 const mesh = new THREE.Mesh(mergeGeometries(geos, false), mat);
@@ -888,7 +903,7 @@ renderer.setSize(innerWidth, innerHeight);
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 0.98;
 renderer.outputColorSpace = THREE.SRGBColorSpace;
-renderer.setClearColor('#05070A', 1);
+renderer.setClearColor('#030626', 1);
 host.appendChild(renderer.domElement);
 
 const scene = new THREE.Scene(); scene.add(mesh);
