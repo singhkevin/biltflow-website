@@ -351,9 +351,9 @@ function refuseReason() {
 // Eight beats across the page, aligned to what the SCENE is doing at that moment:
 // CONSTRUCTION lands as the tower tops out, ASSET CARE as the crane leaves and the
 // floors light up. Text and geometry tell the same story or neither reads.
-const BEATS = [0.00, 0.07, 0.11, 0.16, 0.21, 0.27, 0.32, 0.45, 0.52];
+const BEATS = [0.00, 0.04, 0.08, 0.145, 0.20, 0.25, 0.30, 0.50, 0.58];
 // The hero's share of the build front; the page below carries the rest.
-const SPLIT = 0.55;
+const SPLIT = 0.62;
 // Where the geometry is finished and the closing orbit takes the rest of the scroll.
 const ORBIT0 = 0.86;
 
@@ -400,18 +400,19 @@ if (refused) {
    Temperature carries the story: COOL is what is being built, WARM is what is in use. */
 const C = {
   // cool — the drawing, the structure, the work
-  grid:   { hex:'#0E2E63', hot:'#1552B2', ramp:0.5,  a:0.50, r:0.022, heat:0 },    // ground datum
-  set:    { hex:'#1552B2', hot:'#2C6CB3', ramp:0.5,  a:0.64, r:0.026, heat:0 },    // setting-out
-  frame:  { hex:'#1552B2', hot:'#1A43C4', ramp:0.35, a:0.74, r:0.030, heat:0 },    // structure
-  city:   { hex:'#0E2E63', hot:'#1A43C4', ramp:0.45, a:0.86, r:0.034, heat:0 },    // far context
-  road:   { hex:'#0E2E63', hot:'#1552B2', ramp:0.6,  a:0.48, r:0.055, heat:0 },    // carriageways
-  tick:   { hex:'#1A43C4', hot:'#2C6CB3', ramp:0.4,  a:0.56, r:0.024, heat:0 },    // temporary works
-  plan:   { hex:'#2C6CB3', hot:'#55FCFD', ramp:0.7,  a:0.94, r:0.038, heat:0.25 }, // footprint
-  stream: { hex:'#1552B2', hot:'#55FCFD', ramp:1.0,  a:0.78, r:0.085, heat:0.95 }, // the live record
+  grid:   { hex:'#0E2E63', hot:'#1552B2', ramp:0.5,  a:0.50, r:0.034, heat:0 },    // ground datum
+  set:    { hex:'#1552B2', hot:'#2C6CB3', ramp:0.5,  a:0.64, r:0.038, heat:0 },    // setting-out
+  frame:  { hex:'#1552B2', hot:'#1A43C4', ramp:0.35, a:0.74, r:0.046, heat:0 },    // structure
+  city:   { hex:'#0E2E63', hot:'#1A43C4', ramp:0.45, a:0.86, r:0.050, heat:0 },    // far context
+  road:   { hex:'#0E2E63', hot:'#1552B2', ramp:0.6,  a:0.48, r:0.075, heat:0 },    // carriageways
+  tick:   { hex:'#1A43C4', hot:'#2C6CB3', ramp:0.4,  a:0.56, r:0.036, heat:0 },    // temporary works
+  plan:   { hex:'#2C6CB3', hot:'#55FCFD', ramp:0.7,  a:0.94, r:0.052, heat:0.25 }, // footprint
+  draft:  { hex:'#1552B2', hot:'#55FCFD', ramp:0.8,  a:0.66, r:0.034, heat:0.18 }, // the design, before it is built
+  stream: { hex:'#1552B2', hot:'#55FCFD', ramp:1.0,  a:0.70, r:0.100, heat:0.78 }, // the live record
   // warm — delivery, occupation, the building in use
-  lit:    { hex:'#C25134', hot:'#FBD949', ramp:0.85, a:0.98, r:0.055, heat:1.25 }, // occupied
-  slow:   { hex:'#B5233D', hot:'#F0AC47', ramp:1.0,  a:0.66, r:0.080, heat:0.62 }, // operating record
-  car:    { hex:'#CE7538', hot:'#FBD949', ramp:1.0,  a:0.88, r:0.100, heat:1.00 }, // traffic
+  lit:    { hex:'#C25134', hot:'#FBD949', ramp:0.85, a:0.98, r:0.078, heat:1.25 }, // occupied
+  slow:   { hex:'#B5233D', hot:'#F0AC47', ramp:1.0,  a:0.66, r:0.120, heat:0.70 }, // operating record
+  car:    { hex:'#CE7538', hot:'#FBD949', ramp:1.0,  a:0.88, r:0.150, heat:1.10 }, // traffic
 };
 
 /* ── site + structure, all on a ground plane at y=0 ────────────────────────
@@ -426,11 +427,19 @@ const items = [];
 // construction has to end, not just accumulate.
 // Schedule remap. Knots are (as authored) -> (where it should land); linear between,
 // extrapolating along the last segment so retire points past the end still resolve.
-const WARP = [[0,0], [0.20,0.20], [0.50,0.42], [0.63,0.52], [0.785,0.63],
-              [0.80,0.657],    // handover — pinned to the end of the hero
-              [0.875,0.790],   // the lights are on
+const WARP = [[0,0],
+              [0.05,0.160],    // the site
+              [0.17,0.270],    // DEVELOPMENT — envelope tested, massing chosen
+              [0.22,0.328],    // DESIGN — the building drawn in full
+              [0.26,0.375],    // PROCUREMENT — packages sourced
+              [0.30,0.422],    // COMMERCIAL closed out; CONSTRUCTION starts here
+              [0.50,0.582],    // topped out
+              [0.63,0.628],    // finishing
+              [0.785,0.645],
+              [0.80,0.657],    // handover
+              [0.875,0.763],   // the lights are on
               [0.925,0.860],   // the street and the district have filled in
-              [1.01,0.955]];   // the cleaners finish; the orbit takes over
+              [1.01,0.956]];   // the cleaners finish; the orbit takes over
 function warp(v) {
   if (v <= 0) return 0;
   let i = 0; while (i < WARP.length - 2 && v > WARP[i+1][0]) i++;
@@ -515,9 +524,9 @@ for (let z = -28; z >= -98; z -= 8) push('tick', [[CX-1.6,0,z],[CX+1.6,0,z]], 0.
 const P0 = { w: 15, d: 10 };
 const PIT = [[CX-P0.w-3,CZ-P0.d-3],[CX+P0.w+3,CZ-P0.d-3],[CX+P0.w+3,CZ+P0.d+3],[CX-P0.w-3,CZ+P0.d+3]];
 for (const dy of [0, -5.5]) for (let i = 0; i < 4; i++)
-  push('set', [[PIT[i][0],dy,PIT[i][1]],[PIT[(i+1)%4][0],dy,PIT[(i+1)%4][1]]], 0.10, 0, 0.85);
+  push('set', [[PIT[i][0],dy,PIT[i][1]],[PIT[(i+1)%4][0],dy,PIT[(i+1)%4][1]]], 0.262, 0, 0.85);
 for (let i = 0; i < 4; i++)
-  push('set', [[PIT[i][0],0,PIT[i][1]],[PIT[i][0],-5.5,PIT[i][1]]], 0.115, 0, 0.85);
+  push('set', [[PIT[i][0],0,PIT[i][1]],[PIT[i][0],-5.5,PIT[i][1]]], 0.272, 0, 0.85);
 
 // ── the building ──────────────────────────────────────────────────────────
 const LV = 26, H = 3.2, NX = 7, NZ = 5;
@@ -529,13 +538,85 @@ const at = (k, i, j) => { const { w, d } = plan(k);
 /* THE LADDER. Construction is compressed into the first ~55% so the back half can be
    the building IN USE — which is the actual claim. Everything below is a position on
    the same scroll front; nothing is created or destroyed at runtime. */
-const tF   = k => 0.20 + (k / LV) * 0.30;               // structure    20% -> 50%
-const tC   = k => Math.min(0.99, tF(k) + 0.07);         // cladding trails the frame
-const tFin = k => 0.50 + (k / LV) * 0.13;               // finishing    50% -> 63%
+const tF   = k => 0.30 + (k / LV) * 0.20;               // structure    30% -> 50%
+const tC   = k => Math.min(0.99, tF(k) + 0.05);         // cladding trails the frame
+const tFin = k => 0.50 + (k / LV) * 0.10;               // finishing    50% -> 60%
 // Occupancy arrives UNEVENLY — a building fills up floor by floor in no particular
 // order, and a clean sweep up the tower is the one thing that reads as a progress bar.
 const hashK = k => Math.abs(Math.sin(k * 12.9898) * 43758.5453) % 1;
 const tL   = k => 0.805 + hashK(k) * 0.055;             // lights on    after handover
+
+/* ── THE STAGES THAT COME BEFORE A SITE ────────────────────────────────────
+   The beats named DEVELOPMENT, DESIGN, PROCUREMENT and COMMERCIAL had nothing behind
+   them — the scene went straight from an empty lot to a frame going up, so four of the
+   six stages were being announced over footage of construction. Each now has something
+   that only happens during it. ── */
+{
+  // DEVELOPMENT — what the site permits, and what could go on it. The envelope is drawn
+  // first and three massings are tested inside it; two are discarded, the third is the
+  // building. Feasibility is a decision, so it has to be shown being made.
+  const EX = 19, EZ = 34, EH = LV * H * 1.12;
+  const E = [[CX-EX,CZ-EZ],[CX+EX,CZ-EZ],[CX+EX,CZ+EZ],[CX-EX,CZ+EZ]];
+  for (let i = 0; i < 4; i++) {
+    push('set', [[E[i][0],0,E[i][1]],[E[i][0],EH,E[i][1]]], 0.056 + i*0.005, 0.205, 0.6);
+    push('set', [[E[i][0],EH,E[i][1]],[E[(i+1)%4][0],EH,E[(i+1)%4][1]]], 0.078, 0.205, 0.6);
+  }
+  for (const [ow, od, oL, ob, orr] of [[13, 9, 20, 0.084, 0.116],
+                                        [ 9, 7, 26, 0.116, 0.148],
+                                        [10.5, 7, LV, 0.148, 0.186]]) {
+    const Q2 = [[CX-ow,CZ-od],[CX+ow,CZ-od],[CX+ow,CZ+od],[CX-ow,CZ+od]], oh = oL * H;
+    for (let i = 0; i < 4; i++) {
+      push('draft', [[Q2[i][0],0,Q2[i][1]],[Q2[i][0],oh,Q2[i][1]]], ob, orr);
+      push('draft', [[Q2[i][0],oh,Q2[i][1]],[Q2[(i+1)%4][0],oh,Q2[(i+1)%4][1]]], ob + 0.004, orr);
+    }
+    for (let f = 1; f < 4; f++) {
+      const y = oh * f / 4;
+      push('draft', [[Q2[0][0],y,Q2[0][1]],[Q2[1][0],y,Q2[1][1]]], ob + 0.006, orr);
+      push('draft', [[Q2[3][0],y,Q2[3][1]],[Q2[2][0],y,Q2[2][1]]], ob + 0.006, orr);
+    }
+  }
+
+  // DESIGN — the whole building drawn before any of it exists, then CONSUMED by the
+  // build: each drawn plate retires exactly as the real structure reaches that level.
+  // The drawing becomes the building, which is the one idea worth showing here.
+  for (let k = 1; k <= LV; k++) {
+    const { w, d } = plan(k - 1), y = k * H;
+    const b = 0.178 + (k / LV) * 0.038, r = tF(k - 1) + 0.012;
+    const R = [[CX-w,CZ-d],[CX+w,CZ-d],[CX+w,CZ+d],[CX-w,CZ+d]];
+    for (let i = 0; i < 4; i++)
+      push('draft', [[R[i][0],y,R[i][1]],[R[(i+1)%4][0],y,R[(i+1)%4][1]]], b, r);
+  }
+  { const { w, d } = plan(LV - 1), top = LV * H;
+    const V = [[CX-w,CZ-d],[CX+w,CZ-d],[CX+w,CZ+d],[CX-w,CZ+d]];
+    for (let i = 0; i < 4; i++)
+      push('draft', [[V[i][0],0,V[i][1]],[V[i][0],top,V[i][1]]], 0.216, 0.505); }
+
+  // PROCUREMENT — the packages are sourced. One line per package, arriving from off
+  // scene, each landing on its own point around the site.
+  const PKG = 6, TERM = [];
+  for (let i = 0; i < PKG; i++) {
+    const a = (i / PKG) * Math.PI * 2 + 0.4;
+    const fx = CX + Math.cos(a) * 155, fz = CZ + Math.sin(a) * 155;
+    const tx = CX + Math.cos(a) * 17,  tz = CZ + Math.sin(a) * 13;
+    TERM.push([tx, tz]);
+    const pts = [];
+    for (let j = 0; j <= 28; j++) {
+      const t = j / 28, e = t * t * (3 - 2 * t);
+      pts.push([fx + (tx - fx) * e, 0.4 + Math.sin(t * Math.PI) * 8, fz + (tz - fz) * e]);
+    }
+    push('stream', pts, 0.224 + i * 0.006, HANDOVER);
+  }
+  // COMMERCIAL — each package is closed out, and the separate deals become one
+  // perimeter: the contract that carries the job.
+  for (let i = 0; i < PKG; i++) {
+    const [tx, tz] = TERM[i];
+    push('plan', [[tx-1.5,0.4,tz],[tx+1.5,0.4,tz]], 0.264 + i * 0.006, 0, 0.6);
+    push('plan', [[tx,0.4,tz-1.5],[tx,0.4,tz+1.5]], 0.266 + i * 0.006, 0, 0.6);
+  }
+  for (let i = 0; i < PKG; i++)
+    push('set', [[TERM[i][0],0.4,TERM[i][1]], [TERM[(i+1)%PKG][0],0.4,TERM[(i+1)%PKG][1]]],
+         0.286 + i * 0.002, 0, 0.75);
+}
 
 for (let k = 0; k < LV; k++) {
   const b = tF(k), { w, d } = plan(k), y0 = k*H, y1 = (k+1)*H;
@@ -554,7 +635,7 @@ for (let k = 0; k < LV; k++) {
 
   if (k === 0) for (let i = 0; i < NX; i++) for (let j = 0; j < NZ; j++) {
     const p = at(0, i, j);
-    push('frame', [[p[0],-5.5,p[2]],[p[0],0,p[2]]], 0.13 + (i+j)*0.002, 0, 0.6);   // piles
+    push('frame', [[p[0],-5.5,p[2]],[p[0],0,p[2]]], 0.285 + (i+j)*0.002, 0, 0.6);   // piles
   }
 
   // CORE — lift/stair walls, drawn denser, with X-bracing every level.
@@ -621,17 +702,17 @@ for (let k = 0; k < LV; k++) {
 // rather than as the animation simply stopping.
 const MX = CX - 20, MZ = CZ + 4, MH = LV*H + 12;
 const Q = [[-1.3,-1.3],[1.3,-1.3],[1.3,1.3],[-1.3,1.3]];
-for (const [ox, oz] of Q) push('frame', [[MX+ox,0,MZ+oz],[MX+ox,MH,MZ+oz]], 0.09, HANDOVER + 0.04);
+for (const [ox, oz] of Q) push('frame', [[MX+ox,0,MZ+oz],[MX+ox,MH,MZ+oz]], 0.292, HANDOVER + 0.04);
 for (let y = 3; y < MH; y += 3.4)
   for (let i = 0; i < 4; i++)
     push('frame', [[MX+Q[i][0],y,MZ+Q[i][1]],[MX+Q[(i+1)%4][0],y,MZ+Q[(i+1)%4][1]]],
-         0.09 + (y/MH)*0.12, HANDOVER + 0.04 - (y/MH)*0.05);  // laces come off top-down
-push('plan', [[MX,MH,MZ],[MX+34,MH,MZ]], 0.13, HANDOVER);          // jib
-push('plan', [[MX,MH,MZ],[MX-11,MH,MZ]], 0.13, HANDOVER);          // counter-jib
-push('set',  [[MX,MH+5,MZ],[MX+34,MH,MZ]], 0.14, HANDOVER);        // pendants
-push('set',  [[MX,MH+5,MZ],[MX-11,MH,MZ]], 0.14, HANDOVER);
-push('frame',[[MX,MH,MZ],[MX,MH+5,MZ]], 0.14, HANDOVER + 0.01);    // A-frame
-push('tick', [[MX+21,MH,MZ],[MX+21,MH-13,MZ]], 0.15, HANDOVER - 0.02);  // hoist
+         0.292 + (y/MH)*0.10, HANDOVER + 0.04 - (y/MH)*0.05);  // laces come off top-down
+push('plan', [[MX,MH,MZ],[MX+34,MH,MZ]], 0.315, HANDOVER);         // jib
+push('plan', [[MX,MH,MZ],[MX-11,MH,MZ]], 0.315, HANDOVER);         // counter-jib
+push('set',  [[MX,MH+5,MZ],[MX+34,MH,MZ]], 0.322, HANDOVER);       // pendants
+push('set',  [[MX,MH+5,MZ],[MX-11,MH,MZ]], 0.322, HANDOVER);
+push('frame',[[MX,MH,MZ],[MX,MH+5,MZ]], 0.322, HANDOVER + 0.01);   // A-frame
+push('tick', [[MX+21,MH,MZ],[MX+21,MH-13,MZ]], 0.330, HANDOVER - 0.02);  // hoist
 
 // ── ENTRANCE CANOPY + PODIUM ACTIVITY: the building starts receiving people ──
 {
@@ -763,7 +844,7 @@ for (let i = 0; i < N_STREAM; i++) {
       pts.push([off + (lx-off)*s, 0, ZF + (lz-ZF)*s]); }
     else { const s = (t-0.45)/0.55; pts.push([lx, s*s*(LV*H), lz]); }
   }
-  push('stream', pts, 0.09 + i*0.018, OPERATE + 0.02);   // the site record ends at handover
+  push('stream', pts, 0.305 + i*0.014, OPERATE + 0.02);  // the site record ends at handover
 }
 // The record does NOT stop at handover — it changes character. Fewer, slower, steadier,
 // and they run to the last pixel of scroll.
@@ -877,7 +958,7 @@ const mat = new THREE.ShaderMaterial({
   uniforms: {
     uTime:{value:0}, uBuild:{value:0}, uFogNear:{value:80}, uFogFar:{value:420}, uNearCull:{value:1.5},
     uResolution:{value:new THREE.Vector2(1,1)}, uMaskStops:{value:new THREE.Vector2(0.80,0.99)},
-    uViewportH:{value:1}, uTanHalfFov:{value:Math.tan(19*Math.PI/180)}, uMinPx:{value:2.4},
+    uViewportH:{value:1}, uTanHalfFov:{value:Math.tan(19*Math.PI/180)}, uMinPx:{value:4.2},
   },
 });
 const mesh = new THREE.Mesh(mergeGeometries(geos, false), mat);
@@ -894,8 +975,8 @@ float hash(vec2 p){ return fract(sin(dot(p, vec2(12.9898,78.233)))*43758.5453123
 float sIO(float t){ return -0.5*(cos(3.14159265*t)-1.0); }
 void main(){
   vec4 c = texture2D(tDiffuse, vUv);
-  c.rgb += vec3(0.0180,0.0245,0.2100) * sIO(clamp(1.0-distance(vec2(0.68,0.54),vUv)*1.02,0.0,1.0)) * 0.60;
-  c.rgb += vec3(0.0320,0.0420,0.3400) * sIO(clamp(1.0-distance(vec2(0.68,0.54),vUv)*0.24,0.0,1.0)) * 0.42;
+  c.rgb += vec3(0.0180,0.0245,0.2100) * sIO(clamp(1.0-distance(vec2(0.68,0.54),vUv)*1.02,0.0,1.0)) * 0.32;
+  c.rgb += vec3(0.0320,0.0420,0.3400) * sIO(clamp(1.0-distance(vec2(0.68,0.54),vUv)*0.24,0.0,1.0)) * 0.22;
   c.rgb *= mix(1.0, 0.78, smoothstep(0.22,0.0,vUv.y)*0.88);
   c.rgb *= mix(1.0, smoothstep(0.95,0.26,length((vUv-0.5)*vec2(uAspect,1.0))), 0.55);
   float tq = floor(uTime*12.0)/12.0;
@@ -939,7 +1020,7 @@ cam.position.set(0, 11.0, 46);
 const composer = new EffectComposer(renderer);
 composer.addPass(new RenderPass(scene, cam));
 // Tighter and higher-threshold: the reference blooms only the hottest cores.
-const bloom = new UnrealBloomPass(new THREE.Vector2(innerWidth/2, innerHeight/2), 0.52, 0.26, 0.84);
+const bloom = new UnrealBloomPass(new THREE.Vector2(innerWidth/2, innerHeight/2), 0.58, 0.28, 0.80);
 composer.addPass(bloom);
 const comp = new ShaderPass(COMP); composer.addPass(comp);
 composer.addPass(new OutputPass());
@@ -963,10 +1044,12 @@ frame();
    still cannot drift. */
 const CAM = [
   [0.00,  0,  10,  44],   // on the lot
-  [0.14,  0,  13,  54],   // substructure, piles
-  [0.27,  0,  26,  76],   // frame rising
-  [0.39,  0,  40, 100],   // topped out — the whole building
-  [0.49,  1,  44, 106],   // finishing, holding
+  [0.06,  0,  34, 100],   // pull back — the permitted envelope, full height
+  [0.15,  0,  44, 122],   // the design, drawn top to bottom
+  [0.25,  1,  46, 124],   // holding while the packages arrive and close out
+  [0.32,  0,  28,  86],   // back in as the ground is broken
+  [0.42,  0,  34,  94],   // frame rising
+  [0.49,  1,  44, 106],   // topped out, finishing
   [0.55,  2,  46, 100],   // handover, crane gone
   [0.62,  4,  38,  56],   // push in — the windows start coming on
   [0.66,  5,  34,  42],   // closest on the façade, lights filling floor by floor
