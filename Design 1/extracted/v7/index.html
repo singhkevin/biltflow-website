@@ -76,6 +76,88 @@
   @media (max-height: 560px) and (orientation: landscape) {
     .copy { top: 42%; } .eyebrow { display: none; } .stage { bottom: 16px; }
   }
+
+  /* ── THE PAGE BELOW THE HERO ───────────────────────────────────────────────
+     The scene does not stop at the hero — it stays fixed behind the whole page,
+     holding the finished, occupied building, so scrolling on reads as staying in
+     the same shot rather than leaving it. Content sits on a translucent ground so
+     the drawing stays faintly present the whole way down to the footer. */
+  #story { position: relative; z-index: 3; background: rgba(5,7,10,0.88);
+           backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);
+           border-top: 1px solid rgba(185,196,216,0.14); }
+  .sec { max-width: 1180px; margin: 0 auto; padding: 132px 48px;
+         border-bottom: 1px solid rgba(185,196,216,0.09); }
+  #story .sec:last-child { border-bottom: 0; }
+  /* Same annotation leader as the hero eyebrow, so the page reads as one drawing. */
+  .kicker { display: flex; align-items: center; gap: 11px; margin: 0 0 34px;
+            font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 400;
+            letter-spacing: 0.13em; text-transform: uppercase; color: #B9C4D8; }
+  .kicker i { width: 1px; height: 10px; background: #B9C4D8; flex: none; }
+  .kicker u { width: 26px; height: 1px; background: #B9C4D8; flex: none;
+              text-decoration: none; margin-left: -5px; }
+  #story h2 { margin: 0 0 22px; font-weight: 200; font-stretch: 118%;
+              font-size: clamp(28px, 3.5vw, 52px); line-height: 1.08;
+              letter-spacing: -0.012em; color: #F7F9FA; }
+  #story h2 em { font-style: normal; color: #6B72FF; }
+  .intro { margin: 0 0 54px; max-width: 680px; font-weight: 300;
+           font-size: clamp(15px, 1.25vw, 18px); line-height: 1.62; color: #97A3BA; }
+  .grid { display: grid; gap: 1px; background: rgba(185,196,216,0.11);
+          border: 1px solid rgba(185,196,216,0.11); }
+  .grid > * { background: rgba(5,7,10,0.50); padding: 34px 30px; }
+  .g2 { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .g3 { grid-template-columns: repeat(3, minmax(0,1fr)); }
+  .g4 { grid-template-columns: repeat(4, minmax(0,1fr)); }
+  .card .lbl { display: block; margin: 0 0 14px; font-family: 'JetBrains Mono', monospace;
+               font-size: 10px; font-weight: 500; letter-spacing: 0.15em;
+               text-transform: uppercase; color: #6B72FF; }
+  .card h3 { margin: 0 0 10px; font-weight: 300; font-size: 19px; line-height: 1.25; color: #F7F9FA; }
+  .card p  { margin: 0; font-weight: 300; font-size: 14px; line-height: 1.62; color: #8C97AD; }
+  .card p + p { margin-top: 14px; }
+  .stat b { display: block; font-weight: 200; font-stretch: 118%; letter-spacing: -0.02em;
+            font-size: clamp(34px, 4vw, 58px); line-height: 1; color: #F7F9FA; }
+  .stat span { display: block; margin-top: 14px; font-weight: 300; font-size: 13px;
+               line-height: 1.55; color: #8C97AD; }
+  .band-lead { margin: 0 0 16px; font-weight: 200; font-stretch: 118%;
+               font-size: clamp(26px, 3vw, 44px); line-height: 1.14; color: #5D6880; }
+  .band-sub  { margin: 0; font-weight: 200; font-stretch: 118%;
+               font-size: clamp(26px, 3vw, 44px); line-height: 1.14; color: #F7F9FA; }
+  .quote { margin: 0 0 42px; padding-left: 22px; border-left: 1px solid #6B72FF;
+           font-weight: 200; font-size: clamp(16px, 1.5vw, 21px); line-height: 1.5; color: #F7F9FA; }
+  .quote cite { display: block; margin-top: 14px; font-style: normal;
+                font-family: 'JetBrains Mono', monospace; font-size: 10px;
+                letter-spacing: 0.15em; text-transform: uppercase; color: #8C97AD; }
+  .trace div { display: flex; gap: 22px; align-items: baseline; flex-wrap: wrap; padding: 20px 26px; }
+  .trace b { flex: none; min-width: 132px; font-family: 'JetBrains Mono', monospace;
+             font-size: 10px; font-weight: 500; letter-spacing: 0.15em;
+             text-transform: uppercase; color: #6B72FF; }
+  .trace span { font-weight: 300; font-size: 14px; line-height: 1.5; color: #B9C4D8; }
+  .cta { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 46px; }
+  .btn { display: inline-flex; align-items: center; padding: 14px 26px; border-radius: 2px;
+         font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.13em;
+         text-transform: uppercase; cursor: pointer; background: #6B72FF; color: #F7F9FA;
+         border: 1px solid #6B72FF; transition: background 200ms ease, color 200ms ease; }
+  .btn.ghost { background: transparent; color: #B9C4D8; border-color: rgba(185,196,216,0.30); }
+  .btn:hover { background: #F7F9FA; color: #05070A; border-color: #F7F9FA; }
+  #foot { position: relative; z-index: 3; background: #05070A; padding: 64px 48px;
+          border-top: 1px solid rgba(185,196,216,0.14); }
+  #foot .inner { max-width: 1180px; margin: 0 auto; display: flex; justify-content: space-between;
+                 align-items: baseline; gap: 28px; flex-wrap: wrap; }
+  #foot nav { display: flex; gap: 26px; flex-wrap: wrap; }
+  #foot a { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.13em;
+            text-transform: uppercase; color: #8C97AD; text-decoration: none; }
+  #foot a:hover { color: #F7F9FA; }
+  #foot p { margin: 0; font-family: 'JetBrains Mono', monospace; font-size: 11px;
+            letter-spacing: 0.10em; color: #5D6880; }
+  /* The hero readout is fixed, so it has to stand down once the page moves on. */
+  .copy, .stage { transition: opacity 460ms ease; }
+  body.past-hero .copy, body.past-hero .stage { opacity: 0; pointer-events: none; }
+  @media (max-width: 980px) { .g3, .g4 { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+  @media (max-width: 767px) {
+    .sec { padding: 88px 20px; }
+    .g2, .g3, .g4 { grid-template-columns: minmax(0,1fr); }
+    .trace b { min-width: 0; }
+    #foot { padding: 44px 20px; }
+  }
 </style>
 
 <div id="scroll"></div>
@@ -94,6 +176,130 @@
   <div class="beat"><span class="lead">Every stage.<br>One <em>system.</em></span></div>
 </div>
 <div class="stage"><b id="stageNo">01</b> / 09<u><i id="stageBar"></i></u></div>
+
+<main id="story">
+  <section class="sec">
+    <p class="kicker"><i></i><u></u>Until now</p>
+    <p class="band-lead">More software. More data. Less clarity.</p>
+    <p class="band-sub">One system. All projects. All data. All connected.</p>
+  </section>
+
+  <section class="sec">
+    <div class="grid g4">
+      <div class="stat"><b>$5B+</b><span>Of delivered high-density residential project data behind the model</span></div>
+      <div class="stat"><b>13</b><span>Lifecycle stages, from site sourcing to learning, in one system</span></div>
+      <div class="stat"><b>20+</b><span>Construction-trained AI agents, orchestrated by EVE</span></div>
+      <div class="stat"><b>3</b><span>States &mdash; NSW, QLD and VIC &mdash; Australia&rsquo;s largest apartment markets</span></div>
+    </div>
+  </section>
+
+  <section class="sec" id="who">
+    <p class="kicker"><i></i><u></u>Pathways</p>
+    <h2>One system. Six ways in.</h2>
+    <p class="intro">Nobody buys construction software alone. Each pathway shows the same platform through your lens.</p>
+    <div class="grid g3">
+      <div class="card"><span class="lbl">For executives</span><h3>Control across the portfolio</h3><p>Benchmarking, forecasting and enterprise controls from live data.</p></div>
+      <div class="card"><span class="lbl">For construction</span><h3>Delivery you can standardise</h3><p>Programme, cost, RFIs and site data, consistent on every project.</p></div>
+      <div class="card"><span class="lbl">For commercial</span><h3>Cost certainty, end to end</h3><p>Procurement, contracts and claims tied to the estimate they came from.</p></div>
+      <div class="card"><span class="lbl">For development</span><h3>Feasibility to handover, connected</h3><p>Approvals, consultants and design flowing straight into delivery.</p></div>
+      <div class="card"><span class="lbl">For site teams</span><h3>Less admin. Faster answers.</h3><p>ITPs, inspections and defects in the field, paperwork chased for you.</p></div>
+      <div class="card"><span class="lbl">For digital &amp; IT</span><h3>Architecture your EA will sign</h3><p>Open APIs, SSO, data governance and a true system of record.</p></div>
+    </div>
+  </section>
+
+  <section class="sec" id="eve">
+    <p class="kicker"><i></i><u></u>Meet EVE &middot; AI orchestration layer</p>
+    <h2>Intelligence that <em>acts.</em><br>Not another place to look.</h2>
+    <div class="grid g3">
+      <div class="card"><span class="lbl">Connects</span><p>Every drawing, cost, contract and site record you already have.</p></div>
+      <div class="card"><span class="lbl">Directs</span><p>A workforce of 20+ specialist agents &mdash; one coordinated team, not scattered tools.</p></div>
+      <div class="card"><span class="lbl">Acts</span><p>Only inside the workflows you approve. You stay in control &mdash; always.</p></div>
+    </div>
+  </section>
+
+  <section class="sec" id="platform">
+    <p class="kicker"><i></i><u></u>The platform</p>
+    <h2>Construction-native. Transparent. Built to act.</h2>
+    <div class="grid g3">
+      <div class="card">
+        <span class="lbl">Construction-native</span>
+        <h3>Intelligence built from real buildings, not theory.</h3>
+        <p>EVE reads drawings, costs, contracts, programmes, site diaries and compliance records across every system you run &mdash; and understands how they relate. That understanding came from more than $5 billion of delivered high-density residential work.</p>
+        <p>Benchmarked against real cost plans, programmes and defects from completed towers. A clash in S-101 is connected to the RFI, the variation and the slab it will delay.</p>
+      </div>
+      <div class="card">
+        <span class="lbl">Trust and transparency</span>
+        <h3>Deploy AI you stay in control of.</h3>
+        <p>Every agent works inside the permissions your organisation already has. Every answer traces back to the source file.</p>
+        <p>Human sign-off on every write action. Drawing references, programme lines and cost codes are cited inline and open the real record. Agents see exactly what the person asking can see.</p>
+      </div>
+      <div class="card">
+        <span class="lbl">Built-in agents</span>
+        <h3>Agents that act inside the systems you already run.</h3>
+        <p>No new logins, no re-keying. EVE orchestrates the workforce; connectors carry the work into Procore, Aconex, Jobpac, Xero and the rest.</p>
+        <p>A storm stops a pour; EVE logs the lost hours, tests the critical path, drafts the notice &mdash; then asks you. Autonomy is a setting per workflow.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="assets">
+    <p class="kicker"><i></i><u></u>Asset classes</p>
+    <h2>Built for the buildings that are hardest to deliver.</h2>
+    <div class="grid g2">
+      <div class="card"><span class="lbl">High-density residential</span><p>Class 2 towers, structures, fa&ccedil;ades and services at scale &mdash; hundreds of subcontract packages and staged commissioning in one live record.</p></div>
+      <div class="card"><span class="lbl">Build-to-rent</span><p>One continuous record from feasibility into decades of operation &mdash; because the owner keeps the asset, and every design decision becomes an operating cost.</p></div>
+      <div class="card"><span class="lbl">Hotels &amp; serviced apartments</span><p>Brand standards, operator requirements, FF&amp;E and a fixed opening date &mdash; several fit-out specifications and compliance classes coordinated inside one tower.</p></div>
+      <div class="card"><span class="lbl">Mixed-use</span><p>Retail, residential and commercial stakeholders sharing one programme, one procurement pipeline and one handover.</p></div>
+    </div>
+  </section>
+
+  <section class="sec" id="knows">
+    <p class="kicker"><i></i><u></u>Connecting what happened to why</p>
+    <h2>The next project already knows.</h2>
+    <p class="intro">A defect on Level 08 is never just a defect. Sophia traces it back through installation, subcontractor, product, supplier and procurement to the design decision that started it &mdash; then carries the lesson forward into the next feasibility, estimate and supplier call.</p>
+    <blockquote class="quote">&ldquo;I&rsquo;ve traced it back to the original design, product and installation. The next project already knows.&rdquo;<cite>Sophia &middot; Defects &amp; DLP agent</cite></blockquote>
+    <div class="grid trace">
+      <div><b>Defect</b><span>Waterproofing failure &middot; Level 08, Apt 8.04</span></div>
+      <div><b>Installation</b><span>Membrane lapped against the fall &middot; 14 Mar 2025</span></div>
+      <div><b>Subcontractor</b><span>Package WP-02 &middot; third repeat of the same pattern</span></div>
+      <div><b>Product</b><span>Sheet membrane substituted for liquid-applied</span></div>
+      <div><b>Flows forward</b><span>Project 02 &middot; Feasibility &mdash; Detail D-317 flagged at design review. Liquid-applied membrane specified. Supplier substitution blocked.</span></div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <p class="kicker"><i></i><u></u>Built for people who build</p>
+    <h2>This isn&rsquo;t about replacing construction expertise. It&rsquo;s about amplifying it.</h2>
+    <p class="intro">Your people get the intelligence, automation and digital workforce to do more &mdash; while everything your organisation learns along the way stays with the organisation.</p>
+    <div class="grid g4">
+      <div class="stat"><b>13</b><span>Lifecycle stages, one record</span></div>
+      <div class="stat"><b>20+</b><span>Specialist agents, one workforce</span></div>
+      <div class="stat"><b>90+</b><span>Systems it can connect to</span></div>
+      <div class="stat"><b>1</b><span>Operating system for construction</span></div>
+    </div>
+  </section>
+
+  <section class="sec" id="close">
+    <p class="kicker"><i></i><u></u>biltflow.com</p>
+    <h2>The AI-native operating system for <em>high-density residential development + construction</em></h2>
+    <p class="band-sub">Build. Learn. Improve. Repeat.</p>
+    <div class="cta">
+      <button type="button" class="btn">Book a walkthrough</button>
+      <button type="button" class="btn ghost">Watch the film</button>
+    </div>
+  </section>
+</main>
+
+<footer id="foot">
+  <div class="inner">
+    <nav>
+      <a href="#platform">Platform</a><a href="#who">Who it&rsquo;s for</a><a href="#eve">EVE</a>
+      <a href="#assets">Asset classes</a><a href="#knows">Security</a><a href="#close">Company</a>
+    </nav>
+    <p>&copy; 2026 Hunt Global Pte Ltd &middot; Sydney &middot; Powered by EVE</p>
+  </div>
+</footer>
+
 
 <script type="importmap">
 { "imports": {
@@ -678,8 +884,9 @@ const BEATS = [0.00, 0.08, 0.12, 0.18, 0.23, 0.29, 0.34, 0.50, 0.83];
 const beatEls = Array.from(document.querySelectorAll('.beat'));
 const noEl = document.getElementById('stageNo'), barEl = document.getElementById('stageBar');
 const eyeEl = document.getElementById('eyebrow');
-let shown = 0, t = 0, last = performance.now(), build = 0, docH = 1;
-const measure = () => { docH = Math.max(1, document.documentElement.scrollHeight - innerHeight); };
+let shown = 0, t = 0, last = performance.now(), build = 0, docH = 1, pastHero = false;
+const heroEl = document.getElementById('scroll');
+const measure = () => { docH = Math.max(1, heroEl.offsetHeight - innerHeight); };
 measure();
 
 function tick(now){
@@ -710,6 +917,8 @@ function paintBeat() {
     eyeEl.classList.toggle('is-on', i < 2);
   }
   barEl.style.width = (build*132).toFixed(1) + 'px';
+  const past = scrollY >= docH - 8;
+  if (past !== pastHero) { document.body.classList.toggle('past-hero', past); pastHero = past; }
 }
 
 let rt = 0;
