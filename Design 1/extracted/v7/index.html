@@ -138,6 +138,8 @@
          border: 1px solid #6B72FF; transition: background 200ms ease, color 200ms ease; }
   .btn.ghost { background: transparent; color: #B9C4D8; border-color: rgba(185,196,216,0.30); }
   .btn:hover { background: #F7F9FA; color: #05070A; border-color: #F7F9FA; }
+  /* No background and no copy — the closing orbit plays on an open frame. */
+  #outro { position: relative; z-index: 3; height: 400vh; }
   #foot { position: relative; z-index: 3; background: rgba(5,7,10,0.62); padding: 64px 48px;
           border-top: 1px solid rgba(185,196,216,0.14); }
   #foot .inner { max-width: 1180px; margin: 0 auto; display: flex; justify-content: space-between;
@@ -290,6 +292,8 @@
   </section>
 </main>
 
+<div id="outro" aria-hidden="true"></div>
+
 <footer id="foot">
   <div class="inner">
     <nav>
@@ -347,9 +351,11 @@ function refuseReason() {
 // Eight beats across the page, aligned to what the SCENE is doing at that moment:
 // CONSTRUCTION lands as the tower tops out, ASSET CARE as the crane leaves and the
 // floors light up. Text and geometry tell the same story or neither reads.
-const BEATS = [0.00, 0.08, 0.12, 0.18, 0.24, 0.30, 0.36, 0.50, 0.58];
+const BEATS = [0.00, 0.07, 0.11, 0.16, 0.21, 0.27, 0.32, 0.45, 0.52];
 // The hero's share of the build front; the page below carries the rest.
-const SPLIT = 0.62;
+const SPLIT = 0.55;
+// Where the geometry is finished and the closing orbit takes the rest of the scroll.
+const ORBIT0 = 0.86;
 
 const refused = refuseReason();
 if (refused) {
@@ -401,11 +407,11 @@ const C = {
   road:   { hex:'#0E2E63', hot:'#1552B2', ramp:0.6,  a:0.48, r:0.055, heat:0 },    // carriageways
   tick:   { hex:'#1A43C4', hot:'#2C6CB3', ramp:0.4,  a:0.56, r:0.024, heat:0 },    // temporary works
   plan:   { hex:'#2C6CB3', hot:'#55FCFD', ramp:0.7,  a:0.94, r:0.038, heat:0.25 }, // footprint
-  stream: { hex:'#1552B2', hot:'#55FCFD', ramp:1.0,  a:0.78, r:0.150, heat:1.15 }, // the live record
+  stream: { hex:'#1552B2', hot:'#55FCFD', ramp:1.0,  a:0.78, r:0.085, heat:0.95 }, // the live record
   // warm — delivery, occupation, the building in use
   lit:    { hex:'#C25134', hot:'#FBD949', ramp:0.85, a:0.98, r:0.055, heat:1.25 }, // occupied
-  slow:   { hex:'#B5233D', hot:'#F0AC47', ramp:1.0,  a:0.66, r:0.140, heat:0.75 }, // operating record
-  car:    { hex:'#CE7538', hot:'#FBD949', ramp:1.0,  a:0.88, r:0.160, heat:1.20 }, // traffic
+  slow:   { hex:'#B5233D', hot:'#F0AC47', ramp:1.0,  a:0.66, r:0.080, heat:0.62 }, // operating record
+  car:    { hex:'#CE7538', hot:'#FBD949', ramp:1.0,  a:0.88, r:0.100, heat:1.00 }, // traffic
 };
 
 /* ── site + structure, all on a ground plane at y=0 ────────────────────────
@@ -421,7 +427,10 @@ const items = [];
 // Schedule remap. Knots are (as authored) -> (where it should land); linear between,
 // extrapolating along the last segment so retire points past the end still resolve.
 const WARP = [[0,0], [0.20,0.20], [0.50,0.42], [0.63,0.52], [0.785,0.63],
-              [0.80,0.657], [0.90,0.84], [0.94,0.92], [1.01,1.05]];
+              [0.80,0.657],    // handover — pinned to the end of the hero
+              [0.875,0.790],   // the lights are on
+              [0.925,0.860],   // the street and the district have filled in
+              [1.01,0.955]];   // the cleaners finish; the orbit takes over
 function warp(v) {
   if (v <= 0) return 0;
   let i = 0; while (i < WARP.length - 2 && v > WARP[i+1][0]) i++;
@@ -433,7 +442,9 @@ const push = (cls, pts, build = 0, retire = 0, late = 0) =>
 const GX = 34, ZN = 14, ZF = -210;
 // Phase markers, hoisted: the site hoarding below reads HANDOVER before the building
 // section is reached, and a const declared down there is in its temporal dead zone.
-const HANDOVER = 0.80, MAINT0 = 0.860, OPERATE = 0.84;
+const HANDOVER = 0.80, MAINT0 = 0.925, OPERATE = 0.84;
+// The far skyline leaves before the world starts turning — see the orbit note below.
+const SKYLINE_OUT = 1.00;
 
 // Ground datum — the floor that makes this a place rather than a void.
 for (let z = ZN; z > ZF; z -= 9) push('grid', [[-GX,0,z],[GX,0,z]]);
@@ -453,12 +464,12 @@ for (let x = -GX; x <= GX; x += 9) push('grid', [[x,0,ZN],[x,0,ZF]]);
   for (const [cx, cz, cw, ch] of CITY) {
     const q = [[-cw/2,-cw/2],[cw/2,-cw/2],[cw/2,cw/2],[-cw/2,cw/2]];
     for (let i = 0; i < 4; i++) {                                   // corner edges
-      push('city', [[cx+q[i][0],0,cz+q[i][1]],[cx+q[i][0],ch,cz+q[i][1]]], 0);
-      push('city', [[cx+q[i][0],ch,cz+q[i][1]],[cx+q[(i+1)%4][0],ch,cz+q[(i+1)%4][1]]], 0);
+      push('city', [[cx+q[i][0],0,cz+q[i][1]],[cx+q[i][0],ch,cz+q[i][1]]], 0, SKYLINE_OUT);
+      push('city', [[cx+q[i][0],ch,cz+q[i][1]],[cx+q[(i+1)%4][0],ch,cz+q[(i+1)%4][1]]], 0, SKYLINE_OUT);
     }
     for (let f = 1; f < 5; f++) {                                   // a few floor bands
       const y = ch * (f / 5);
-      push('city', [[cx-cw/2,y,cz+cw/2],[cx+cw/2,y,cz+cw/2]], 0);
+      push('city', [[cx-cw/2,y,cz+cw/2],[cx+cw/2,y,cz+cw/2]], 0, SKYLINE_OUT);
     }
   }
 }
@@ -524,7 +535,7 @@ const tFin = k => 0.50 + (k / LV) * 0.13;               // finishing    50% -> 6
 // Occupancy arrives UNEVENLY — a building fills up floor by floor in no particular
 // order, and a clean sweep up the tower is the one thing that reads as a progress bar.
 const hashK = k => Math.abs(Math.sin(k * 12.9898) * 43758.5453) % 1;
-const tL   = k => 0.635 + hashK(k) * 0.15;              // moving in    63% -> 78%
+const tL   = k => 0.805 + hashK(k) * 0.055;             // lights on    after handover
 
 for (let k = 0; k < LV; k++) {
   const b = tF(k), { w, d } = plan(k), y0 = k*H, y1 = (k+1)*H;
@@ -586,10 +597,10 @@ for (let k = 0; k < LV; k++) {
       if (a < 0.70) {
         // Lit on move-in. Some go dark years later — a home changing hands — and come
         // back on later still. The building stands; the life inside it turns over.
-        push('lit', [p, q], tL(k) + h*0.075, c < 0.45 ? 0.885 + c*0.05 : 0);
-        if (c < 0.45) push('lit', [p, q], 0.955 + c*0.055);
+        push('lit', [p, q], tL(k) + h*0.030, c < 0.45 ? 0.900 + c*0.03 : 0);
+        if (c < 0.45) push('lit', [p, q], 0.930 + c*0.030);
       } else {
-        push('lit', [p, q], 0.905 + (a - 0.70)*0.18);   // and it keeps filling up
+        push('lit', [p, q], 0.865 + (a - 0.70)*0.12);   // and it keeps filling up
       }
     });
   }
@@ -660,7 +671,7 @@ push('tick', [[MX+21,MH,MZ],[MX+21,MH-13,MZ]], 0.15, HANDOVER - 0.02);  // hoist
   const N = 18, span = roof - base;
   for (let i = 0; i < N; i++) {
     const y = roof - span * (i / (N - 1));
-    const b = MAINT0 + i * 0.0044, r = b + 0.010;     // first pass: lands at 0.935
+    const b = MAINT0 + i * 0.0026, r = b + 0.007;     // first pass: lands at 0.969
     push('lit',  [[bx-1.4, y, bz], [bx+1.4, y, bz]], b, r);            // cradle platform
     push('tick', [[bx-1.4, y, bz], [bx-1.4, y+0.8, bz]], b, r);        // end frames
     push('tick', [[bx+1.4, y, bz], [bx+1.4, y+0.8, bz]], b, r);
@@ -668,7 +679,7 @@ push('tick', [[MX+21,MH,MZ],[MX+21,MH-13,MZ]], 0.15, HANDOVER - 0.02);  // hoist
     push('tick', [[bx+1.0, y+0.8, bz], [bx+1.0, Math.min(roof+2.4, y+11), bz]], b, r);
   }
   // rope access — three drops working a façade band, also in sequence
-  [[-6.0, 0.852], [0.6, 0.872], [7.4, 0.892]].forEach(([ox, b]) => {
+  [[-6.0, 0.930], [0.6, 0.941], [7.4, 0.952]].forEach(([ox, b]) => {
     const y = roof - span * 0.45;
     push('tick', [[CX+ox-0.5, y, bz], [CX+ox-0.5, roof, bz]], b, b + 0.030);
     push('tick', [[CX+ox+0.5, y, bz], [CX+ox+0.5, roof, bz]], b, b + 0.030);
@@ -684,7 +695,7 @@ push('tick', [[MX+21,MH,MZ],[MX+21,MH-13,MZ]], 0.15, HANDOVER - 0.02);  // hoist
   push('plan', [[b2x, roof+0.4, bz-2.2], [b2x, roof+2.6, bz-2.2]], 0.932);
   for (let i = 0; i < N; i++) {
     const y = 52 - (52 - 20) * (i / (N - 1));
-    const b = 0.940 + i * 0.0035, r = b + 0.009;
+    const b = 0.955 + i * 0.0024, r = b + 0.006;
     push('lit',  [[b2x-1.4, y, bz], [b2x+1.4, y, bz]], b, r);
     push('tick', [[b2x-1.4, y, bz], [b2x-1.4, y+0.8, bz]], b, r);
     push('tick', [[b2x+1.4, y, bz], [b2x+1.4, y+0.8, bz]], b, r);
@@ -700,7 +711,7 @@ push('tick', [[MX+21,MH,MZ],[MX+21,MH-13,MZ]], 0.15, HANDOVER - 0.02);  // hoist
    compressed into a few percent of scroll: a mast arrives, the frame climbs, the mast
    leaves, the lights come on. Placed and timed against the camera arc so both tops sit
    mid-frame while the camera is still wide. ── */
-for (const [nx, nz, nw, nd, nL, t0] of [[-30, -120, 15, 11, 18, 0.846], [20, -138, 17, 12, 22, 0.862]]) {
+for (const [nx, nz, nw, nd, nL, t0] of [[-30, -120, 15, 11, 18, 0.868], [20, -138, 17, 12, 22, 0.880]]) {
   const nh = 3.2, span = 0.042, done = t0 + span;
   const q = [[-nw/2,-nd/2],[nw/2,-nd/2],[nw/2,nd/2],[-nw/2,nd/2]];
   for (let k = 1; k <= nL; k++) {
@@ -906,7 +917,20 @@ renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.setClearColor('#030626', 1);
 host.appendChild(renderer.domElement);
 
-const scene = new THREE.Scene(); scene.add(mesh);
+/* THE ORBIT. The camera must not rotate — the vanishing point is SET by setViewOffset
+   rather than solved, so it only stays put under translation. Turning the WORLD about
+   the tower's own axis gives the drone move and leaves that guarantee intact, still in
+   one draw call with no geometry added. */
+const pivot = new THREE.Group();
+pivot.position.set(CX, 0, CZ);        // pivot on the tower's axis, not the origin
+mesh.position.set(-CX, 0, -CZ);
+pivot.add(mesh);
+const scene = new THREE.Scene(); scene.add(pivot);
+function orbitAt(b) {
+  if (b <= ORBIT0) return 0;
+  const u = Math.min(1, (b - ORBIT0) / (1 - ORBIT0));
+  return u * u * (3 - 2 * u) * Math.PI * 2;   // eased into and out of a full turn
+}
 // Zero rotation + principal-point offset, exactly as /v6 — verticals stay plumb and
 // the vanishing point cannot drift. Eye is above the ground plane looking level.
 const cam = new THREE.PerspectiveCamera(38, innerWidth/innerHeight, 0.5, 900);
@@ -914,7 +938,8 @@ cam.position.set(0, 11.0, 46);
 
 const composer = new EffectComposer(renderer);
 composer.addPass(new RenderPass(scene, cam));
-const bloom = new UnrealBloomPass(new THREE.Vector2(innerWidth/2, innerHeight/2), 0.55, 0.32, 0.78);
+// Tighter and higher-threshold: the reference blooms only the hottest cores.
+const bloom = new UnrealBloomPass(new THREE.Vector2(innerWidth/2, innerHeight/2), 0.52, 0.26, 0.84);
 composer.addPass(bloom);
 const comp = new ShaderPass(COMP); composer.addPass(comp);
 composer.addPass(new OutputPass());
@@ -942,10 +967,14 @@ const CAM = [
   [0.27,  0,  26,  76],   // frame rising
   [0.39,  0,  40, 100],   // topped out — the whole building
   [0.49,  1,  44, 106],   // finishing, holding
-  [0.64,  2,  46, 102],   // handover, crane gone
-  [0.74,  5,  58,  60],   // push in toward the working façade
-  [0.85,  6,  50,  44],   // starting down with the cradle
-  [1.00,  5,  40,  22],   // the building, lit and in use, still being kept
+  [0.55,  2,  46, 100],   // handover, crane gone
+  [0.62,  4,  38,  56],   // push in — the windows start coming on
+  [0.66,  5,  34,  42],   // closest on the façade, lights filling floor by floor
+  [0.73,  3,  15,  54],   // DROP to the street: podium, arrivals, traffic
+  [0.79,  3,  12,  46],   // holding low — the development at the bottom
+  [0.84,  6,  46,  46],   // back up the façade with the cleaners
+  [0.88,  2,  44,  82],   // pull back for the orbit
+  [1.00,  2,  46,  88],   // holding while the world turns a full circle
 ];
 function camAt(b) {
   let i = 0; while (i < CAM.length - 2 && b > CAM[i + 1][0]) i++;
@@ -966,14 +995,23 @@ const heroEl = document.getElementById('scroll');
    and both window-cleaning runs. Anchoring the split to the hero boundary rather than
    driving off total document height keeps handover landing exactly as the hero ends at
    every viewport, however tall the content reflows on a narrow screen. */
+const storyEl = document.getElementById('story'), outroEl = document.getElementById('outro');
+let bodyH = 1, outroH = 1;
 const measure = () => {
-  heroH = Math.max(1, heroEl.offsetHeight - innerHeight);
-  tailH = Math.max(1, document.documentElement.scrollHeight - innerHeight - heroH);
+  heroH  = Math.max(1, heroEl.offsetHeight - innerHeight);
+  bodyH  = Math.max(1, storyEl.offsetHeight);
+  outroH = Math.max(1, outroEl.offsetHeight);
+  tailH  = bodyH + outroH;
 };
+/* Three pinned segments. The hero carries construction to handover; the content carries
+   the building coming into use, the street filling in and the cleaners; the outro is the
+   orbit alone. Pinning each boundary means an act lands where it was designed to land
+   whatever the content reflows to on a narrow screen. */
 const progress = () => {
   const y = scrollY;
-  return y <= heroH ? (y / heroH) * SPLIT
-                    : SPLIT + Math.min(1, (y - heroH) / tailH) * (1 - SPLIT);
+  if (y <= heroH) return (y / heroH) * SPLIT;
+  if (y <= heroH + bodyH) return SPLIT + ((y - heroH) / bodyH) * (ORBIT0 - SPLIT);
+  return ORBIT0 + Math.min(1, (y - heroH - bodyH) / outroH) * (1 - ORBIT0);
 };
 measure();
 
@@ -987,6 +1025,7 @@ function tick(now){
   comp.uniforms.uTime.value = t;
   const cp = camAt(build);
   cam.position.set(cp[0], cp[1], cp[2]);
+  pivot.rotation.y = orbitAt(build);
   paintBeat();
   composer.render();
 }
