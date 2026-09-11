@@ -1,0 +1,319 @@
+<!-- /v7 — HERO BEAT CONCEPT: "The Record", beat 1 of 7 ("Site").
+     Standalone on purpose: no artboard runtime, no hydration race, no dark-theme
+     selector layer. This exists to judge ART STYLE, not to be a page.
+     Palette, shader grammar and post chain are identical to /v6 so the two are
+     directly comparable. -->
+<title>Biltflow — hero beat concept</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@200;300;500&family=JetBrains+Mono:wght@400;500&display=swap');
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #05070A; }
+  body { font-family: Archivo, system-ui, sans-serif; }
+  /* 4 viewports of scroll drives the build front; the beat is legible in the first one. */
+  #scroll { height: 400vh; }
+  #gl { position: fixed; inset: 0; z-index: 0; }
+  #gl canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block;
+               opacity: 0; transition: opacity 700ms ease-out; }
+  .scrim { position: fixed; inset: 0; z-index: 1; pointer-events: none;
+           background: linear-gradient(180deg, rgba(5,7,10,0) 40%, rgba(5,7,10,0.45) 64%, rgba(5,7,10,0.82) 82%); }
+  .copy { position: fixed; left: 0; right: 0; bottom: 104px; z-index: 2; padding: 0 48px; }
+  .eyebrow { display: flex; align-items: center; gap: 12px; font-family: 'JetBrains Mono', monospace;
+             font-size: 11px; font-weight: 500; letter-spacing: 0.24em; text-transform: uppercase; color: #9AA0FF; }
+  .eyebrow i { width: 10px; height: 10px; border-radius: 2px; background: #2E38FF; flex: none; }
+  h1 { font-weight: 200; font-stretch: 118%; font-size: clamp(40px, 5vw, 84px); line-height: 1.04;
+       letter-spacing: -0.015em; color: #F7F9FA; margin: 26px 0 0; max-width: 15ch; text-wrap: balance; }
+  h1 span { color: #6B72FF; }
+  /* Beat readout — this is the STAGE label, never a metric. */
+  .stage { position: fixed; right: 48px; bottom: 104px; z-index: 2; text-align: right;
+           font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.18em;
+           text-transform: uppercase; color: #9AA0FF; line-height: 2; }
+  .stage b { color: #F7F9FA; font-weight: 500; }
+  .stage u { display: block; width: 132px; height: 1px; background: rgba(154,160,255,0.25);
+             margin: 10px 0 0 auto; text-decoration: none; position: relative; }
+  .stage u i { position: absolute; left: 0; top: 0; height: 1px; background: #6B72FF; width: 0; }
+  @media (max-width: 767px) {
+    .copy { padding: 0 20px; bottom: 84px; } .stage { right: 20px; bottom: 84px; }
+  }
+</style>
+
+<div id="scroll"></div>
+<div id="gl" aria-hidden="true"></div>
+<div class="scrim" aria-hidden="true"></div>
+<div class="copy">
+  <div class="eyebrow"><i></i>AI-native construction operating system</div>
+  <h1>The tools changed. The way construction operates didn't. <span>Until now.</span></h1>
+</div>
+<div class="stage">Stage <b id="stageNo">01</b> / 13<br><span id="stageName">Site sourcing</span><u><i id="stageBar"></i></u></div>
+
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.186.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.186.0/examples/jsm/" } }
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
+
+/* ═══ THE BEAT ══════════════════════════════════════════════════════════════
+   Scroll 0 -> 1 is the SITE beat: an empty lot on a ground datum, the setting-out
+   lines, the core footprint drawing itself, then the first structure standing up.
+   Everything is revealed by a single build front (uBuild) compared against a
+   per-vertex aBuild — no geometry is added or removed, so the whole story costs
+   one attribute and one uniform. That is the mechanism the full 7-beat concept
+   would use end to end. */
+
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const lowPower = matchMedia('(pointer: coarse)').matches || (navigator.hardwareConcurrency||8) <= 4;
+
+/* ── palette — identical to /v6, nothing invented ── */
+const C = {
+  stream: { hex:'#2E38FF', a:1.00, r:0.020, heat:1.7 },   // the live layer
+  tick:   { hex:'#F7F9FA', a:0.62, r:0.013, heat:0 },     // white drafting
+  set:    { hex:'#9AA0FF', a:0.52, r:0.016, heat:0 },     // setting-out
+  plan:   { hex:'#F7F9FA', a:0.55, r:0.016, heat:0 },     // footprint
+  frame:  { hex:'#434CAA', a:0.34, r:0.014, heat:0 },     // structure
+  grid:   { hex:'#5A63A8', a:0.52, r:0.018, heat:0 },    // ground datum
+};
+
+/* ── site geometry, all on a ground plane at y=0 ── */
+const items = [];
+const push = (cls, pts, build = 0) => items.push({ cls, pts, build });
+const GX = 30, ZN = 12, ZF = -190;
+
+// Ground datum. A receding grid is what gives the void a FLOOR — /v6 has none,
+// and that absence is why it reads as abstract rather than as a place.
+for (let z = ZN; z > ZF; z -= 9) push('grid', [[-GX,0,z],[GX,0,z]]);
+for (let x = -GX; x <= GX; x += 9) push('grid', [[x,0,ZN],[x,0,ZF]]);
+
+// Site boundary — the lot.
+const B = [[-17,-26],[17,-26],[17,-96],[-17,-96]];
+for (let i = 0; i < 4; i++) {
+  const a = B[i], b = B[(i+1)%4];
+  push('tick', [[a[0],0,a[1]],[b[0],0,b[1]]], 0.02);
+}
+// Setting-out lines + station ticks across the lot.
+push('set', [[-GX,0,-61],[GX,0,-61]], 0.06);
+push('set', [[0,0,ZN],[0,0,ZF]], 0.06);
+for (let z = -30; z >= -94; z -= 8) push('tick', [[-1.6,0,z],[1.6,0,z]], 0.08);
+
+// The L-plan core footprint, drawn at ground level.
+const P = [[-5,-5],[5,-5],[5,1],[1.8,1],[1.8,5],[-5,5]].map(([u,v]) => [u*1.35, 0, -61 + v*1.35]);
+for (let i = 0; i < P.length; i++) push('plan', [P[i], P[(i+1)%P.length]], 0.16 + i*0.012);
+
+// Structure: core edges rise, then level rings stack. This is the build.
+const LV = 12, GAP = 2.9;
+for (const p of P) push('frame', [[p[0],0,p[2]],[p[0], LV*GAP, p[2]]], 0.30);
+for (let k = 1; k <= LV; k++) {
+  const t = 0.34 + (k/LV) * 0.62;
+  const ring = P.map(p => [p[0], k*GAP, p[2]]);
+  for (let i = 0; i < ring.length; i++) push('frame', [ring[i], ring[(i+1)%ring.length]], t);
+  if (k % 3 === 0) for (const p of P) push('tick', [[p[0]*1.3, k*GAP, p[2]], [p[0], k*GAP, p[2]]], t + 0.01);
+}
+
+// Streams: arrive along the ground from the far distance, then climb the core.
+const N_STREAM = lowPower ? 5 : 9;
+for (let i = 0; i < N_STREAM; i++) {
+  const lane = P[i % P.length], off = (i/N_STREAM - 0.5) * 22, pts = [];
+  for (let j = 0; j <= 46; j++) {
+    const t = j / 46;
+    if (t < 0.5) {                       // travel in across the ground to the core
+      const s = t / 0.5, e = s*s*(3-2*s);
+      pts.push([off + (lane[0]-off)*e, 0, ZF + (lane[2]-ZF)*e]);
+    } else {                             // then climb it
+      const s = (t - 0.5) / 0.5;
+      pts.push([lane[0], s*s * LV*GAP, lane[2]]);
+    }
+  }
+  push('stream', pts, 0.10 + i * 0.02);
+}
+
+/* ── curve + build ── */
+class Poly extends THREE.Curve {
+  constructor(p){ super(); this.p = p.map(q => new THREE.Vector3(q[0],q[1],q[2])); this.arcLengthDivisions = Math.max(200, p.length*4); }
+  getPoint(t, o = new THREE.Vector3()){
+    const n = this.p.length-1, i = Math.min(n-1, Math.floor(t*n));
+    return o.copy(this.p[i]).lerp(this.p[i+1], (t - i/n) * n);
+  }
+}
+
+const VERT = `
+uniform float uViewportH, uTanHalfFov, uMinPx;
+attribute vec3 aColor; attribute vec4 aWave; attribute vec2 aFade; attribute float aRadius, aBuild;
+varying vec3 vColor; varying vec4 vWave; varying vec2 vFade;
+varying float vDepth, vWidthFade, vBuild; varying vec2 vUvL;
+void main(){
+  vUvL = uv; vColor = aColor; vWave = aWave; vFade = aFade; vBuild = aBuild;
+  vec4 mv = modelViewMatrix * vec4(position, 1.0);
+  vDepth = -mv.z;
+  float pxPerUnit = uViewportH / (2.0 * vDepth * uTanHalfFov);
+  float wantR = max(aRadius, uMinPx / (2.0 * pxPerUnit));
+  mv.xyz += normalize(normalMatrix * normal) * (wantR - aRadius);
+  vWidthFade = aRadius / wantR;
+  gl_Position = projectionMatrix * mv;
+}`;
+
+const FRAG = `
+uniform float uTime, uBuild, uFogNear, uFogFar, uNearCull;
+uniform vec2 uResolution, uMaskStops;
+varying vec3 vColor; varying vec4 vWave; varying vec2 vFade;
+varying float vDepth, vWidthFade, vBuild; varying vec2 vUvL;
+void main(){
+  // THE BUILD FRONT. One comparison turns the whole scene into a sequence: geometry
+  // only exists once the front has passed the level it belongs to. Nothing is added
+  // or removed at runtime — this is the entire storytelling mechanism.
+  // The front starts slightly AHEAD of zero, otherwise smoothstep(0, .035, 0) discards
+  // even the ground datum and the beat opens on an empty frame.
+  float front = uBuild * 0.86 + 0.14;
+  float born = smoothstep(vBuild, vBuild + 0.035, front);
+  if (born <= 0.001) discard;
+  // A brief flash as each element lands, so the drawing reads as being DRAWN.
+  float ink = 1.0 + 2.4 * exp(-pow((front - vBuild) * 26.0, 2.0));
+
+  float phase = vUvL.x * vWave.x - uTime * vWave.y + vWave.z;
+  float pulse = smoothstep(-0.5, 0.5, sin(phase)) * step(0.5, vWave.y);
+  float statMod = mix(0.76 + 0.24 * sin(vUvL.x * vWave.x * 0.5 + vWave.z), 1.0, step(0.5, vWave.y));
+
+  float fogF  = 1.0 - smoothstep(uFogNear, uFogFar, vDepth);
+  float nearF = smoothstep(uNearCull, uNearCull + 9.0, vDepth);
+  float hide  = smoothstep(0.0, vFade.y, vUvL.x) * smoothstep(1.0, 0.94, vUvL.x);
+
+  float sy = 1.0 - (gl_FragCoord.y / uResolution.y);
+  float mask = 1.0 - 0.22 * smoothstep(uMaskStops.x, uMaskStops.y, sy);
+
+  vec3 col = vColor * ink + pulse * vWave.w;
+  float a = vFade.x * hide * fogF * nearF * vWidthFade * statMod * mask * born;
+  gl_FragColor = vec4(col * fogF, a);
+}`;
+
+const geos = [];
+const radial = lowPower ? 3 : 5;
+items.forEach((it, idx) => {
+  const K = C[it.cls], curve = new Poly(it.pts), len = curve.getLength();
+  if (!(len > 0.01)) return;
+  const seg = it.cls === 'stream' ? (lowPower ? 90 : 200) : Math.max(2, Math.min(40, Math.round(len/3)));
+  const g = new THREE.TubeGeometry(curve, seg, K.r, radial, false);
+  const n = g.attributes.position.count;
+  const col = new THREE.Color(K.hex);
+  const put = (name, size, fn) => {
+    const arr = new Float32Array(n*size);
+    for (let v = 0; v < n; v++) fn(arr, v*size);
+    g.setAttribute(name, new THREE.BufferAttribute(arr, size));
+  };
+  const uSize = 2*Math.PI*len/16, phase = idx*2.399963;
+  const speed = it.cls === 'stream' ? 1 : 0;
+  put('aColor', 3, (a,o)=>{ a[o]=col.r; a[o+1]=col.g; a[o+2]=col.b; });
+  put('aWave', 4, (a,o)=>{ a[o]=uSize; a[o+1]=speed; a[o+2]=phase; a[o+3]=K.heat; });
+  put('aFade', 2, (a,o)=>{ a[o]=K.a; a[o+1]=Math.min(0.4, 16/len); });
+  put('aRadius', 1, (a,o)=>{ a[o]=K.r; });
+  put('aBuild', 1, (a,o)=>{ a[o]=it.build; });
+  geos.push(g);
+});
+
+const mat = new THREE.ShaderMaterial({
+  vertexShader: VERT, fragmentShader: FRAG, transparent: true,
+  depthTest: false, depthWrite: false, blending: THREE.AdditiveBlending, fog: false,
+  uniforms: {
+    uTime:{value:0}, uBuild:{value:0}, uFogNear:{value:80}, uFogFar:{value:300}, uNearCull:{value:1.5},
+    uResolution:{value:new THREE.Vector2(1,1)}, uMaskStops:{value:new THREE.Vector2(0.58,0.86)},
+    uViewportH:{value:1}, uTanHalfFov:{value:Math.tan(19*Math.PI/180)}, uMinPx:{value:1.15},
+  },
+});
+const mesh = new THREE.Mesh(mergeGeometries(geos, false), mat);
+mesh.frustumCulled = false;
+geos.forEach(g => g.dispose());
+
+/* ── composite pass: same grammar as /v6 ── */
+const COMP = {
+  uniforms:{ tDiffuse:{value:null}, uAspect:{value:1}, uTime:{value:0} },
+  vertexShader:`varying vec2 vUv; void main(){ vUv=uv; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0); }`,
+  fragmentShader:`
+uniform sampler2D tDiffuse; uniform float uAspect, uTime; varying vec2 vUv;
+float hash(vec2 p){ return fract(sin(dot(p, vec2(12.9898,78.233)))*43758.5453123); }
+float sIO(float t){ return -0.5*(cos(3.14159265*t)-1.0); }
+void main(){
+  vec4 c = texture2D(tDiffuse, vUv);
+  c.rgb += vec3(0.0180,0.0245,0.2100) * sIO(clamp(1.0-distance(vec2(0.68,0.54),vUv)*1.02,0.0,1.0)) * 0.60;
+  c.rgb += vec3(0.0320,0.0420,0.3400) * sIO(clamp(1.0-distance(vec2(0.68,0.54),vUv)*0.24,0.0,1.0)) * 0.42;
+  c.rgb *= mix(1.0, 0.78, smoothstep(0.22,0.0,vUv.y)*0.88);
+  c.rgb *= mix(1.0, smoothstep(0.95,0.26,length((vUv-0.5)*vec2(uAspect,1.0))), 0.55);
+  float tq = floor(uTime*12.0)/12.0;
+  c.rgb += (hash(gl_FragCoord.xy + tq*91.7)-0.5)*0.014 + (hash(gl_FragCoord.xy*1.7)-0.5)*0.018;
+  gl_FragColor = c;
+}`,
+};
+
+/* ── renderer ── */
+const host = document.getElementById('gl');
+const renderer = new THREE.WebGLRenderer({ antialias:false, alpha:false, stencil:false, depth:false });
+const dpr = Math.min(devicePixelRatio||1, lowPower?1.25:1.5);
+renderer.setPixelRatio(dpr);
+renderer.setSize(innerWidth, innerHeight);
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 0.74;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.setClearColor('#05070A', 1);
+host.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene(); scene.add(mesh);
+// Zero rotation + principal-point offset, exactly as /v6 — verticals stay plumb and
+// the vanishing point cannot drift. Eye is above the ground plane looking level.
+const cam = new THREE.PerspectiveCamera(38, innerWidth/innerHeight, 0.5, 900);
+cam.position.set(0, 12.0, 30);
+
+const composer = new EffectComposer(renderer);
+composer.addPass(new RenderPass(scene, cam));
+const bloom = new UnrealBloomPass(new THREE.Vector2(innerWidth/2, innerHeight/2), 0.78, 0.34, 0.5);
+composer.addPass(bloom);
+const comp = new ShaderPass(COMP); composer.addPass(comp);
+composer.addPass(new OutputPass());
+
+function frame(){
+  const w = innerWidth, h = innerHeight;
+  cam.aspect = w/h;
+  cam.setViewOffset(w, h, w*(0.5-0.72), h*(0.5-0.54), w, h);
+  cam.updateProjectionMatrix();
+  mat.uniforms.uResolution.value.set(w*dpr, h*dpr);
+  mat.uniforms.uViewportH.value = h*dpr;
+  comp.uniforms.uAspect.value = w/h;
+}
+frame();
+
+const STAGES = [[0.00,'01','Site sourcing'],[0.14,'02','Feasibility'],[0.30,'03','Design'],
+                [0.46,'04','Procurement'],[0.62,'05','Structure'],[0.82,'06','Façade']];
+const noEl = document.getElementById('stageNo'), nmEl = document.getElementById('stageName'), barEl = document.getElementById('stageBar');
+let shown = -1, t = 0, last = performance.now(), build = 0, docH = 1;
+const measure = () => { docH = Math.max(1, document.documentElement.scrollHeight - innerHeight); };
+measure();
+
+function tick(now){
+  if (now - last < 15.5) return;
+  t += Math.min(now - last, 33) * 0.001; last = now;
+  const p = Math.min(1, Math.max(0, scrollY / docH));
+  build += (p - build) * 0.09;
+  mat.uniforms.uBuild.value = build;
+  mat.uniforms.uTime.value = t * 0.85;
+  comp.uniforms.uTime.value = t;
+  // The camera lifts and pulls back as the tower stands up, so the subject stays framed.
+  cam.position.set(0, 12.0 + build*13, 30 + build*26);
+  let i = 0; for (let k = 0; k < STAGES.length; k++) if (build >= STAGES[k][0]) i = k;
+  if (i !== shown) { shown = i; noEl.textContent = STAGES[i][1]; nmEl.textContent = STAGES[i][2]; }
+  barEl.style.width = (build*132).toFixed(1) + 'px';
+  composer.render();
+}
+
+addEventListener('resize', () => { renderer.setSize(innerWidth, innerHeight); composer.setSize(innerWidth, innerHeight); frame(); measure(); }, { passive:true });
+
+await renderer.compileAsync(scene, cam);
+composer.render();
+renderer.domElement.style.opacity = '1';
+if (reduce) { mat.uniforms.uBuild.value = 1; composer.render(); }
+else renderer.setAnimationLoop(tick);
+window.__concept = 'ok:' + items.length;
+window.__d = { scene, cam, mesh, mat, composer, renderer, items, THREE };
+</script>
