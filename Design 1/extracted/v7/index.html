@@ -11,7 +11,7 @@
   html, body { margin: 0; height: 100%; background: #05070A; }
   body { font-family: Archivo, system-ui, sans-serif; }
   /* 4 viewports of scroll drives the build front; the beat is legible in the first one. */
-  #scroll { height: 400vh; }
+  #scroll { height: 760vh; }
   #gl { position: fixed; inset: 0; z-index: 0; }
   #gl canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block;
                opacity: 0; transition: opacity 700ms ease-out; }
@@ -78,6 +78,7 @@ const C = {
   set:    { hex:'#9AA0FF', a:0.62, r:0.016, heat:0 },     // setting-out
   plan:   { hex:'#F7F9FA', a:0.92, r:0.018, heat:0 },     // footprint
   frame:  { hex:'#7A84D8', a:0.72, r:0.016, heat:0 },     // structure
+  lit:    { hex:'#FFFFFF', a:1.00, r:0.015, heat:1.15 },  // occupied — the payoff
   grid:   { hex:'#5A63A8', a:0.52, r:0.018, heat:0 },    // ground datum
 };
 
@@ -88,7 +89,10 @@ const C = {
    The façade is deliberately sequenced a few levels BEHIND the frame, which is
    how cladding actually follows structure up a real job. ── */
 const items = [];
-const push = (cls, pts, build = 0) => items.push({ cls, pts, build });
+// retire: the point the element LEAVES (0 = never). late: how far it dims once the
+// building is in use. Together these are what turn a build-up into a full lifecycle —
+// construction has to end, not just accumulate.
+const push = (cls, pts, build = 0, retire = 0, late = 0) => items.push({ cls, pts, build, retire, late });
 const GX = 34, ZN = 14, ZF = -210;
 
 // Ground datum — the floor that makes this a place rather than a void.
@@ -98,7 +102,7 @@ for (let x = -GX; x <= GX; x += 9) push('grid', [[x,0,ZN],[x,0,ZF]]);
 // The lot.
 const CX = 2, CZ = -62;
 const B = [[-20,-24],[26,-24],[26,-100],[-20,-100]];
-for (let i = 0; i < 4; i++) push('tick', [[B[i][0],0,B[i][1]],[B[(i+1)%4][0],0,B[(i+1)%4][1]]], 0.015);
+for (let i = 0; i < 4; i++) push('tick', [[B[i][0],0,B[i][1]],[B[(i+1)%4][0],0,B[(i+1)%4][1]]], 0.015, 0, 0.6);
 push('set', [[-GX,0,CZ],[GX,0,CZ]], 0.05);
 push('set', [[CX,0,ZN],[CX,0,ZF]], 0.05);
 for (let z = -28; z >= -98; z -= 8) push('tick', [[CX-1.6,0,z],[CX+1.6,0,z]], 0.07);
@@ -110,8 +114,9 @@ const plan = k => k < PODIUM ? { w: 15, d: 10 } : { w: 10.5, d: 7 };
 const at = (k, i, j) => { const { w, d } = plan(k);
   return [CX - w + 2*w*i/(NX-1), k*H, CZ - d + 2*d*j/(NZ-1)]; };
 // structure at level k lands at this point on the front; cladding trails it.
-const tF = k => 0.20 + (k / LV) * 0.66;
-const tC = k => Math.min(0.99, tF(k) + 0.085);
+const tF = k => 0.36 + (k / LV) * 0.28;                 // structure  36% -> 64%
+const tC = k => Math.min(0.99, tF(k) + 0.09);           // cladding trails it
+const tL = k => 0.78 + (k / LV) * 0.12;                 // occupied   78% -> 90%
 
 for (let k = 0; k < LV; k++) {
   const b = tF(k), { w, d } = plan(k), y0 = k*H, y1 = (k+1)*H;
@@ -119,14 +124,14 @@ for (let k = 0; k < LV; k++) {
   // COLUMNS — one segment per level, so the frame rises storey by storey.
   for (let i = 0; i < NX; i++) for (let j = 0; j < NZ; j++) {
     const p = at(k, i, j);
-    push('frame', [[p[0], y0, p[2]], [p[0], y1, p[2]]], b);
+    push('frame', [[p[0], y0, p[2]], [p[0], y1, p[2]]], b, 0, 0.35);
   }
   // FLOOR PLATE — perimeter as a double line (slab thickness) + internal beams.
   const C = [at(k,0,0), at(k,NX-1,0), at(k,NX-1,NZ-1), at(k,0,NZ-1)];
   for (const dy of [0, 0.42]) for (let i = 0; i < 4; i++)
-    push(dy ? 'frame' : 'plan', [[C[i][0], y1+dy, C[i][2]], [C[(i+1)%4][0], y1+dy, C[(i+1)%4][2]]], b + 0.004);
-  for (let i = 0; i < NX; i++) push('frame', [[at(k,i,0)[0], y1, CZ-d], [at(k,i,0)[0], y1, CZ+d]], b + 0.006);
-  for (let j = 0; j < NZ; j++) push('frame', [[CX-w, y1, at(k,0,j)[2]], [CX+w, y1, at(k,0,j)[2]]], b + 0.006);
+    push(dy ? 'frame' : 'plan', [[C[i][0], y1+dy, C[i][2]], [C[(i+1)%4][0], y1+dy, C[(i+1)%4][2]]], b + 0.004, 0, dy?0.55:0.2);
+  for (let i = 0; i < NX; i++) push('frame', [[at(k,i,0)[0], y1, CZ-d], [at(k,i,0)[0], y1, CZ+d]], b + 0.006, 0, 0.5);
+  for (let j = 0; j < NZ; j++) push('frame', [[CX-w, y1, at(k,0,j)[2]], [CX+w, y1, at(k,0,j)[2]]], b + 0.006, 0, 0.5);
 
   // CORE — lift/stair walls, drawn denser, with X-bracing every level.
   const cw = 3.4, cd = 2.6;
@@ -135,8 +140,18 @@ for (let k = 0; k < LV; k++) {
     push('plan', [[K[i][0], y0, K[i][1]], [K[i][0], y1, K[i][1]]], b);
     push('plan', [[K[i][0], y1, K[i][1]], [K[(i+1)%4][0], y1, K[(i+1)%4][1]]], b + 0.004);
   }
-  push('set', [[K[0][0], y0, K[0][1]], [K[1][0], y1, K[1][1]]], b + 0.008);
-  push('set', [[K[1][0], y0, K[1][1]], [K[0][0], y1, K[0][1]]], b + 0.008);
+  push('set', [[K[0][0], y0, K[0][1]], [K[1][0], y1, K[1][1]]], b + 0.008, 0, 0.8);
+  push('set', [[K[1][0], y0, K[1][1]], [K[0][0], y1, K[0][1]]], b + 0.008, 0, 0.8);
+
+  // OCCUPANCY — the building comes into use. This is the beat the whole sequence is for:
+  // the record does not stop at handover.
+  if (k % 2 === 0 && k < LV - 1) {
+    const L = tL(k), MOD = 2.3, yl = y0 + H*0.45;
+    for (let x = CX - w + MOD; x < CX + w - 0.1; x += MOD*2)
+      push('lit', [[x, yl, CZ+d], [x + MOD*0.62, yl, CZ+d]], L + Math.abs(Math.sin(x*7.3+k))*0.05);
+    for (let z = CZ - d + MOD; z < CZ + d - 0.1; z += MOD*2)
+      push('lit', [[CX-w, yl, z], [CX-w, yl, z + MOD*0.62]], L + Math.abs(Math.sin(z*5.1+k))*0.05);
+  }
 
   // FAÇADE — vertical mullions on the two visible faces at a fixed module.
   // Trails the frame by tC-tF, so you watch cladding chase the structure up.
@@ -149,21 +164,22 @@ for (let k = 0; k < LV; k++) {
   }
 }
 
-// ── tower crane: the one object that says CONSTRUCTION at a glance ──
+// ── tower crane: goes up early, comes DOWN before handover ──
+// Dismantling it top-down is what makes the end of the sequence read as completion
+// rather than as the animation simply stopping.
 const MX = CX - 20, MZ = CZ + 4, MH = LV*H + 12;
-for (const [ox, oz] of [[-1.3,-1.3],[1.3,-1.3],[1.3,1.3],[-1.3,1.3]])
-  push('frame', [[MX+ox,0,MZ+oz],[MX+ox,MH,MZ+oz]], 0.10);
-for (let y = 3; y < MH; y += 3.4) {                       // mast lacing
-  const q = [[-1.3,-1.3],[1.3,-1.3],[1.3,1.3],[-1.3,1.3]];
+const Q = [[-1.3,-1.3],[1.3,-1.3],[1.3,1.3],[-1.3,1.3]];
+for (const [ox, oz] of Q) push('frame', [[MX+ox,0,MZ+oz],[MX+ox,MH,MZ+oz]], 0.10, 0.88);
+for (let y = 3; y < MH; y += 3.4)
   for (let i = 0; i < 4; i++)
-    push('frame', [[MX+q[i][0],y,MZ+q[i][1]],[MX+q[(i+1)%4][0],y,MZ+q[(i+1)%4][1]]], 0.10 + y/MH*0.5);
-}
-push('plan', [[MX,MH,MZ],[MX+34,MH,MZ]], 0.62);           // jib
-push('plan', [[MX,MH,MZ],[MX-11,MH,MZ]], 0.62);           // counter-jib
-push('set',  [[MX,MH+5,MZ],[MX+34,MH,MZ]], 0.64);         // pendants
-push('set',  [[MX,MH+5,MZ],[MX-11,MH,MZ]], 0.64);
-push('frame',[[MX,MH,MZ],[MX,MH+5,MZ]], 0.63);            // A-frame
-push('tick', [[MX+21,MH,MZ],[MX+21,MH-13,MZ]], 0.66);     // hoist line
+    push('frame', [[MX+Q[i][0],y,MZ+Q[i][1]],[MX+Q[(i+1)%4][0],y,MZ+Q[(i+1)%4][1]]],
+         0.10 + (y/MH)*0.16, 0.88 - (y/MH)*0.06);   // laces come off from the top down
+push('plan', [[MX,MH,MZ],[MX+34,MH,MZ]], 0.15, 0.80);          // jib
+push('plan', [[MX,MH,MZ],[MX-11,MH,MZ]], 0.15, 0.80);          // counter-jib
+push('set',  [[MX,MH+5,MZ],[MX+34,MH,MZ]], 0.16, 0.80);        // pendants
+push('set',  [[MX,MH+5,MZ],[MX-11,MH,MZ]], 0.16, 0.80);
+push('frame',[[MX,MH,MZ],[MX,MH+5,MZ]], 0.16, 0.81);           // A-frame
+push('tick', [[MX+21,MH,MZ],[MX+21,MH-13,MZ]], 0.17, 0.78);    // hoist line
 
 // ── streams: arrive across the ground, then climb the core ──
 const N_STREAM = lowPower ? 5 : 9;
@@ -190,11 +206,11 @@ class Poly extends THREE.Curve {
 
 const VERT = `
 uniform float uViewportH, uTanHalfFov, uMinPx;
-attribute vec3 aColor; attribute vec4 aWave; attribute vec2 aFade; attribute float aRadius, aBuild;
+attribute vec3 aColor; attribute vec4 aWave; attribute vec2 aFade, aSeq; attribute float aRadius, aBuild;
 varying vec3 vColor; varying vec4 vWave; varying vec2 vFade;
-varying float vDepth, vWidthFade, vBuild; varying vec2 vUvL;
+varying float vDepth, vWidthFade, vBuild; varying vec2 vUvL, vSeq;
 void main(){
-  vUvL = uv; vColor = aColor; vWave = aWave; vFade = aFade; vBuild = aBuild;
+  vUvL = uv; vColor = aColor; vWave = aWave; vFade = aFade; vBuild = aBuild; vSeq = aSeq;
   vec4 mv = modelViewMatrix * vec4(position, 1.0);
   vDepth = -mv.z;
   float pxPerUnit = uViewportH / (2.0 * vDepth * uTanHalfFov);
@@ -208,7 +224,7 @@ const FRAG = `
 uniform float uTime, uBuild, uFogNear, uFogFar, uNearCull;
 uniform vec2 uResolution, uMaskStops;
 varying vec3 vColor; varying vec4 vWave; varying vec2 vFade;
-varying float vDepth, vWidthFade, vBuild; varying vec2 vUvL;
+varying float vDepth, vWidthFade, vBuild; varying vec2 vUvL, vSeq;
 void main(){
   // THE BUILD FRONT. One comparison turns the whole scene into a sequence: geometry
   // only exists once the front has passed the level it belongs to. Nothing is added
@@ -233,7 +249,11 @@ void main(){
   float mask = 1.0 - 0.22 * smoothstep(uMaskStops.x, uMaskStops.y, sy);
 
   vec3 col = vColor * ink + pulse * vWave.w;
-  float a = vFade.x * hide * fogF * nearF * vWidthFade * statMod * mask * born;
+  // The crane comes down; the temporary works go with it.
+  float gone = (vSeq.x > 0.0) ? 1.0 - smoothstep(vSeq.x, vSeq.x + 0.05, front) : 1.0;
+  // Once the building is in use the construction layer recedes and the record keeps running.
+  float late = 1.0 - vSeq.y * smoothstep(0.84, 0.96, front);
+  float a = vFade.x * hide * fogF * nearF * vWidthFade * statMod * mask * born * gone * late;
   gl_FragColor = vec4(col * fogF, a);
 }`;
 
@@ -258,6 +278,7 @@ items.forEach((it, idx) => {
   put('aFade', 2, (a,o)=>{ a[o]=K.a; a[o+1]=Math.min(0.4, 16/len); });
   put('aRadius', 1, (a,o)=>{ a[o]=K.r; });
   put('aBuild', 1, (a,o)=>{ a[o]=it.build; });
+  put('aSeq', 2, (a,o)=>{ a[o]=it.retire||0; a[o+1]=it.late||0; });
   geos.push(g);
 });
 
@@ -330,8 +351,13 @@ function frame(){
 }
 frame();
 
-const STAGES = [[0.00,'01','Site sourcing'],[0.14,'02','Feasibility'],[0.30,'03','Design'],
-                [0.46,'04','Procurement'],[0.62,'05','Structure'],[0.82,'06','Façade']];
+const STAGES = [
+  [0.00,'01','Site sourcing'], [0.05,'02','Feasibility'],   [0.11,'03','Design'],
+  [0.16,'04','Approvals'],     [0.21,'05','Procurement'],   [0.27,'06','Enabling works'],
+  [0.32,'07','Substructure'],  [0.38,'08','Structure'],     [0.58,'09','Façade'],
+  [0.70,'10','Services'],      [0.78,'11','Fit-out'],       [0.88,'12','Handover'],
+  [0.95,'13','Operation'],
+];
 const noEl = document.getElementById('stageNo'), nmEl = document.getElementById('stageName'), barEl = document.getElementById('stageBar');
 let shown = -1, t = 0, last = performance.now(), build = 0, docH = 1;
 const measure = () => { docH = Math.max(1, document.documentElement.scrollHeight - innerHeight); };
@@ -346,7 +372,8 @@ function tick(now){
   mat.uniforms.uTime.value = t * 0.85;
   comp.uniforms.uTime.value = t;
   // The camera lifts and pulls back as the tower stands up, so the subject stays framed.
-  cam.position.set(0, 12.0 + build*20, 44 + build*46);
+  // Rises with the building, then keeps pulling back so the finished tower reads whole.
+  cam.position.set(0, 12.0 + build*26, 44 + build*48);
   let i = 0; for (let k = 0; k < STAGES.length; k++) if (build >= STAGES[k][0]) i = k;
   if (i !== shown) { shown = i; noEl.textContent = STAGES[i][1]; nmEl.textContent = STAGES[i][2]; }
   barEl.style.width = (build*132).toFixed(1) + 'px';
