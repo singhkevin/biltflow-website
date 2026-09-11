@@ -1,0 +1,93 @@
+[
+  {
+    "n": "01",
+    "title": "Site sourcing",
+    "desc": "Tango surfaces sites that fit the brief — before anyone picks up the phone.",
+    "agent": "Tango",
+    "img": "https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_113134_1a0f068f-2888-4015-b312-482b0c632c0a.png"
+  },
+  {
+    "n": "02",
+    "title": "Feasibility",
+    "desc": "Numbers built on what your last nine towers actually cost, not a template.",
+    "agent": "Fred",
+    "img": "https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_115432_2254bcfa-75ea-40d1-9d72-24638bc49831.png"
+  },
+  {
+    "n": "03",
+    "title": "Approvals",
+    "desc": "Statutory milestones, consultants and conditions tracked as one programme.",
+    "agent": "Fred",
+    "img": "https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_115432_c0971b4a-cea1-41a6-9b26-df0ed95acdc4.png"
+  },
+  {
+    "n": "04",
+    "title": "Design",
+    "desc": "Drawings, models and RFIs coordinated with the estimate they change.",
+    "agent": "Cash",
+    "img": "https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_115432_3c5bbc74-6c54-47eb-982d-f2f9c341380b.png"
+  },
+  {
+    "n": "05",
+    "title": "Estimating",
+    "desc": "Takeoffs and cost plans benchmarked against real delivered projects.",
+    "agent": "Cost Agent",
+    "img": "https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_113134_f6e233a5-02f4-44a6-8626-64bc79340efa.png"
+  },
+  {
+    "n": "06",
+    "title": "Procurement",
+    "desc": "Packages, RFQs and supplier comparison — Tango sources, Cash executes.",
+    "agent": "Tango · Cash",
+    "img": "https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_113134_c4b2d966-59af-4e3c-a3a5-8d4527eda3f6.png"
+  },
+  {
+    "n": "07",
+    "title": "Commercial",
+    "desc": "Contracts, variations and claims connected to the estimate they came from.",
+    "agent": "Cash",
+    "img": "https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_115432_085e66b5-6c3e-4798-9cf3-ff3b7fc9bc99.png"
+  },
+  {
+    "n": "08",
+    "title": "Construction",
+    "desc": "Programme, cost and site progress in one live record.",
+    "agent": "Programme Agent",
+    "img": "https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_101409_8f8c3c8a-32e3-4d97-bf27-ab18476c02a7.png"
+  },
+  {
+    "n": "09",
+    "title": "Compliance",
+    "desc": "ITPs, inspections, permits and NCRs with a full audit trail.",
+    "agent": "QA Agent",
+    "img": "https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_115432_cb27eef1-e146-444d-83c2-2616c603a166.png"
+  },
+  {
+    "n": "10",
+    "title": "Handover",
+    "desc": "Digital handover with every asset, warranty and decision attached.",
+    "agent": "Sophia",
+    "img": "https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_091214_83fb9d30-31eb-4aff-8f60-1e64803d21e6.png"
+  },
+  {
+    "n": "11",
+    "title": "Defects",
+    "desc": "Sophia traces each defect back to the decision that caused it.",
+    "agent": "Sophia",
+    "img": "https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_113134_ae6b561d-4f96-4f8f-900c-45556e5d2fd6.png"
+  },
+  {
+    "n": "12",
+    "title": "Maintenance",
+    "desc": "The building keeps talking back — for the life of the asset.",
+    "agent": "Wilma",
+    "img": "https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_115432_a0fae4b7-1333-4aed-a144-de9f20ee176d.png"
+  },
+  {
+    "n": "13",
+    "title": "Learning",
+    "desc": "Every lesson flows forward. The next project already knows.",
+    "agent": "EVE",
+    "img": "https://d8j0ntlcm91z4.cloudfront.net/user_3IqJh6WA6PAhaT5jKqPwZgp9Ecn/hf_20260904_115432_28bec8cb-6884-4cac-b3c6-fd712b9f4342.png"
+  }
+]
