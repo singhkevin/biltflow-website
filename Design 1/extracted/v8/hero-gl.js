@@ -83,10 +83,14 @@ const at = (k, i, j) => { const { w, d } = plan(k);
 /* PHASE LADDER — where each trade lands on the page. Structure occupies the middle
    because that is where the page has the least type; occupancy is the payoff and is
    the one thing that BRIGHTENS while everything else quiets down. */
-const tFrame = k => 0.175 + (k / LV) * 0.415;     // structure   17.5% -> 59%
-const tClad  = k => Math.min(0.985, tFrame(k) + 0.075);
-const tFit   = k => 0.72 + (k / LV) * 0.16;       // occupancy   72%  -> 88%
-const RETIRE_CRANE = 0.90, RETIRE_JIB = 0.84, RETIRE_SITE = 0.88;
+const tFrame = k => 0.16 + (k / LV) * 0.34;       // structure    16% -> 50%
+const tClad  = k => Math.min(0.985, tFrame(k) + 0.07);
+const tFin   = k => 0.50 + (k / LV) * 0.13;       // finishing    50% -> 63%
+// Occupancy arrives UNEVENLY — a clean sweep up the tower reads as a progress bar.
+const hashK  = k => Math.abs(Math.sin(k * 12.9898) * 43758.5453) % 1;
+const tFit   = k => 0.635 + hashK(k) * 0.15;      // moving in    63% -> 78%
+const HANDOVER = 0.80, MAINT0 = 0.845, OPERATE = 0.84;
+const RETIRE_CRANE = HANDOVER + 0.04, RETIRE_JIB = HANDOVER, RETIRE_SITE = HANDOVER + 0.02;
 
 const items = [];
 const push = (cls, pts, build = 0, retire = 0, late = 0) =>
@@ -96,6 +100,30 @@ const push = (cls, pts, build = 0, retire = 0, late = 0) =>
 const gStep = lowPower ? 14 : 9;
 for (let z = ZN; z > ZF; z -= gStep) push('grid', [[-GX,0,z],[GX,0,z]]);
 for (let x = -GX; x <= GX; x += gStep) push('grid', [[x,0,ZN],[x,0,ZF]]);
+
+
+/* ── CONTEXT: the city the project sits in. Born at 0 and never retires, so the frame
+   has real content from the FIRST pixel instead of an empty lot. This is what makes the
+   hero land immediately — the subject tower then rises in front of it. Deliberately far
+   and dim: it reads as depth, never competing with the building. ── */
+{
+  const CITY = [
+    [-62, -126, 14, 31], [ 54, -116, 12, 25], [-34, -164, 17, 43], [ 78, -148, 15, 36],
+    [-88, -190, 13, 28], [ 28, -198, 19, 49], [-54, -224, 16, 38], [ 96, -210, 13, 31],
+    [  8, -250, 21, 55], [-100, -258, 15, 34],
+  ];
+  for (const [cx, cz, cw, ch] of CITY) {
+    const q = [[-cw/2,-cw/2],[cw/2,-cw/2],[cw/2,cw/2],[-cw/2,cw/2]];
+    for (let i = 0; i < 4; i++) {                                   // corner edges
+      push('city', [[cx+q[i][0],0,cz+q[i][1]],[cx+q[i][0],ch,cz+q[i][1]]], 0);
+      push('city', [[cx+q[i][0],ch,cz+q[i][1]],[cx+q[(i+1)%4][0],ch,cz+q[(i+1)%4][1]]], 0);
+    }
+    for (let f = 1; f < 5; f++) {                                   // a few floor bands
+      const y = ch * (f / 5);
+      push('city', [[cx-cw/2,y,cz+cw/2],[cx+cw/2,y,cz+cw/2]], 0);
+    }
+  }
+}
 
 /* ── the lot, setting-out, and the excavation ── */
 const B = [[-22,-26],[28,-26],[28,-106],[-22,-106]];
@@ -143,6 +171,18 @@ for (let k = 0; k < LV; k++) {
   push('set', [[K[0][0], y0, K[0][1]], [K[1][0], y1, K[1][1]]], b + 0.006, 0, 0.8);
   push('set', [[K[1][0], y0, K[1][1]], [K[0][0], y1, K[0][1]]], b + 0.006, 0, 0.8);
 
+  // FINISHING — partitions and a balustrade at each slab edge: the members that turn a
+  // frame into somewhere you can occupy.
+  {
+    const f = tFin(k);
+    for (let q = 1; q <= 2; q++) {
+      const xq = CX - w + (2*w) * (q / 3);
+      push('tick', [[xq, y1, CZ-d*0.72], [xq, y1, CZ+d*0.72]], f + q*0.004, 0, 0.25);
+    }
+    push('tick', [[CX-w, y1+1.0, CZ+d], [CX+w, y1+1.0, CZ+d]], f + 0.012, 0, 0.2);
+    push('tick', [[CX-w, y1+1.0, CZ-d], [CX-w, y1+1.0, CZ+d]], f + 0.012, 0, 0.2);
+  }
+
   // services risers climb the core once the frame is topped out
   if (k % 2 === 0) push('set', [[K[2][0]-0.7, y0, K[2][1]-0.7], [K[2][0]-0.7, y1, K[2][1]-0.7]], 0.62 + (k/LV)*0.10, 0, 0.45);
 
@@ -179,6 +219,46 @@ push('set',  [[MX,MH+5.5,MZ],[MX-12,MH,MZ]], 0.17, RETIRE_JIB);
 push('frame',[[MX,MH,MZ],[MX,MH+5.5,MZ]], 0.17, RETIRE_JIB + 0.01);
 push('tick', [[MX+23,MH,MZ],[MX+23,MH-15,MZ]], 0.18, RETIRE_JIB - 0.02);
 
+/* ── ENTRANCE CANOPY + PODIUM ACTIVITY: the building starts receiving people ── */
+{
+  const py = PODIUM * H, zf = CZ + 11;
+  push('plan', [[CX-5, py+1.2, zf+3.4], [CX+5, py+1.2, zf+3.4]], 0.60, 0, 0.15);
+  push('plan', [[CX-5, py+1.2, zf], [CX-5, py+1.2, zf+3.4]], 0.605, 0, 0.15);
+  push('plan', [[CX+5, py+1.2, zf], [CX+5, py+1.2, zf+3.4]], 0.605, 0, 0.15);
+  for (const x of [-4.2, -2.6, 1.4, 3.8])
+    push('tick', [[CX+x, 0, zf+3.4], [CX+x, 0, zf+6.6]], 0.665 + Math.abs(x)*0.004, 0, 0.3);
+}
+
+/* ── MAINTENANCE ──────────────────────────────────────────────────────────────
+   A roof davit that arrives at handover and stays, and a window-cleaning cradle that
+   DESCENDS the façade. The cradle is a FLIPBOOK: copies down its path, each with a
+   narrow build..retire window, so scrolling past reveals them one at a time. Recurring
+   motion inside a monotonic build front — no new uniform, no runtime geometry. */
+{
+  const roof = LV * H, base = PODIUM * H + 2, d = 7.5;
+  const bx = CX + 5, bz = CZ + d;
+  push('plan', [[bx-1.6, roof+0.4, bz-2.2], [bx+1.6, roof+0.4, bz-2.2]], 0.825);
+  push('plan', [[bx, roof+0.4, bz-2.2], [bx, roof+2.6, bz-2.2]], 0.828);
+  push('plan', [[bx, roof+2.6, bz-2.2], [bx, roof+2.4, bz+0.4]], 0.831);
+
+  const N = 18, span = roof - base;
+  for (let i = 0; i < N; i++) {
+    const y = roof - span * (i / (N - 1));
+    const b = MAINT0 + i * 0.0088, r = b + 0.012;   // still descending at front 1.0
+    push('lit',  [[bx-1.4, y, bz], [bx+1.4, y, bz]], b, r);
+    push('tick', [[bx-1.4, y, bz], [bx-1.4, y+0.8, bz]], b, r);
+    push('tick', [[bx+1.4, y, bz], [bx+1.4, y+0.8, bz]], b, r);
+    push('tick', [[bx-1.0, y+0.8, bz], [bx-1.0, roof+2.4, bz]], b, r);
+    push('tick', [[bx+1.0, y+0.8, bz], [bx+1.0, roof+2.4, bz]], b, r);
+  }
+  [[-6.0, 0.880], [0.6, 0.906], [7.4, 0.932]].forEach(([ox, b]) => {
+    const y = roof - span * 0.45;
+    push('tick', [[CX+ox-0.5, y, bz], [CX+ox-0.5, roof, bz]], b, b + 0.034);
+    push('tick', [[CX+ox+0.5, y, bz], [CX+ox+0.5, roof, bz]], b, b + 0.034);
+    push('lit',  [[CX+ox-0.7, y, bz], [CX+ox+0.7, y, bz]], b + 0.002, b + 0.034);
+  });
+}
+
 /* ── streams: arrive across the ground, then climb the core ── */
 const N_STREAM = lowPower ? 6 : 11;
 for (let i = 0; i < N_STREAM; i++) {
@@ -190,7 +270,14 @@ for (let i = 0; i < N_STREAM; i++) {
       pts.push([off + (lx-off)*sm, 0, ZF + (lz-ZF)*sm]); }
     else { const sm = (t-0.45)/0.55; pts.push([lx, sm*sm*(LV*H), lz]); }
   }
-  push('stream', pts, 0.07 + i*0.014);
+  push('stream', pts, 0.07 + i*0.014, OPERATE + 0.02);   // the site record ends at handover
+}
+// The record does not stop at handover — it changes character: fewer, slower, steadier,
+// running to the last pixel of scroll.
+for (let i = 0; i < 4; i++) {
+  const a2 = (i/4)*Math.PI*2 + 0.7, lx = CX + Math.cos(a2)*3.2, lz = CZ + Math.sin(a2)*2.4, pts = [];
+  for (let j = 0; j <= 40; j++) { const t = j/40; pts.push([lx, t*t*(LV*H), lz]); }
+  push('slow', pts, OPERATE + i*0.012);
 }
 
 /* ══════════ 2. CAMERA MODES ═══════════════════════════════════════════════
@@ -215,6 +302,10 @@ const FOG_NEAR = 90, FOG_FAR = 340, MIN_PX = 1.15, NEAR_CULL = 2.0;
 /* ══════════ 3. LINE CLASSES ═══════════════════════════════════════════════ */
 const CLASSES = {
   stream: { color: '#2E38FF', alpha: 0.68, radius: 0.017, near: 0.16, far: 0.88, heat: 0.85 },
+  // near/far are fractions of CURVE LENGTH: 0.22 on a 31-unit tower edge faded 42% of
+  // it away, which is why the skyline was present in the buffer but invisible on screen.
+  city:   { color: '#4A5599', alpha: 0.88, radius: 0.021, near: 0.05, far: 0.97, heat: 0 },
+  slow:   { color: '#2E38FF', alpha: 0.52, radius: 0.016, near: 0.20, far: 0.90, heat: 0.55 },
   lit:    { color: '#FFFFFF', alpha: 1.00, radius: 0.015, near: 0.30, far: 0.94, heat: 1.15 },
   plan:   { color: '#F7F9FA', alpha: 0.88, radius: 0.017, near: 0.28, far: 0.94, heat: 0 },
   tick:   { color: '#DDE2F2', alpha: 0.48, radius: 0.012, near: 0.30, far: 0.96, heat: 0 },
@@ -266,7 +357,12 @@ varying float vDepth, vWidthFade, vFar, vBuild; varying vec2 vUvL;
 void main(){
   // THE BUILD FRONT — the entire 13-phase sequence is this one comparison. A member
   // exists only once the front has passed the point it is placed at.
-  float front = uBuild * 0.95 + 0.05;
+  // v8's hero is ONE viewport of a 17,000px page, so uBuild there is ~0 — and at 0 the
+  // only thing placed is an empty lot. Correct for /v7, wrong for a marketing hero that
+  // has to land immediately. Starting the front at 0.24 opens on a podium, eight levels
+  // of frame and the crane already up; nothing is skipped, those phases are simply
+  // already PLACED rather than animating in.
+  float front = uBuild * 0.76 + 0.24;
   float born = smoothstep(vBuild, vBuild + 0.03, front);
   if (born <= 0.001) discard;
   float ink = 1.0 + 2.2 * exp(-pow((front - vBuild) * 26.0, 2.0));   // placed just now
@@ -291,7 +387,7 @@ void main(){
   vec3 col = vColor * ink + pulse * vWave.w;
   float a = vFade.x * hide * fogF * nearF * vWidthFade * statMod * mask
           * born * gone * late * uGlobalAlpha;
-  gl_FragColor = vec4(col * fogF, a);
+  gl_FragColor = vec4(col, a);   // fog lives in alpha; doubling it squared the falloff
 }`;
 
 const COMPOSITE = {
@@ -331,14 +427,14 @@ function buildScene(mode) {
     const len = curve.getLength();
     if (!(len > 0.01)) return;
 
-    const tubular = it.cls === 'stream'
+    const tubular = (it.cls === 'stream' || it.cls === 'slow')
       ? Math.min(lowPower ? 120 : 260, Math.max(24, Math.round(len * 1.1)))
       : Math.max(2, Math.min(40, Math.round(len / 2.5)));
 
     const g = new THREE.TubeGeometry(curve, tubular, C.radius, radial, false);
     const n = g.attributes.position.count;
     const col = new THREE.Color(C.color);
-    const speed = it.cls === 'stream' ? 1 : 0;
+    const speed = it.cls === 'stream' ? 1 : (it.cls === 'slow' ? 0.38 : 0);
     if (speed) animated++;
     const uSize = 2 * Math.PI * len / 17.0;
     const phase = idx * 2.399963;                 // golden angle — else everything crests in unison
