@@ -21,12 +21,19 @@
   /* Beats are stacked and cross-faded — never more than one on screen, so the hero
      holds 5-6 words at a time instead of a paragraph. */
   .copy { position: fixed; left: 0; right: 0; bottom: 104px; z-index: 2; padding: 0 48px; height: 200px; }
-  .eyebrow { display: flex; align-items: center; gap: 12px; font-family: 'JetBrains Mono', monospace;
-             font-size: 11px; font-weight: 500; letter-spacing: 0.24em; text-transform: uppercase;
-             color: #9AA0FF; position: absolute; left: 48px; bottom: 178px;
+  /* An ANNOTATION LEADER, not a badge. The coloured rounded square + 0.24em tracked mono
+     is the default AI-startup eyebrow and reads as exactly that; a drawing labels things
+     with a terminator tick, a leader line and tight small caps. Tracking drops 0.24 -> 0.13
+     (that run of caps was 530px wide — a banner, not a note) and the lavender goes to a
+     neutral graphite so it recedes under the headline instead of competing with it. */
+  .eyebrow { display: flex; align-items: center; gap: 11px; font-family: 'JetBrains Mono', monospace;
+             font-size: 11px; font-weight: 400; letter-spacing: 0.13em; text-transform: uppercase;
+             color: #B9C4D8; position: absolute; left: 48px; bottom: 182px;
              opacity: 0; transition: opacity 600ms ease; }
   .eyebrow.is-on { opacity: 1; }
-  .eyebrow i { width: 10px; height: 10px; border-radius: 2px; background: #2E38FF; flex: none; }
+  .eyebrow i { width: 1px; height: 10px; background: #B9C4D8; flex: none; }     /* terminator tick */
+  .eyebrow u { width: 26px; height: 1px; background: #B9C4D8; flex: none;
+               text-decoration: none; margin-left: -5px; }                       /* leader line */
   /* Two different words cross-fading in the SAME position reads as a smear, so the
      outgoing beat leaves quickly and the incoming one is delayed past it. */
   .beat { position: absolute; left: 48px; right: 48px; bottom: 0; opacity: 0;
@@ -38,8 +45,8 @@
   .lead { display: block; font-weight: 200; font-stretch: 118%; font-size: clamp(38px, 5.4vw, 92px);
           line-height: 1.0; letter-spacing: -0.012em; color: #F7F9FA; text-transform: uppercase; }
   .lead em { font-style: normal; color: #6B72FF; }
-  .sub { display: block; margin-top: 20px; font-family: 'JetBrains Mono', monospace; font-size: 12px;
-         font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: #9AA0FF; }
+  .sub { display: block; margin-top: 18px; font-family: 'JetBrains Mono', monospace; font-size: 11px;
+         font-weight: 400; letter-spacing: 0.15em; text-transform: uppercase; color: #97A3BA; }
   /* Beat readout — this is the STAGE label, never a metric. */
   .stage { position: fixed; right: 48px; bottom: 104px; z-index: 2; text-align: right;
            font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.18em;
@@ -57,8 +64,8 @@
 <div id="gl" aria-hidden="true"></div>
 <div class="scrim" aria-hidden="true"></div>
 <div class="copy">
-  <div class="eyebrow" id="eyebrow"><i></i>AI-native construction operating system</div>
-  <div class="beat"><span class="lead">Every stage.</span></div>
+  <div class="eyebrow is-on" id="eyebrow"><i></i><u></u>AI-native construction operating system</div>
+  <div class="beat is-on"><span class="lead">Every stage.</span></div>
   <div class="beat"><span class="lead">One <em>system.</em></span></div>
   <div class="beat"><span class="lead">Development</span><span class="sub">Feasibility · Approvals</span></div>
   <div class="beat"><span class="lead">Design</span><span class="sub">Coordination · Documentation</span></div>
@@ -381,7 +388,7 @@ const BEATS = [0.00, 0.11, 0.21, 0.33, 0.45, 0.56, 0.68, 0.84];
 const beatEls = Array.from(document.querySelectorAll('.beat'));
 const noEl = document.getElementById('stageNo'), barEl = document.getElementById('stageBar');
 const eyeEl = document.getElementById('eyebrow');
-let shown = -1, t = 0, last = performance.now(), build = 0, docH = 1;
+let shown = 0, t = 0, last = performance.now(), build = 0, docH = 1;
 const measure = () => { docH = Math.max(1, document.documentElement.scrollHeight - innerHeight); };
 measure();
 
