@@ -82,8 +82,7 @@
      holding the finished, occupied building, so scrolling on reads as staying in
      the same shot rather than leaving it. Content sits on a translucent ground so
      the drawing stays faintly present the whole way down to the footer. */
-  #story { position: relative; z-index: 3; background: rgba(5,7,10,0.88);
-           backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);
+  #story { position: relative; z-index: 3; background: rgba(5,7,10,0.35);
            border-top: 1px solid rgba(185,196,216,0.14); }
   .sec { max-width: 1180px; margin: 0 auto; padding: 132px 48px;
          border-bottom: 1px solid rgba(185,196,216,0.09); }
@@ -103,7 +102,8 @@
            font-size: clamp(15px, 1.25vw, 18px); line-height: 1.62; color: #97A3BA; }
   .grid { display: grid; gap: 1px; background: rgba(185,196,216,0.11);
           border: 1px solid rgba(185,196,216,0.11); }
-  .grid > * { background: rgba(5,7,10,0.50); padding: 34px 30px; }
+  .grid > * { background: rgba(5,7,10,0.56); padding: 34px 30px;
+              backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px); }
   .g2 { grid-template-columns: repeat(2, minmax(0,1fr)); }
   .g3 { grid-template-columns: repeat(3, minmax(0,1fr)); }
   .g4 { grid-template-columns: repeat(4, minmax(0,1fr)); }
@@ -118,7 +118,7 @@
   .stat span { display: block; margin-top: 14px; font-weight: 300; font-size: 13px;
                line-height: 1.55; color: #8C97AD; }
   .band-lead { margin: 0 0 16px; font-weight: 200; font-stretch: 118%;
-               font-size: clamp(26px, 3vw, 44px); line-height: 1.14; color: #5D6880; }
+               font-size: clamp(26px, 3vw, 44px); line-height: 1.14; color: #707C96; }
   .band-sub  { margin: 0; font-weight: 200; font-stretch: 118%;
                font-size: clamp(26px, 3vw, 44px); line-height: 1.14; color: #F7F9FA; }
   .quote { margin: 0 0 42px; padding-left: 22px; border-left: 1px solid #6B72FF;
@@ -138,7 +138,7 @@
          border: 1px solid #6B72FF; transition: background 200ms ease, color 200ms ease; }
   .btn.ghost { background: transparent; color: #B9C4D8; border-color: rgba(185,196,216,0.30); }
   .btn:hover { background: #F7F9FA; color: #05070A; border-color: #F7F9FA; }
-  #foot { position: relative; z-index: 3; background: #05070A; padding: 64px 48px;
+  #foot { position: relative; z-index: 3; background: rgba(5,7,10,0.62); padding: 64px 48px;
           border-top: 1px solid rgba(185,196,216,0.14); }
   #foot .inner { max-width: 1180px; margin: 0 auto; display: flex; justify-content: space-between;
                  align-items: baseline; gap: 28px; flex-wrap: wrap; }
@@ -344,11 +344,43 @@ function refuseReason() {
   } catch (e) { return 'unsupported'; }         // Firefox can throw rather than return null
   return null;
 }
+// Eight beats across the page, aligned to what the SCENE is doing at that moment:
+// CONSTRUCTION lands as the tower tops out, ASSET CARE as the crane leaves and the
+// floors light up. Text and geometry tell the same story or neither reads.
+const BEATS = [0.00, 0.08, 0.12, 0.18, 0.24, 0.30, 0.36, 0.50, 0.58];
+// The hero's share of the build front; the page below carries the rest.
+const SPLIT = 0.62;
+
 const refused = refuseReason();
 if (refused) {
   // The beats still tell the story on the CSS ground; only the scene is skipped.
   document.querySelector('.beat').classList.add('is-on');
   window.__concept = 'refused:' + refused;
+  /* The render loop is what normally advances the beats AND stands the fixed hero copy
+     down once the page scrolls past the hero. With no loop there is nothing doing either,
+     so the opening beat sat pinned over every content section below — on short viewports,
+     without WebGL, and on data-saver. Scroll drives both here instead. */
+  const spacer = document.getElementById('scroll');
+  const els = Array.from(document.querySelectorAll('.beat'));
+  const noEl = document.getElementById('stageNo'), barEl = document.getElementById('stageBar');
+  const eyeEl = document.getElementById('eyebrow');
+  let range = 1, at = 0, wasPast = false;
+  const remeasure = () => { range = Math.max(1, spacer.offsetHeight - innerHeight); };
+  const sync = () => {
+    const b = Math.min(1, Math.max(0, scrollY / range)) * SPLIT;
+    let i = 0; for (let k = 0; k < BEATS.length; k++) if (b >= BEATS[k]) i = k;
+    if (i !== at) {
+      els[at].classList.remove('is-on'); els[i].classList.add('is-on'); at = i;
+      noEl.textContent = String(i + 1).padStart(2, '0');
+      eyeEl.classList.toggle('is-on', i < 2);
+    }
+    barEl.style.width = (b * 132).toFixed(1) + 'px';
+    const past = scrollY >= range - 8;
+    if (past !== wasPast) { document.body.classList.toggle('past-hero', past); wasPast = past; }
+  };
+  remeasure(); sync();
+  addEventListener('scroll', sync, { passive: true });
+  addEventListener('resize', () => { remeasure(); sync(); }, { passive: true });
 }
 
 /* ── palette — identical to /v6, nothing invented ── */
@@ -908,10 +940,6 @@ function camAt(b) {
   return [A[1] + (B[1] - A[1]) * e, A[2] + (B[2] - A[2]) * e, A[3] + (B[3] - A[3]) * e];
 }
 
-// Eight beats across the page, aligned to what the SCENE is doing at that moment:
-// CONSTRUCTION lands as the tower tops out, ASSET CARE as the crane leaves and the
-// floors light up. Text and geometry tell the same story or neither reads.
-const BEATS = [0.00, 0.08, 0.12, 0.18, 0.24, 0.30, 0.36, 0.50, 0.58];
 const beatEls = Array.from(document.querySelectorAll('.beat'));
 const noEl = document.getElementById('stageNo'), barEl = document.getElementById('stageBar');
 const eyeEl = document.getElementById('eyebrow');
@@ -923,7 +951,6 @@ const heroEl = document.getElementById('scroll');
    and both window-cleaning runs. Anchoring the split to the hero boundary rather than
    driving off total document height keeps handover landing exactly as the hero ends at
    every viewport, however tall the content reflows on a narrow screen. */
-const SPLIT = 0.62;
 const measure = () => {
   heroH = Math.max(1, heroEl.offsetHeight - innerHeight);
   tailH = Math.max(1, document.documentElement.scrollHeight - innerHeight - heroH);
